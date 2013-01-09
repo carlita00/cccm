@@ -8,7 +8,8 @@ import hertz_mindlin as hm
 import hs_bounds as mhs
 import contact_cement as cc
 import constant_cement as ctc
-import matplotlib.pyplot as plt
+import matplotlib.pylab as pylab
+import matplotlib.mlab as ml
 
 from pylab import *
 import numpy as np
@@ -31,15 +32,15 @@ Gsid=51e09
 
 Kc = 25.0e09 # 70.2e09   #Pa
 
-Gc = 5.0e09 #29.e09    #Pa
+Gc = 9.0e09 #29.e09    #Pa
 
 Rhoqz = 2650    #Pa
 
 Rhoclay = 2550    #Pa
 
-clayVol = 0.17 # 0.12 #= Clay proportion Paluxy con mucho clay
+clayVol = 0.12 # 0.12 #= Clay proportion Paluxy con mucho clay
 
-sidVol  = 0.01 # 0.1
+sidVol  = 0.015 # 0.1
 
 
 Ks  = ha.Ksget(Kqz, Kclay, Ksid, clayVol,sidVol)
@@ -68,7 +69,8 @@ contact dement model ###VERY IMPORTANT#####
 '''
 
 n = 20.0 - 34.0 *phi_c +14.0*np.power(phi_c,2) 
-n *=1.2
+n *=1.3
+print(n)
 
 '''
 Slip factor in Hertz-Mindlin model, underconstruction
@@ -77,10 +79,40 @@ Slip factor in Hertz-Mindlin model, underconstruction
 Ft=0  
 
 
+CO2 =np.arange(0.0,1.0,0.1)
+
+nCO2=CO2.size
+
+'''
+Pressure modeling parameters 
+'''
+Po = 10.5e6                                 #Reference pressure
+
+P = np.arange( 3.5*1e6, 17.5*1e6, 1.0*1e6 ) #Effective pressure
+
+#P = np.arange( 8.5*1e6, 18.5*1e6, 1.0*1e6 ) 
+
+ipo = 9
+iref = 7
+ico2 = 0
+
+ibrine=9
+
+print(P)
+NP=P.size
+print(NP)
+
+phi= np.arange(0.0001,0.4001000050,0.001)
+
+#phi= np.arange(0.0001,0.3601000050,0.001)
+
+Np=phi.size
+
+
 '''
 Gassman substitution parameters for P[3.5 ... 12.5]MPa
 '''
-
+'''
 rhoco2  = [0.67*1e3, 0.66*1e3,  0.64*1e3, 0.60*1e3, 0.56*1e3, 0.52*1e3, 0.48*1e3,0.44*1e3,0.33*1e3, 0.35*1e3]
 
 rhobrine= [0.998*1e3,0.99*1e3,  0.99*1e3, 0.99*1e3,0.99*1e3, 0.998*1e3,0.99*1e3,0.99*1e3,0.99*1e3, 0.99*1e3] 
@@ -93,50 +125,36 @@ Kbrine  = [2.53*1e9, 2.50*1e9,  2.52*1e9, 2.51*1e9,2.5*1e9,  2.49*1e9, 2.49*1e9,
 
 Koil    = [1.13*1e9, 1.1*1e9,   1.09*1e9, 1.07*1e9,1.07*1e9, 1.05*1e9, 1.04*1e9,1.03*1e9,1.02*1e9, 1.00*1e9]
 
-
-'''
-rhoco2  = [0.6*1e3, 0.6*1e3,  0.6*1e3, 0.6*1e3, 0.6*1e3, 0.6*1e3, 0.6*1e3,0.6*1e3,0.6*1e3, 0.6*1e3]
-
-rhobrine= [0.99*1e3,0.99*1e3,  0.99*1e3, 0.99*1e3,0.99*1e3, 0.99*1e3,0.99*1e3,0.99*1e3,0.99*1e3, 0.99*1e3] 
-
-rhooil  = [0.79*1e3,0.79*1e3,  0.79*1e3, 0.79*1e3,0.79*1e3, 0.79*1e3, 0.79*1e3,0.79*1e3,0.79*1e3, 0.79*1e3] 
-
-Kco2    = [0.125*1e9,0.125*1e9, 0.125*1e9,0.125*1e9,0.125*1e9, 0.125*1e9, 0.125*1e9,0.125*1e9,0.125*1e9, 0.125*1e9] 
-
-Kbrine  = [2.47*1e9, 2.47*1e9,  2.47*1e9, 2.47*1e9,2.47*1e9,  2.47*1e9, 2.47*1e9,2.47*1e9,2.47*1e9, 2.47*1e9] 
-
-Koil    = [1.*1e9, 1.*1e9,   1.*1e9, 1.*1e9,1.*1e9, 1.*1e9, 1.*1e9,1.*1e9,1.0*1e9, 1.00*1e9]
-
 '''
 
+#rhoco2  = [0.6*1e3, 0.6*1e3,  0.6*1e3, 0.6*1e3, 0.6*1e3, 0.6*1e3, 0.6*1e3,0.6*1e3,0.6*1e3, 0.6*1e3]
 
-CO2 =np.arange(0.0,1.0,0.1)
+#rhobrine= [0.99*1e3,0.99*1e3,  0.99*1e3, 0.99*1e3,0.99*1e3, 0.99*1e3,0.99*1e3,0.99*1e3,0.99*1e3, 0.99*1e3] 
 
-nCO2=CO2.size
+#rhooil  = [0.79*1e3,0.79*1e3,  0.79*1e3, 0.79*1e3,0.79*1e3, 0.79*1e3, 0.79*1e3,0.79*1e3,0.79*1e3, 0.79*1e3] 
 
-'''
-Pressure modeling parameters 
-'''
-Po = 12.5e6                                 #Reference pressure
+#Kco2    = [0.125*1e9,0.125*1e9, 0.125*1e9,0.125*1e9,0.125*1e9, 0.125*1e9, 0.125*1e9,0.125*1e9,0.125*1e9, 0.125*1e9] 
 
-#P = np.arange( 3.5*1e6, 13.5*1e6, 1.0*1e6 ) #Effective pressure
+#Kbrine  = [2.47*1e9, 2.47*1e9,  2.47*1e9, 2.47*1e9,2.47*1e9,  2.47*1e9, 2.47*1e9,2.47*1e9,2.47*1e9, 2.47*1e9] 
 
-P = np.arange( 8.5*1e6, 18.5*1e6, 1.0*1e6 ) 
+#Koil    = [1.*1e9, 1.*1e9,   1.*1e9, 1.*1e9,1.*1e9, 1.*1e9, 1.*1e9,1.*1e9,1.0*1e9, 1.00*1e9]
 
-ipo=4
+rhoco2 = np.zeros(NP)
+rhobrine = np.zeros(NP)
+rhooil = np.zeros(NP)
+Kco2 = np.zeros(NP)
+Kbrine = np.zeros(NP)
+Koil = np.zeros(NP)
 
-ico2=0
+for i in range(NP):
+    rhoco2[i] = 0.6*1e3
+    rhobrine[i] = 0.99*1e3
+    rhooil[i] = 0.79*1e3
+    Kco2[i] = 0.125*1e9
+    Kbrine[i] = 2.47*1e9
+    Koil[i] = 1.*1e9
 
-ibrine=9
 
-print(P)
-NP=P.size
-
-phi= np.arange(0.0001,0.4001000050,0.001)
-
-#phi= np.arange(0.0001,0.3601000050,0.001)
-
-Np=phi.size
 #------------------Elastic modeling------------------------#
 '''Hertz mindlin'''
 
@@ -152,6 +170,7 @@ Modified lower Hashin-Shtrikman bound
 
 Kdry_l = mhs.K_sashin_shtrikman_lower(Ks,Khm,Ghm,phi_c,phi,P)
 Gdry_l = mhs.G_sashin_shtrikman_lower(Ghm,Gs,phi_c,phi,Zhm,Ks,P)
+
 
 '''
 Modified upper Hashin-Shtrikman bound
@@ -180,6 +199,7 @@ rhosat_l1 = np.zeros(((NP,Np,nCO2)))
 #colors=['k','b','r','m','y','g','c','b']
 
 for i in range(NP):
+    print(i)
     (Ksat_l,rhosat_l)= gm.Gassman(Kdry_l[i,:],Ks,phi, Kbrine[i],Rhos,Kco2[i],rhobrine[i],rhoco2[i])
     for j in range(Np):     
         for k in range(nCO2): 
@@ -212,8 +232,8 @@ GW = np.zeros(((Np))) #Weight for cement model
 
 Gdry_constant = np.zeros(((NP,Np)))
 
-nmodel=4  # 4 6 5% de cement
-Gnmodel=4 # 3 6 5%de cement 
+nmodel= 15 #4  # 4 6 5% de cement
+Gnmodel=6 #4 # 3 6 5%de cement 
 
 Kdry_stiff = np.zeros(((NP,Np)))
 
@@ -240,17 +260,13 @@ for i in range(NP):
             Kdry_constant_plot[i][j][k]=Kdry_constant1[j][k]
             Gdry_constant_plot[i][j][k]=Gdry_constant1[j][k]
 
-
-
-
-
 '''
 Selecting the model corresponding to cement 10%
 '''
 
-nmodel=27
+nmodel=30
 
-Gnmodel=27 
+Gnmodel=30 
 
 for i in range(NP):
     (Kdry_constant1,Gdry_constant1,Kconstant_perc2,Gconstant_perc2)=ctc.K_constant_cement(Ks,Kdry_cement[:],Gdry_cement[:],Gs,phi,Khm,Ghm)
@@ -360,7 +376,7 @@ rho_sat_l_oil   = np.zeros(((NP,nCO2,Np)))
 
 for i in range(NP):
     for k in range(nCO2):    
-            
+        
         Vssat_l1= ep.vs(Gdry_constant[i,:],rhosat_l_contact[i,:,k],phi)
         Vpsat_l1= ep.vp(Ksat_l_contact[i,:,k],Gdry_constant[i,:],rhosat_l_contact[i,:,k],phi)
         Vp_Vs_sat_l1= ep.vp_vs(Vpsat_l1,Vssat_l1,phi)
@@ -555,9 +571,9 @@ Input files, well-log data
 '''
 #phi_d,phi_t,Ksat_well,Vsh_iw,G,depth = np.loadtxt('./xplot1_tmp.txt',unpack=True)
 
-phi_d,phi_t,Ksat_well,Vsh_iw,G,SO,depth,well,facies = np.loadtxt('./well_140_159_holt_bryant.txt',unpack=True)
+phi_d,phi_t,Ksat_well,Vsh_iw,G,SO,depth,well,facies,sid = np.loadtxt('./well_140_159_holt_bryant.txt',unpack=True)
 
-print()
+
 
 #---------Calculating Kdry in the wells by using Gassman -----------------
 
@@ -574,6 +590,7 @@ Kdry_well= gm.Kdry(Ksat_well,Ks_well,phi_t/100,SO/100,Kbrine[4],Koil[4])
 
 
 print(Kconstant_perc2)
+print(Gconstant_perc2)
 
 for i in range(Ndepth):    
     dry_ratio[i]=(Kdry_well[i] + 4.0/3.0*G[i])/G[i] 
@@ -611,8 +628,8 @@ cbar.set_label('Vsh')
 axis([0, 0.5, 0, 5*1e10])
         
 plot(phi[:],Kdry_constant_plot[4,5,:],'b')
-plot(phi[:],Kdry_constant_plot[4,13,:],'b')
-plot(phi[:],Kdry_constant_plot[4,30,:],'b')
+plot(phi[:],Kdry_constant_plot[4,9,:],'b')
+plot(phi[:],Kdry_constant_plot[4,20,:],'b')
 plot(phi[:],Kdry_cement[:],'r')
 plot(phi[:],Kdry_l[4,:],'r')
 
@@ -645,17 +662,31 @@ for i in range(Ndepth):
 
 #-----------Plot Facies -----------------------------------------
 
-fig = figure(18, figsize=(10, 8))
+#fig = figure(18, figsize=(5, 4))
+fig = figure(18, figsize=(8, 6))
 
 bx = plt.subplot(1,1,1)
-bx.set_xlabel('porosity $\phi$')
-bx.set_ylabel('Dry Bulk modulus $K$')
+bx.set_xlabel('porosity $\phi$',fontsize=20)
+bx.set_ylabel('Dry Bulk modulus $K$ (Pa)',fontsize=20)
+#bx.set_yticks(fontsize=16)
+#bx.set_yticks(fontsize=16)
+#axis([0, 0.5, 0, 2*1e10])
+
+axis([0.0, 0.4, 0, 4*1e10])
+        
+#plot(phi[:],Kdry_constant_plot[5,5,:],'b')
+plot(phi[:],Kdry_constant_plot[5,12,:],'b')
+
+#plot(phi[:],Kdry_constant_plot[5,15,:],'b')
+#plot(phi[:],Kdry_constant_plot[5,20,:],'b')
+#plot(phi[:],Kdry_constant_plot[5,25,:],'b')
+#plot(phi[:],Kdry_constant_plot[5,30,:],'b')
+#plot(phi[:],Kdry_constant_plot[5,35,:],'b')
 
 
-axis([0, 0.5, 0, 5*1e10])
 
-plot(phi[:],Kdry_constant_plot[5,14,:],'b')
-plot(phi[:],Kdry_constant_plot[5,30,:],'b')
+
+
 plot(phi[:],Kdry_cement[:],'r')
 plot(phi[:],Kdry_l[5,:],'r')
 
@@ -664,33 +695,32 @@ for i in range(Ndepth):
     for j in range(len(colors)):
         if Vsh_iw[i] <40:
             if facies[i] == colors[j]:
-                c=cm.gist_ncar((j+1)/float(len(colors)),1)
+                c=cm.spectral((j+1)/float(len(colors)),1)
                 p=bx.scatter(phi_t[i]/100.0,Kdry_well[i],color=c)
             else:
                 k=k
         else:
             k=k
+'''
+p1 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((1)/float(len(colors)),1))
+p2 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((2)/float(len(colors)),1))
+p3 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((3)/float(len(colors)),1))
+p4 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((4)/float(len(colors)),1))
+p5 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((5)/float(len(colors)),1))
 
-p1 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((1)/float(len(colors)),1))
-p2 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((2)/float(len(colors)),1))
-p3 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((3)/float(len(colors)),1))
-p4 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((4)/float(len(colors)),1))
-
-p5 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((5)/float(len(colors)),1))
-
-p20 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((11)/float(len(colors)),1))
-p30 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((12)/float(len(colors)),1))
-p40 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((13)/float(len(colors)),1))
-p50 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((14)/float(len(colors)),1))
+p20 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((11)/float(len(colors)),1))
+p30 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((12)/float(len(colors)),1))
+p40 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((13)/float(len(colors)),1))
+p50 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((14)/float(len(colors)),1))
 
 
-labels = ('Tusc: Beach / Barrier bar' , 'Tusc: Washover', 'Tusc: Transitional', 'Tusc: Fluvial',  \
+labels = ('Tusc: Beach / Barrier bar' , 'Tusc: Washover', 'Tusc: Transitional','Tusc: Fluvial', \
           'Tusc: Poor rock', 'Paluxy: Distributary sand','Paluxy: mediocre distributary sand', \
           'Paluxy: mediocre distributary sand','Paluxy: Poor rock')
 legend = plt.legend([p1,p2,p3,p4,p5,p20,p30,p40,p50],labels, loc=(0.25, .7), labelspacing=0.1)
 ltext = gca().get_legend().get_texts()
 
-
+'''
 #-------------------------------------------------------------------------
 
 
@@ -705,15 +735,15 @@ cbar= plt.colorbar(p)
 cbar.set_label('Vsh')
 axis([0.02, 0.5, 0, 5*1e10])
         
-plot(phi[:],Ksat_constant[4,5,:],'b')
+plot(phi[:],Ksat_constant[5,5,:],'b')
 
-plot(phi[:],Ksat_constant[4,18,:],'b')
+plot(phi[:],Ksat_constant[5,18,:],'b')
 plot(phi[:],Ksat_c[:,0],'r')
 
-plot(phi[:],Ksat_constant[9,36,:],'b')
+plot(phi[:],Ksat_constant[5,36,:],'b')
 
 
-plot(phi[:],Ksat_l1[9,:,0],'r')
+plot(phi[:],Ksat_l1[5,:,0],'r')
 
 #--------------------------------
 
@@ -725,7 +755,7 @@ phi_d=0.0
 
 ax.set_ylabel('Vp/Vs ratio ')
 ax.set_xlabel('Acoustic impedance kg/(m2*s)')
-PR,Ip,Vsh_iw,phi_d,phi_t,SO,vp,vs,mu,depth,well,facies= np.loadtxt('./well_140_159_holt_bryant_2b.txt',unpack=True)
+PR,Ip,Vsh_iw,phi_d,phi_t,SO,vp,vs,mu,depth,well,facies= np.loadtxt('./well_140_holt_bryant_2b.txt',unpack=True)
 Ndepth=depth.size
 
 p=ax.scatter(Ip_sat_l_oil[9,0,:],Vp_Vs_sat_l_oil[9,0,:],color='g')
@@ -748,27 +778,25 @@ for i in range(Ndepth):
         if Vsh_iw[i] <25:
             if facies[i] == colors[j]:
                 print(facies[i])
-                c=cm.gist_ncar((j+1)/float(len(colors)),1)
+                c=cm.spectral((j+1)/float(len(colors)),1)
                 p=ax.scatter(Ip[i],PR[i],color=c)
             else:
                 k=k
         else:
             k=k
 
-p1 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((1)/float(len(colors)),1))
-p2 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((2)/float(len(colors)),1))
-p3 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((3)/float(len(colors)),1))
-p5 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((4)/float(len(colors)),1))
+p1 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((1)/float(len(colors)),1))
+p2 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((2)/float(len(colors)),1))
+p3 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((3)/float(len(colors)),1))
+p5 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((5)/float(len(colors)),1))
 
-p5 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((5)/float(len(colors)),1))
-
-p20 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((11)/float(len(colors)),1))
-p30 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((12)/float(len(colors)),1))
-p40 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((13)/float(len(colors)),1))
-p50 = Rectangle((0, 0), 0.2, 0.2, fc=cm.gist_ncar((14)/float(len(colors)),1))
+p20 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((11)/float(len(colors)),1))
+p30 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((12)/float(len(colors)),1))
+p40 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((13)/float(len(colors)),1))
+p50 = Rectangle((0, 0), 0.2, 0.2, fc=cm.spectral((14)/float(len(colors)),1))
 
 
-labels = ('Tusc: Beach / Barrier bar' , 'Tusc: Washover', 'Tusc: Transitional','Tusc: Fluvial', \
+labels = ('Tusc: Beach / Barrier bar' , 'Tusc: Washover', 'Tusc: Transitional', \
           'Tusc: Poor rock', 'Paluxy: Distributary sand','Paluxy: mediocre distributary sand', \
           'Paluxy: mediocre distributary sand','Paluxy: Poor rock')
 legend = plt.legend([p1,p2,p3,p5,p20,p30,p40,p50],labels, loc=(0.25, .7), labelspacing=0.1)
@@ -837,7 +865,7 @@ for i in range(Ndepth):
 #       k=10
 
 
-    elif depth[i]  >=3287.0 and depth[i]<=3446.0:
+    elif depth[i]  >=3388.0 and depth[i]<=3446.0:
 
   #     p=ax.scatter(Ip[i],PR[i],c=SO[i])
        if Vsh_iw[i]<1000.0: 
@@ -863,12 +891,22 @@ for i in range(Ndepth):
  #   else:
  #      k=10
 
-#p=ax.scatter(Ip_paluxy,PR_paluxy,c=SO_paluxy)
-p=ax.scatter(Ip,PR,c=SO)
+p=ax.scatter(Ip_paluxy,PR_paluxy,c=SO_paluxy)
 
 cbar= plt.colorbar(p)
 cbar.set_label('Oil')
 axis([4*1e6, 12*1e6, 1.0, 3])
+
+
+#p=ax.scatter(Ip,PR,c=SO)
+p=ax.scatter(Ip_sat_l_oil[5,0,:],Vp_Vs_sat_l_oil[5,0,:],color='g')
+p=ax.scatter(Ip_sat_l_oil[5,1,:],Vp_Vs_sat_l_oil[5,1,:],color='g')
+p=ax.scatter(Ip_sat_l_oil[5,9,:],Vp_Vs_sat_l_oil[5,9,:],color='g')
+
+p=ax.scatter(Ip_sat_l[5,0,:],Vp_Vs_sat_l[5,0,:],color='r')
+p=ax.scatter(Ip_sat_l[5,1,:],Vp_Vs_sat_l[5,1,:],color='r')
+p=ax.scatter(Ip_sat_l[5,9,:],Vp_Vs_sat_l[5,9,:],color='r')
+
 
 fig = figure(4, figsize=(8, 6))
 
@@ -904,10 +942,10 @@ for i in range(Np):
 
 #p=ax.scatter(Ip,PR,c=phi_d)
 
-p=ax.scatter(Ip,PR,c=Vsh_iw)
+#p=ax.scatter(Ip,PR,c=Vsh_iw)
 
 
-#p=ax.scatter(Ip_paluxy,PR_paluxy,c=Vsh_iw_paluxy)
+p=ax.scatter(Ip_paluxy,PR_paluxy,c=Vsh_iw_paluxy)
 
 cbar= plt.colorbar(p)
 
@@ -1007,6 +1045,9 @@ plot(phi[:],Gdry_constant[4,:],'b')
 plot(phi[:],Gdry_constant[0,:],'c')
 plot(phi[:],Gdry_l[0,:],'r')
 plot(phi[:],Gdry_l[4,:],'r')
+plot(phi[:],Gdry_constant_plot[5,5,:],'b')
+plot(phi[:],Gdry_constant_plot[5,10,:],'b')
+plot(phi[:],Gdry_constant_plot[5,15,:],'b')
 
 plot(phi[:],Gdry_cement[:],'r')
 
@@ -1086,9 +1127,44 @@ ax.set_xlabel('CO2 saturation')
 ax.set_ylabel('Difference % ')
 #ax.set_title('Saturation change ')
 
-fig =  figure(11, figsize=(10, 8))
+fig =  figure(19, figsize=(6, 5))
 
 ax = plt.subplot(1,1,1)
+#xline,iline,x,y,vpvs_inversion = np.loadtxt('./normdiff_to_plot/inverted0926_1108_VpVs_paluxy_A-B_norm',unpack=True)
+#xline,iline,x,y,zp_inversion = np.loadtxt('./normdiff_to_plot/inverted0926_1108_Zp_paluxy_A-B_norm',unpack=True)
+xline,iline,x,y,vpvs_inversion = np.loadtxt('./normdiff_to_plot/inverted0926_1108_VpVs_Tusc2_A-B_norm',unpack=True)
+xline,iline,x,y,zp_inversion = np.loadtxt('./normdiff_to_plot/inverted0926_1108_Zp_Tusc2_A-B_norm',unpack=True)
+xwell,ywell = np.loadtxt('./normdiff_to_plot/injectors',unpack=True)
+
+
+
+N_inv = zp_inversion.size
+N_well = xwell.size
+
+discrimination = np.zeros(N_inv)
+
+
+for i in range(N_inv):
+    if zp_inversion[i] <=0.0 and vpvs_inversion[i] >= 0.0:
+        ax.scatter(zp_inversion[i]*100,vpvs_inversion[i]*100 ,c= 'g')
+        discrimination[i]= 0.5
+    elif zp_inversion[i] <=0.0 and vpvs_inversion[i] <= 0.0:
+        ax.scatter(zp_inversion[i]*100,vpvs_inversion[i]*100 ,c= 'r')
+        discrimination[i]= 1.5
+
+    elif zp_inversion[i] >=0.0 and vpvs_inversion[i] >= 0.0:
+        ax.scatter(zp_inversion[i]*100,vpvs_inversion[i]*100 ,c= 'b')
+        discrimination[i]= 2.5
+
+    elif zp_inversion[i] >=0.0 and vpvs_inversion[i] <= 0.0:
+        ax.scatter(zp_inversion[i]*100,vpvs_inversion[i]*100 ,c= 'y')
+        discrimination[i]= 3.5
+
+    else:
+        ax.scatter(zp_inversion[i]*100,vpvs_inversion[i]*100 ,c= 'w')
+        discrimination[i]= 4.5
+
+
 
 '''
 for i in range (NP):
@@ -1096,9 +1172,9 @@ for i in range (NP):
     ax.scatter(Ip_co2_dif[i,5,320],VpVs_co2_dif[i,5,320], c='b')
     ax.scatter(Ip_co2_dif[i,9,320],VpVs_co2_dif[i,9,320], c='b')
 '''
-
+'''
 for i in range (nCO2):
-    ax.scatter(Ip_oil_dif[0,i,320],VpVs_oil_dif[0,i,320] , c='b')
+    ax.scatter(Ip_oil_dif[0,i,320],VpVs_oil_dif[0,i,320] , c='k')
     ax.scatter(Ip_oil_dif[1,i,320],VpVs_oil_dif[1,i,320] , c='k')
     ax.scatter(Ip_oil_dif[2,i,320],VpVs_oil_dif[2,i,320], c='k')
     ax.scatter(Ip_oil_dif[3,i,320],VpVs_oil_dif[3,i,320], c='k')
@@ -1106,10 +1182,10 @@ for i in range (nCO2):
     ax.scatter(Ip_oil_dif[5,i,320],VpVs_oil_dif[5,i,320], c='k')
     ax.scatter(Ip_oil_dif[6,i,320],VpVs_oil_dif[6,i,320], c='k')
     ax.scatter(Ip_oil_dif[7,i,320],VpVs_oil_dif[7,i,320], c='k')
-    ax.scatter(Ip_oil_dif[8,i,320],VpVs_oil_dif[8,i,320], c='m')
+    ax.scatter(Ip_oil_dif[8,i,320],VpVs_oil_dif[8,i,320], c='k')
     ax.scatter(Ip_oil_dif[9,i,320],VpVs_oil_dif[9,i,320], c='k')
 
-
+'''
 '''
 for i in range (nCO2):
  #   ax.scatter(Ip_co2_difs[4,i,320],VpVs_co2_difs[4,i,320] ,c= 'c',marker='v',s=50)
@@ -1128,22 +1204,29 @@ for i in range (nCO2):
     ax.scatter(Ip_co2_difs[9,i,320],Is_co2_difs[9,i,320], c='r')
     
 '''
-'''
 
+'''
 for i in range (nCO2):
-    ax.scatter(Ip_co2_difps[0,i,320],VpVs_co2_difps[0,i,320] , c='b')
-    ax.scatter(Ip_co2_difps[1,i,320],VpVs_co2_difps[1,i,320] , c='b')
-    ax.scatter(Ip_co2_difps[2,i,320],VpVs_co2_difps[2,i,320], c='b')
-    ax.scatter(Ip_co2_difps[3,i,320],VpVs_co2_difps[3,i,320], c='b')
-    ax.scatter(Ip_co2_difps[4,i,320],VpVs_co2_difps[4,i,320], c='b')
-    ax.scatter(Ip_co2_difps[5,i,320],VpVs_co2_difps[5,i,320], c='b')
-    ax.scatter(Ip_co2_difps[6,i,320],VpVs_co2_difps[6,i,320], c='b')
-    ax.scatter(Ip_co2_difps[7,i,320],VpVs_co2_difps[7,i,320], c='b')
-    ax.scatter(Ip_co2_difps[8,i,320],VpVs_co2_difps[8,i,320], c='b')
-    ax.scatter(Ip_co2_difps[9,i,320],VpVs_co2_difps[9,i,320], c='b')
+    for j in range(NP):
+        ax.scatter(Ip_co2_difps[j,i,320],VpVs_co2_difps[j,i,320] , c='k')
+'''
+#    ax.scatter(Ip_co2_difps[1,i,320],VpVs_co2_difps[1,i,320] , c='b')
+#    ax.scatter(Ip_co2_difps[2,i,320],VpVs_co2_difps[2,i,320], c='b')
+#    ax.scatter(Ip_co2_difps[3,i,320],VpVs_co2_difps[3,i,320], c='b')
+#    ax.scatter(Ip_co2_difps[4,i,320],VpVs_co2_difps[4,i,320], c='b')
+#    ax.scatter(Ip_co2_difps[5,i,320],VpVs_co2_difps[5,i,320], c='b')
+#    ax.scatter(Ip_co2_difps[6,i,320],VpVs_co2_difps[6,i,320], c='b')
+#    ax.scatter(Ip_co2_difps[7,i,320],VpVs_co2_difps[7,i,320], c='b')
+#    ax.scatter(Ip_co2_difps[8,i,320],VpVs_co2_difps[8,i,320], c='b')
+#    ax.scatter(Ip_co2_difps[9,i,320],VpVs_co2_difps[9,i,320], c='b')
+#    ax.scatter(Ip_co2_difps[9,i,320],VpVs_co2_difps[9,i,320], c='b')
+#    ax.scatter(Ip_co2_difps[9,i,320],VpVs_co2_difps[9,i,320], c='b')
+
+
 '''
 
 
+'''
 '''
 for i in range (nCO2):
     ax.scatter(Ip_co2_difpsb[0,i,320],VpVs_co2_difpsb[0,i,320] , c='g')
@@ -1156,7 +1239,8 @@ for i in range (nCO2):
     ax.scatter(Ip_co2_difpsb[7,i,320],VpVs_co2_difpsb[7,i,320], c='g')
     ax.scatter(Ip_co2_difpsb[8,i,320],VpVs_co2_difpsb[8,i,320], c='g')
     ax.scatter(Ip_co2_difpsb[9,i,320],VpVs_co2_difpsb[9,i,320], c='g')
-
+'''
+'''
 '''
 '''
 for i in range (nCO2):
@@ -1170,7 +1254,7 @@ for i in range (nCO2):
     ax.scatter(Ip_oil_difps[7,i,320],Is_oil_difps[7,i,320], c='m')
     ax.scatter(Ip_oil_difps[8,i,320],Is_oil_difps[8,i,320], c='m')
     ax.scatter(Ip_oil_difps[9,i,320],Is_oil_difps[9,i,320], c='m')
-
+'''
 #ax.scatter(Ip_co2_difst[0,i,320],VpVs_co2_difst[0,i,320], c='c')
 #ax.scatter(Ip_co2_difst[9,i,320],VpVs_co2_difst[9,i,320], c='c')
 
@@ -1183,25 +1267,60 @@ for i in range (nCO2):
 
 '''
 
-'''
+
 for i in range (nCO2):
-    ax.scatter(Ip_co2_difs[4,i,320],VpVs_co2_difs[4,i,320] ,c= 'r',marker='v',s=50)
-    ax.scatter(Ip_oil_difs[4,i,320],VpVs_oil_difs[4,i,320] ,c= 'r',marker='v',s=50)
-    ax.scatter(Ip_co2_dif[4,i,320],VpVs_co2_dif[4,i,320] ,c= 'k',marker='v',s=50)
-   
-
-   
-''' 
-
-
-
+    ax.scatter(Ip_co2_difs[7,i,320],VpVs_co2_difs[7,i,320] ,c= 'r',marker='v',s=50)
+   # ax.scatter(Ip_oil_difs[4,i,320],VpVs_oil_difs[4,i,320] ,c= 'r',marker='v',s=50)
+   # ax.scatter(Ip_co2_dif[4,i,320],VpVs_co2_dif[4,i,320] ,c= 'k',marker='v',s=50)
+'''   
 ax.set_xlabel('Impedance %')
-ax.set_ylabel('Vp/Vs ration %')
-ax.set_title('Saturation ')
+ax.set_ylabel('Vp/Vs ratio %')
+#ax.set_title('Saturation ')
 
 print(CO2)
 
 
+
+
+
+'''
+fig =  figure(20, figsize=(10, 8))
+
+ax = plt.subplot(1,1,1)
+#p=ax.(x,y,c=vpvs_inversion*100)
+#cbar= plt.colorbar(p)
+#cbar.set_label('VpVs')
+
+''' 
+
+# Size of regular grid
+ny, nx = 500, 500
+
+# Generate a regular grid to interpolate the data.
+xi = np.linspace(min(x), max(x), nx)
+yi = np.linspace(min(y), max(y), ny)
+xi, yi = np.meshgrid(xi, yi)
+
+# Interpolate using delaunay triangularization 
+zi = ml.griddata(x,y,discrimination,xi,yi)
+
+fig =  figure(20, figsize=(6, 5))
+
+ax = plt.subplot(1,1,1)
+
+cmap = mpl.colors.ListedColormap(['g','r','b','y'])
+bounds=[0,1,2,3,4]
+norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
+
+p = plt.pcolormesh(xi,yi,zi,cmap=cmap)
+#ax = plt.scatter(x,y,c=vpvs_inversion)
+cbar =plt.colorbar(p)
+p = plt.axis([min(x), max(x), min(y), max(y)])
+
+cbar.set_clim(0,4)
+for i in range(N_well):
+    ax.scatter(xwell[i],ywell[i] ,c= 'k',marker='v',s=100)
+
+
+
 plt.show()
-
-

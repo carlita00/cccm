@@ -1,0 +1,25 @@
+ DEPTH    .F                  : 1     Name = Domain Curve - Type = DEPTH
+ CALI     .in                 : 2     Name = Caliper_1 - Type = Caliper
+ RHOB     .g/cc               : 3     Name = Density_edit 1 - Type = Density
+ DPTM     .ms (Two Way time)  : 4     Name = Depth-time_P-wave_1 - Type = Depth-time
+ UNKNOWN  .%                  : 5     Name = DMRBVI - Type = Unknown
+ UNKNOWN  .%                  : 6     Name = DMRBVW - Type = Unknown
+ UNKNOWN  .%                  : 7     Name = DMRCBW - Type = Unknown
+ UNKNOWN  .%                  : 8     Name = DMREPHI - Type = Unknown
+ UNKNOWN  .%                  : 9     Name = DMRPTPHI - Type = Unknown
+ GR       .API                : 10    Name = Gamma Ray_1 - Type = Gamma Ray
+ DT       .us/ft              : 11    Name = P-wave_1 - Type = P-wave
+ UNKNOWN  .pu                 : 12    Name = SO_core - Type = Unknown
+ UNKNOWN  .pu                 : 13    Name = SOIL - Type = Unknown
+ UNKNOWN  .us/ft              : 14    Name = S-Wave_1 - Type = S-Wave
+ SDT      .us/ft              : 15    Name = S-wave_fast - Type = S-wave
+ SDT      .us/ft              : 16    Name = S-wave_slow - Type = S-wave
+                              : 17    Name = Cal3
+                              : 18    Name = DMRBOIL
+                              : 19    Name = DMRP
+                              : 20    Name = DTC
+                              : 21    Name = DTS
+                              : 22    Name = rhoB
+                              : 23    Name = T2K
+                              : 24    Name = cluster
+

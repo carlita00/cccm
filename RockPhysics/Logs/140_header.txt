@@ -1,0 +1,22 @@
+: 1     Name =	Domain Curve - Typ	e = DEPTH		
+: 2     Name =	Caliper_1 - Type =	Caliper		
+: 3     Name =	Density_edit0620 -	Type = Density		
+: 4     Name =	Depth-time_P-wave_	corr0907 - Type	#NAME?	
+: 5     Name =	Depth-time_S-wave_	corr0910 - Type	#NAME?	Swave
+: 6     Name =	DMRBOIL - Type = Unknown		
+: 7     Name =	DMRBVI - Type = Unknown		
+: 8     Name =	DMRBVW - Type = Unknown		
+: 9     Name =	DMRCBW - Type = Unknown		
+: 10    Name =	Gamma Ray_1 - Type	#NAME?		
+: 11    Name =	P-wave_corr0907 -	Type = P-wave		
+: 12    Name =	SO - Type = Unknown		
+: 13    Name =	S-wave_corr0910 -	Type = S-wave		
+: 14    Name =	Vsh - Type = Gamma	Ray		
+: 15    Name =	V_SH - Type = Unknown	
+: 16    Name =  DMRBOIL 
+: 17    Name =  DMRP     
+: 18    Name =  DTC      
+: 19    Name =  DTS      
+: 20    Name =  RHOB     
+: 21    Name =  Tag_Master_Cluste	rDLKcombine.	
+: 22    Name =  Total porosity.			
