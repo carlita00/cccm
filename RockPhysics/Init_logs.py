@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 def logread140(fileName):
   depth,caliper,rhoC,depthP,bvi,bvw,cbw,phie,phit,gr,slowp,so,slows,vsh1,vsh2,boilD,dmrp, \
   dtc,dts,rhoD,facies,phit = np.loadtxt(fileName,unpack=True)
-  return slowp,slows,dtc,dts,rhoC,so,phit,facies,depth,gr,bvi,cbw,vsh2
+  return slowp,slows,dtc,dts,rhoD,so,phit,facies,depth,gr,bvi,cbw,vsh2
 
 def logread159(fileName):
   depth,caliper,rhoC,depthP,bvi,bvw,cbw,phie,phit,gr,slowp,so,somril,slows,s1,s2,cal2, \

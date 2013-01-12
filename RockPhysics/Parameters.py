@@ -42,26 +42,26 @@ class Parameters:
     vsBrineCo2 = ep.vs(self._gdry_l,self._rhosat_l,self._phi,self._co2,self._p)
     ipBrineCo2 = ep.Ip(vpBrineCo2,self._rhosat_l,self._phi,self._co2,self._p) 
     isBrineCo2 = ep.Ip(vsBrineCo2,self._rhosat_l,self._phi,self._co2,self._p) 
-    vpvsBrineCo2 = ep.vp_vs(vpBrineCo2,vsBrineCo2,self._phi,self._co2,self._p) 
+    rtBrineCo2 = ep.vp_vs(vpBrineCo2,vsBrineCo2,self._phi,self._co2,self._p) 
 
     vpBrineOil = ep.vp(self._ksat_loil,self._gdry_l,self._rhosat_loil,self._phi,self._co2,self._p)   
     vsBrineOil = ep.vs(self._gdry_l,self._rhosat_loil,self._phi,self._co2,self._p)
     ipBrineOil = ep.Ip(vpBrineOil,self._rhosat_loil,self._phi,self._co2,self._p) 
     isBrineOil = ep.Ip(vsBrineOil,self._rhosat_loil,self._phi,self._co2,self._p) 
-    vpvsBrineOil = ep.vp_vs(vpBrineOil,vsBrineOil,self._phi,self._co2,self._p) 
+    rtBrineOil = ep.vp_vs(vpBrineOil,vsBrineOil,self._phi,self._co2,self._p) 
 
 
     par['vpBrineCo2'] = vpBrineCo2        
     par['vsBrineCo2'] = vsBrineCo2
     par['ipBrineCo2'] = ipBrineCo2
     par['isBrineCo2'] = isBrineCo2
-    par['vpvsBrineCo2'] = vpvsBrineCo2
+    par['rtBrineCo2'] = rtBrineCo2
 
     par['vpBrineOil'] = vpBrineOil        
     par['vsBrineOil'] = vsBrineOil
     par['ipBrineOil'] = ipBrineOil
     par['isBrineOil'] = isBrineOil
-    par['vpvsBrineOil'] = vpvsBrineOil
+    par['rtBrineOil'] = rtBrineOil
 
     return par
 
@@ -75,46 +75,26 @@ class Parameters:
    
     if type == 'P':
       dif = np.zeros(n3)
-
       for i3 in range (n3):
-        if self._p[i3] == pref:
-          i = i3
-        else:
-          i = 0
-      for i3 in range (n3):
-        dif[i3]=self._p[i]-self._p[i3]
+        dif[i3]=self._p[i3]-self._p[pref]
         for i2 in range (n2):
           for i1 in range (n1):
-            property_dif[i3][i2][i1]=(property[i3][i2][i1]-property[i][i2][i1])/property[i][i2][i1]*100
+            property_dif[i3][i2][i1]=(property[i3][i2][i1]-property[pref][i2][i1])/property[pref][i2][i1]*100
+            #print (property[i3][i2][i1],i1,i2,i3)
     elif type == 'S':
       dif = np.zeros(n2)
-      for i2 in range (n2):
-        if self._co2[i2] == co2ref:
-          i = i2
-        else:
-          i2 = 0
       for i3 in range (n3):
         for i2 in range (n2):
-          dif[i2]=self._co2[i]-self._co2[i2]
+          dif[i2]=self._co2[i2]-self._co2[co2ref]
           for i1 in range (n1):
-            property_dif[i3][i2][i1]=(property[i3][i2][i1]-property[i3][i][i1])/property[i3][i][i1]*100
+            property_dif[i3][i2][i1]=(property[i3][i2][i1]-property[i3][co2ref][i1])/property[i3][co2ref][i1]*100
     elif type == 'B':
       dif = np.zeros(n2)
       for i3 in range (n3):
-        if self._p[i3] == pref:
-          i = i3
-        else:
-          i = 0
-      for i2 in range (n2):
-        if self._co2[i2] == co2ref:
-          j = i2
-        else:
-          i2 = 0
-      for i3 in range (n3):
         for i2 in range (n2):
-          dif[i2]=self._co2[i]-self._co2[i2]
+          dif[i2]=self._co2[i2]-self._co2[co2ref]
           for i1 in range (n1):
-            property_dif[i3][i2][i1]=(property[i3][i2][i1]-property[i][j][i1])/property[i][j][i1]*100
+            property_dif[i3][i2][i1]=(property[i3][i2][i1]-property[pref][co2ref][i1])/property[pref][co2ref][i1]*100
 
     else:
       print('Error in the selection, you must type pressure or co2')

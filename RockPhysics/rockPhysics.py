@@ -22,12 +22,13 @@ import matplotlib.pyplot as plt
   
 k = [37.0e09,25.0e09,123.0e09]    #Pa  
 g = [44.e09,9.4e09,51.0e09]       #Pa
-f = [.9,.09,.01] # Mineral fraccion
+#f = [.9,.09,.01] # Mineral fraccion
+f = [.8,.19,.01] # Mineral fraccion
 #f = [.65,.15,.2] # Mineral fraccion
 rho = [2650.0, 2550.0,3960.0]
 phiC = 0.4001 # critical porosity
 n = 20.0 - 34.0 *phiC +14.0*np.power(phiC,2) 
-c = 1.3
+c = 1 #1.3
 n = n*c
 print(n)
 
@@ -113,8 +114,16 @@ dmax2 = 3301
 
 fileName1 = './Logs/140.txt'
 fileName2 = './Logs/159.txt'
+#input140 = ['slowp','slows','dtc','dts','rhoD','so','phit','facies','depth','gr','bvi','cbw','vsh1']
+#input159 = ['slowp','slows','dtc','dts','rhoD','so','phit','facies','depth','gr','bvi','cbw','somril']
 
+
+#log140inp = {}
+#log140out = {}
+#log159inp = {}
+#log159out = {}
 #--- Reading the logs files-------
+
 slowp1,slows1,dtc1,dts1,rhoD1,so1,phit1,facies1,depth1,gr1,bvi1,cbw1,vsh1 = Logs.logread140(fileName1)
 slowp2,slows2,dtc2,dts2,rhoD2,so2,phit2,facies2,depth2,gr2,bvi2,cbw2,somril = Logs.logread159(fileName2)
 
@@ -148,68 +157,106 @@ print(len(depth1),len(depth2),len(depth))
 
 plots = Plot.Plot(kdry_l,gdry_l,kdry_c,gdry_c,kdryConstant,gdryConstant,phi,ks)
 #plots.plotDry(kbri[pref],koil[pref],pref,kSatD2,muDryD2,phit2,so2,gr2,facies2,vsh2)
-plots.plotDry(kbri[pref],koil[pref],pref,ksat,mudry,phit,so,gr,facies,vsh)
+plots.plotDry(kbri[pref],koil[pref],pref,kSatD1,muDryD1,phit1,so1,gr1,facies1,vsh1)
+
+#plots.plotDry(kbri[pref],koil[pref],pref,ksat,mudry,phit,so,gr,facies,vsh)
+kdry_well = plots.plotDryratio(kbri[pref],koil[pref],kSatD1,muDryD1,phit1,so1,gr1,facies1,depth1,dmin,dmax,vsh1)
 
 #kdry_well = plots.plotDryratio(kbri[pref],koil[pref],kSatD2,muDryD2,phit2,so2,gr2,facies2,depth2,dmin2,dmax2,vsh2)
 #plots.plotfacies(kSatD2,muDryD2,phit2,vsh2,facies2,depth2,kdry_well,pref)
 #kdry_well = plots.plotDryratio(kbri[pref],koil[pref],ksat,mudry,phit,so,gr,facies,depth,dmin2,dmax2,vsh)
 #plots.plotfacies(kSatD2,muDryD2,phit2,vsh2,facies2,depth2,kdry_well,pref)
+plots.plotfacies(kSatD1,muDryD1,phit1,vsh1,facies1,depth1,kdry_well,pref)
+
 #plots.plotfacies(ksat,mudry,phit,vsh,facies,depth,kdry_well,pref)
 
 #----- Calculating elastic parameters ---------
 
-parameters1 = ['vpBrineCo2','vsBrineCo2','ipBrineCo2','isBrineCo2','vpvsBrineCo2', \
-              'vpBrineOil','vsBrineOil','ipBrineOil','isBrineOil','vpvsBrineOil', ]
-
+#parameters1 = ['vpBrineCo2','vsBrineCo2','ipBrineCo2','isBrineCo2','vpvsBrineCo2', \
+#              'vpBrineOil','vsBrineOil','ipBrineOil','isBrineOil','vpvsBrineOil', ]
+parameters = ['vpBrine','vsBrine','ipBrine','isBrine','rtBrine']
+fluid = ['Co2','Oil'] 
 differences = ['P','S','B']
 
 co2ref=0 # 100% brine 
 par = Parameters.Parameters(kdry_l,ksat_l,gdry_l,rhosat_l,ksat_loil,rhosat_loil,phi,co2,p)
+m1 = len(fluid)
+m2 = len(parameters)
+m3 = len(differences)
+i=0
 
-par1 = par.calculation(parameters1)
-
-m2 = len(parameters1)
-m1 = len(differences)
-par2 = {}
-par3 = {}
+static_par = ['']*(m1*m2)
 for i1 in range(m1):
-
-  string1 = "%s"%(differences[i1])
-  par3[string1] =  np.zeros(((n3,n2,n1)))
+  string1 = "%s"%(fluid[i1])
   for i2 in range(m2):
-    print("paso")
+    string2 = parameters[i2]
+    static_par[i] = string2+string1
+    i += 1
 
-    string2 = parameters1[i2]+string1
-    par2[string2] =  np.zeros(((n3,n2,n1)))
-    property_dif,dif = par.differences(par1[parameters1[i2]],pref,co2ref,string1)
-    par2[string2]= property_dif
-    par3[string1] =  dif
-
-
-
+static = par.calculation(static_par) #dictionary static parameters
 
 #---Plotting static template---------------
-plots.plottemplate(par1,pref,vpvs,ip,so)
+plots.plottemplate(static,pref,vpvs,ip,so)
+plots.plot3dtemplate(static,pref,vpvs,ip,so,p,phi)
+
+dynamic = {} #dictonary dynamic parameters
+
+diff = {}    #dictionary differences
+
+m2 = len(static_par)
+i=0
+
+dynamic_par = ['']*(m3*m2)
+
+for i3 in range(m3):
+  string3 = "%s"%(differences[i3])
+  for i2 in range(m2):
+    string2 = "%s"%(static_par[i2])
+    string = string2+string3
+    property_dif,dif = par.differences(static[string2],pref,co2ref,string3)
+    dynamic[string2+string3]= property_dif
+    diff[string3] =  dif
+    dynamic_par[i] = string2+string3
+    i += 1
+print(dynamic_par)
 
 
 #---Plotting dynamic template--------------
-print("paso222")
 
-g = par2['vpvsBrineCo2P']
-print("paso3")
+#plots.plotparschange(dynamic,diff,dynamic_par,p,co2,phi) 
+'''
+g1 = dynamic['vsBrineCo2P']
+g2 = dynamic['vpBrineCo2P']
+g3 = dynamic['rtBrineCo2B']
+g4 = dynamic['ipBrineCo2B']
+g5 = dynamic['rtBrineOilB']
+g6 = dynamic['ipBrineOilB']
 
-h = par3['P']
-fig =  figure(8, figsize=(6, 5))
+#print("paso3")
+'''
+'''
+h = diff['P']
+fig =  figure(9, figsize=(6, 5))
 ax = plt.subplot(1,1,1)
-#for i3 in range (n3):
-#  for i2 in range(n2):
-#    print("paso2")
-#    ax.scatter(e[i3][i2][320],d[i3][i2][320] , c='r')
-print("paso222")
-
-for i3 in range(n3):
+for i3 in range (n3):
   for i2 in range(n2):
-    print("paso2")
-    ax.scatter(h[i3],g[i3][i2][320] , c='r')
+#    print("paso2")
+    ax.scatter(g4[i3][i2][320],g3[i3][i2][320] , c='r')
+    ax.scatter(g6[i3][i2][320],g5[i3][i2][320] , c='g')
+
+#print("paso222")
+
+#for i3 in range(n3):
+#  for i2 in range(n2):
+    #print("paso2")
+   #ax.scatter(h[i3],g1[i3][i2][320] , c='r')
+  #ax.scatter(h[i3],g2[i3][0][320] , c='b')
+  #ax.scatter(h[i3],g2[i3][1][320] , c='b')
+  #ax.scatter(h[i3],g2[i3][2][320] , c='b')
+  #ax.scatter(h[i3],g2[i3][3][320] , c='b')
+  #ax.scatter(h[i3],g2[i3][4][320] , c='b')
+
+'''
+
       
 plt.show()
