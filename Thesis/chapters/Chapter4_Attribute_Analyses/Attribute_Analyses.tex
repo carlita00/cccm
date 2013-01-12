@@ -1,0 +1,220 @@
+\chapter{Attribute Analyses}
+
+	 In this chapter, seismic attributes are studied in comparison with well log data. The goal is to find an attribute or some combination of attributes from the seismic data and inversions that correlate with a well log property. Then the attribute map can be used to predict this log property in the reservoir throughout the survey area. The well log that I interpreted to be the easier to one to distinguish the reservoir from the overlying shales was the density log. In the density log, the top and the base of the reservoir are sharp marked. An average value was extracted from the density logs at the reservoir upper zone from each well (\ref{fig:density_logs}) to be used as a target function in the attribute analyses.
+	 
+	 After the interpretation of the seismic horizons, various seismic attributes were extracted. I tested different windows and different attributes. The attributes that I chose to be used in the correlation were the minimum amplitude or maximum negative amplitude attribute and the RMS amplitude attribute. The attribute extractions were done in an interval of 10 ms for the P-P data and 20 ms for the P-S data, each centered in the top of reservoir horizon.  The minimum amplitude attribute was selected because the reservoir has lower acoustic impedance and shear impedance than the shale above it, and the interface between a higher impedance layer above a lower impedance layer gives a negative amplitude.
+	 
+	Additionally, I extracted a number of attributes from the post-stack P-P and P-S joint inversion. The output of the inversion volumes provided 4 new seismic volumes: acoustic impedance, shear impedance, VpVs ratio and density. All these new volumes are in P-P time and they are layer properties. The upper reservoir zone is represented in an interval of 30 ms. To be sure that I had all the reservoir sampled, I extracted the attributes in a 40 ms P-P time window below the top of the reservoir horizon. Extracting the minimum amplitude and RMS amplitude from each volume, I obtained 8 additional maps  from the inversion. 
+	
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=0.7\linewidth]{./chapters/Chapter4_Attribute_Analyses/Figures/Fig1_den_logs}
+			\caption[Well density logs extracted in the reservoir interval.]{Well density logs extracted in the upper reservoir zone interval. In red is the window used for averaging the density log from each well.}
+			\label{fig:density_logs}
+		\end{center}
+	\end{figure}	
+
+
+
+\subsection{Single attribute analyses}
+
+In the most simple attribute analyses, only one attribute a time is tested to correlate with the target function, in this case density. Moreover, one can test for linear and non-linear correlations. In this work I only tested linear correlations. 
+
+To correlate the seismic attribute with the well logs, I extracted an average attribute value around each well with a radius of 100 meters and that corresponds to 4 seismic traces. The single attribute correlation coefficient list is shown on the Table 4.1.
+
+%\begin{figure}[hbtp]
+%	\begin{center}
+%	\includegraphics[width=1.1\linewidth]{./chapters/Chapter4_Attribute_Analyses/Figures/thesis_table1_ISmap}
+%			\caption[Correlation coefficients between each single attribute and the density log average value from each well.]{Correlation coefficients between each single attribute and the %density log average value from each well.}
+%			\label{fig:list1}
+%		\end{center}
+%	\end{figure}	
+
+
+
+
+
+	Using a single attribute correlation analyses (Hampson and Russell, 2008a), the shear-impedance RMS amplitude attribute extracted in a 40 ms window below the top of the reservoir had 51 percent of correlation with the density log (\ref{fig:xplot_zs}). The acoustic-impedance RMS attribute extracted in a 40 ms window below the top of the reservoir had 43 percent of correlation with the density log (\ref{fig:xplot_zp}). I used the same time window in both volumes because all the results from the inversion came in P-P time. The P-P seismic minimum amplitude attribute extracted in a 10 ms window below the top of the reservoir had 41 percent of correlation with the density log (\ref{fig:xplot_PP}). The density RMS attribute extracted in a 40 ms window below the top of the reservoir had 39 percent of correlation with the density log (\ref{fig:xplot_invDen}). The Vp/Vs ratio RMS attribute extracted in a 40 ms window below the top of the reservoir had 35 percent of negative correlation with the density log, and the P-S seismic RMS amplitude attribute extracted in a 20 ms window below the top of the reservoir had 14 percent correlation coefficient with the density log. I did not use other attributes extracted from the attributes to avoid redundancy. I used these correlations to choose the 6 best seismic attributes out of the 12 initially used. 
+
+\begin{table} \label{Single-attributes correlation coefficients. } 
+\begin{center} 
+\begin{tabular}{| c | c | c | c | } 
+\hline 
+Target function                & Attribute  & Error  & Correlation     \\ 
+\hline 
+Density         &  RMS Shear Impedance        &  0.057354  &  0.511506        \\ 
+\hline 
+Density         & RMS Acoustic Impedance     &  0.060011 & 0.437744   \\ 
+\hline 
+Density        &  Minimum Amplitude P-P        & 0.060897 & 0.409373     \\ 
+\hline
+Density        &  RMS Density Volume             & 0.061554 & 0.386717\\
+\hline   
+Density        &    RMS P-P  Amplitude                               & 0.062154 & -0.364495 \\
+\hline 
+Density        & RMS VpVs                                      & 0.062649  & -0.344957     \\ 
+\hline 
+Density         &  Minimum Amplitude Shear Impedance      &  0.065325  &  0.205248        \\ 
+\hline 
+Density         & Minimum Amplitude Acoustic Impedance     &  0.065970 & 0.151993   \\ 
+\hline 
+Density        &  RMS P-S  Amplitude                                   & 0.066095 & 0.139351     \\ 
+\hline
+Density       &  Minimum Amplitude Density Volume  & 0.066224 & 0.124864\\
+\hline
+Density      &    Minimum Amplitude P-S   & 0.066305 & -0.114679 \\
+\hline
+Density      &    Minimum Amplitude VpVs   & 0.066345 & -0.109455 \\
+\hline 
+\end{tabular} 
+\caption{Single-attributes correlation coefficients with the target function density log averaged value from each well in the upper reservoir zone.} 
+\end{center} 
+\end{table}
+
+
+
+
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter4_Attribute_Analyses/Figures/Fig2_xplot_Zs}
+			\caption[Crossplot between shear impedance attribute and density well log average value from each well.]{Crossplot between inverted shear impedance attribute extracted from the upper reservoir zone time level  and the density well log average value from each well. The value of the shear impedance was extracted in a radius of 100 meters (4 seismic traces) around each well. The correlation coefficient is 51 percent.}
+			\label{fig:xplot_zs}
+		\end{center}
+	\end{figure}	
+	
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter4_Attribute_Analyses/Figures/Fig3_xplot_Zp}
+			\caption[Crossplot between acoustic impedance attribute and density well log average value from each well.]{Crossplot between acoustic impedance attribute extracted from the upper reservoir zone time level and the density well log average value from each well. The value of the acoustic impedance was extracted in a radius of 100 meters (4 seismic traces) around each well. The correlation coefficient is 43 percent.}
+			\label{fig:xplot_zp}
+		\end{center}
+	\end{figure}	
+	
+	
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter4_Attribute_Analyses/Figures/Fig4_xplot_PP}
+			\caption[Crossplot between P-P minimum amplitude attribute and density well log average value from each well.]{Crossplot between P-P minimum amplitude or maximum negative amplitude attribute extracted from the upper reservoir zone time level and the density well log average value from each well. The value of the seismic amplitude was extracted in a radius of 100 meters (4 seismic traces) around each well. The correlation coefficient is 41 percent.}
+			\label{fig:xplot_PP}
+		\end{center}
+	\end{figure}	
+
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter4_Attribute_Analyses/Figures/Fig5_xplot_invDen}
+			\caption[Crossplot between inverted density attribute extracted from the upper reservoir zone time level and density well log average value from each well.]{Crossplot between inverted density attribute map and the density well log average value from each well. The value of the inverted density was extracted in a radius of 100 meters (4 seismic traces) around each well. The correlation coefficient is 39 percent.}
+			\label{fig:xplot_invDen}
+		\end{center}
+	\end{figure}	
+
+
+
+
+
+
+
+\subsection{Multi-attribute transform}
+
+
+In the single attribute analysis, only one attribute at a time is tested for correlation with the target function. Including more than one independent attribute in some linear combination of attributes will always improve the correlation with the target function. The first question that arised was how many attributes to include ? My approach to answer that question was first to select the independent attributes that have physical meaning with the target function that I was trying to predict. I looked at the single attribute correlation coefficient values and selected the ones with higher correlation avoiding to use the same attribute with different extraction methods, I chose to use either the RMS amplitude or minimum amplitude from each volume. From this choice I reduced the number of attributes from 12 to 6. The second step was to analyze the correlation coefficient, errors  and the spuriouness value with different number of attribute combination  Table 4.2.
+
+%\begin{figure}[hbtp]
+%	\begin{center}
+%	\includegraphics[width=1.0\linewidth]{./chapters/Chapter4_Attribute_Analyses/Figures/thesis_result_ISmap_multatt}
+%			\caption[Multi-attribute correlation coefficients value and spurious value for various number of attribute combination.]{Multi-attribute correlation coefficients value and spurious value %for various number of attribute combination.}
+%			\label{fig:mult1}
+%		\end{center}
+%	\end{figure}	
+
+
+\begin{table} \label{Multi-attributes correlation coefficients. } 
+\begin{center} 
+\begin{tabular}{| c | c | c | c | c | c |} 
+\hline 
+Target   &    Attributes  &   Training Error &  Validation Error  & Correlation   &   Spuriousness    \\ 
+\hline 
+Density                  &   1                                  &  0.057354    &  0.060849    &   0.511474     &   0.002770    \\ 
+\hline       
+Density                  &   2                                  &  0.055520    &   0.060316    &    0.555047       &     0.034814   \\ 
+\hline    
+Density                 &    3                                 & 0.050678   &    0.057807     &     0.650886   &    0.053470\\ 
+\hline
+Density                 &    4                                 & 0.048716    &    0.057903   &        0.683666     &   0.085259\\
+\hline   
+Density                 &    5                                  & 0.048662    &      0.059719   &    0.684510    &   0.160031 \\
+\hline 
+Density                &    6                                      & 0.048576  &   0.062102   &    0.685863        &      0.577712        \\ 
+\hline 
+\end{tabular} 
+\caption{Multi-attribute correlation coefficients value, errors and spurious value for various number of attribute combination.} 
+\end{center} 
+\end{table}
+
+
+
+
+
+
+
+The multiple attribute transform has the objective to predict a target function from a combination of attributes. This predicted target function map should have a higher correlation with the target well logs (Hampson, 2001).  The transform tested different numbers of attributes in the process. To quality control the results I plotted the prediction result errors by the number of attributes used (\ref{fig:errors}). The validation-error began to increase after the third attribute. The validation-error value is the cross validation analysis that leaves out the target well.
+
+	From the prediction-error plot and from the various linear combination tests, I judged that it is better to use just three attributes in the multi-attribute transform. The attributes that provided the most meaningful correlation used were (1) the RMS shear impedance attribute extracted in a 40 ms window below the top of the reservoir, (2) the RMS acoustic impedance attribute extracted in a 40 ms window below the top of the reservoir and the (3) RMS density extracted in a 40 ms window below the top of the reservoir. \ref{fig:result} shows the weight applied to each attribute that best matches the target function.
+	
+	
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter4_Attribute_Analyses/Figures/Fig6_errors}
+			\caption[Prediction error and validation error versus attribute number plot.]{Prediction error and validation error versus attribute number plot.}
+			\label{fig:errors}
+		\end{center}
+	\end{figure}	
+	
+	
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=0.6\linewidth]{./chapters/Chapter4_Attribute_Analyses/Figures/thesis_multatt_result}
+			\caption[Equation result of the multi-attribute analyses to predict the target function.]{Equation result of the multi-attribute analyses to predict the target function.}
+			\label{fig:result}
+		\end{center}
+	\end{figure}	
+	
+	
+	
+
+	
+
+	The target map result (\ref{fig:result_map}) from the multi-attribute transform had a correlation with the well logs of 65 percent (\ref{fig:xplot_result}), a maximum error of 0.12 g/cc and a spuriousness of 5 percent. The multi-attribute transform improved the density prediction from the single attribute analyses. The predicted density was higher in the lower density region and lower in the higher density region (Figure 4.9). My interpretation is that this phenomenon is caused by the large range and higher resolution of the density well logs compared with the density predicted from the seismic attributes.
+	
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.1\linewidth]{./chapters/Chapter4_Attribute_Analyses/Figures/Fig8_result_map}
+			\caption[Predicted density map from the multi-attribute transform.]{Predicted density map from the multi-attribute transform with 65 percent of prediction confidence.}
+			\label{fig:result_map}
+		\end{center}
+	\end{figure}	
+
+	
+
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter4_Attribute_Analyses/Figures/Fig7_xplot_result}
+			\caption[Crossplot between predicted density from the multi-attribute transform versus density well logs.]{Crossplot between predicted density from the multi-attribute transform versus density well logs.}
+			\label{fig:xplot_result}
+		\end{center}
+	\end{figure}	
+
+
+
+
+
+
+

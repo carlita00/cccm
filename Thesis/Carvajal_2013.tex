@@ -1,0 +1,130 @@
+\documentclass[letterpaper,12pt]{article}
+
+\usepackage{csm-thesis}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{rotating}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{pdflscape} % use ``lscape'' if you are not creating a PDF output
+\usepackage{amsmath}
+	\title{Joint inversion of multicomponent seismic 3D data and rock physics modeling in Delhi Field}
+\degreetitle{Master of Science}
+\discipline{Geophysics}
+\department{Geophysics}
+
+\author{Carla C. Carvajal Meneses}
+\advisor{Dr. Thomas L. Davis}
+% Comment out the following line if you do not have a co-advisor:
+%\coadvisor{Dr. Secondary B. Advisor}
+\dpthead{Dr. Terence K. Young}{Professor and Head}
+
+\begin{document}
+
+\frontmatter
+
+\maketitle
+\newpage
+
+\makecopyright{\the\year}
+\newpage
+
+%%% Parts of a Thesis - Front Matter - Signature Page (required)
+
+\makesubmittal
+\newpage
+
+%%% Parts of a Thesis - Front Matter - Abstract (required)
+
+\begin{abstract}
+
+\end{abstract}
+
+\newpage
+
+%%% Parts of a Thesis - Front Matter - Table of Contents (required)
+
+\tableofcontents
+
+\newpage
+
+\listoffiguresandtables
+
+\newpage
+
+\listofsymbols
+
+\newpage
+
+\addsymbol{absorption coefficient}{$\alpha_c$}
+\addsymbol{absorption cross section}{$\alpha_{\sigma}$}
+\addsymbol{average radius of cylindrical shell}{$c$}
+\addsymbol{activation energy of oxidation reaction of a-C in excited state}{$E^{\ast}_{act}$}
+
+\listofabbreviations
+\newpage
+
+% Note that you may define abbreviations anywhere in the document, when you re-run LaTeX they
+% will be added to the list (just like all other lists)
+\addabbreviation{Bio Force Gun, Model 9000}{BFG9000}
+\addabbreviation{Mammoth Armed Reclamation Vehicle}{MARV}
+\addabbreviation{Stone of Jordan}{SoJ}
+%\addabbreviation{Field flow fractionation-inductively coupled plasma-mass\newline spectrometry% with extra% magic and stuff and things
+\addabbreviation{Field flow fractionation-inductively coupled plasma-mass spectrometry% with extra% magic and stuff and things
+}{FFF-ICP-MS}
+
+%%% Parts of a Thesis - Front Matter - Acknowledgments (optional)
+
+\begin{acknowledgments}
+To Toto
+\end{acknowledgments}
+\newpage
+
+%%% Parts of a Thesis - Front Matter - Dedication (optional)
+
+\begin{dedication}
+To Toto.
+\end{dedication}
+\newpage
+
+%% Parts of a Thesis - Body
+
+\bodymatter
+
+\chapter{test bib}
+
+\cite{ref:A,ref:B,ref:C} o los puedes citar asi~\cite{ref:A} and 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% If you would like to work on each chapter of your thesis in a separate document then use: %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\include{./chapters/Chapter1_intro/Introduction}
+
+%\csmlongfigure{Strongbad}{figures/strongbad}{1in}{A world-class hero}{ of awesomeness~\cite{ref:Wikipedia}.}
+
+\backmatter
+
+
+\bibliography{thesis}
+%\printbibliography % <-- For using biblatex instead of natbib or the built-in bibliography utility
+
+%%% Parts of a Thesis - Back Matter - Selected Bibliography (optional)
+%\cleardoublepage
+%\begin{selected-bibliography}
+% Your selected bibliogrpahy would go here, a page break might also be necessary above.
+%\end{selected-bibliography}
+
+%%% Parts of a Thesis - Back Matter - Appendices (if applicable)
+\appendix{Magical Encoding Awesomeness}\label{app:encoding}
+\ref{tab:encoding} shows how several symbols appear in the rendered document.
+
+
+\appendix{Special Coolness}
+
+Insert ice cubes here (\ref{lst:hello-world}).
+
+\lstinputlisting[language=Matlab,label={lst:hello-world},caption={A MATLAB ``Hello World`` Example}]{matlab_code.m}
+
+
+\end{document}

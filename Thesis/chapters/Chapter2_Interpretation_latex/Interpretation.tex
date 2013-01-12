@@ -1,0 +1,235 @@
+\chapter{Interpretation}
+
+The 3-D, 4-C OBS seismic data were acquired over the field to improve the reservoir characterization. The data were processed into  P-P (\ref{fig:PP_line1360}) and P-S seismic volumes  (\ref{fig:PS_line1360}). 
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig1_edt}
+			\caption[P-P seismic data in P-P time, Inline 1360.]{P-P seismic data (Inline 1360) processed from the 3-D, 4-C OBS survey showing the good quality of the data.}
+			\label{fig:PP_line1360}
+		\end{center}
+	\end{figure}
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig2_edt}
+			\caption[P-S seismic data in P-S time, Inline 1360.]{P-S seismic data in P-S time, Inline 1360, processed from the 3-D, 4-C OBS survey. }
+			\label{fig:PS_line1360}
+		\end{center}
+	\end{figure}
+
+
+\subsection{Seismic Resolution}
+
+Seismic resolution is dependent upon the wavelength of the seismic. The wavelength is dependent upon interval velocity and frequency (Equation \ref{eq:vel_freq}).  The interval P-wave velocity in the reservoir level is around 3000 m/s and the dominant frequency above the noise is 12 Hz (\ref{fig:wv_PP}). Thus, the average wavelength in the reservoir level is 250 m. The seismic tuning thickness given by the wavelength divided by four is 62.5 m. The top of the reservoir layer has an average thickness of 30 m which is below tuning. Nonetheless, it is possible to seismically detect the reservoir because the signal-to-noise level is such that amplitude is a robust measure of thickness down to at least 1/8 of a wavelength. 
+\begin{equation} 
+%v = \lambda \cdot f 
+\lambda=v/f
+\label{eq:vel_freq}
+\end{equation} 
+
+ 
+The S-wave velocity in the reservoir level is around 1600 m/s and the dominant frequency is 10 Hz (\ref{fig:wv_PS}) corresponding to a calculated wavelength of 160 m. With this value the seismic tuning thickness is 40 m, equal to the wavelength divided by four. The seismic resolution in the P-S data should be better than the P-P data, but the P-S data are noisier and the shear-impedance contrast between the reservoir and the shale above is weaker. 
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/wv_PP}
+			\caption[The average wavelet in time and its amplitude spectrum extracted from the final migrated P-P data in the whole survey between the time 2500 ms and 2900 ms.]{The wavelet in time and its amplitude spectrum extracted from the final migrated P-P data in the whole survey between the time 2500 ms and 2900 ms, time interval correspondent to the reservoir level. }
+			\label{fig:wv_PP}
+		\end{center}
+	\end{figure}
+	
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/wv_PS}
+			\caption[The average wavelet in time and its amplitude spectrum extracted from the P-S data using whole P-S migrated volume between the time 4600 ms and 5100 ms.]{The wavelet in time and its amplitude spectrum extracted from the final migrated P-S data in the whole survey between the time 4600 ms and 5100 ms, the time interval correspondent to the reservoir level. }
+			\label{fig:wv_PS}
+		\end{center}
+	\end{figure}
+
+
+
+\subsection{P-P Seismic Interpretation}
+
+The first step in the seismic interpretation is to determine the location the reservoir. The OBS data used here were not the first seismic acquired over this area. Streamer seismic data was already available and interpreted for this reservoir. To help me with the interpretation, I imported the time-depth curves from the older seismic survey to use as a guide to determine the seismic horizons in the area. 
+
+I chose the vertical wells with sonic and density logs to create synthetic seismic traces. A trough in the synthetic and field traces seismic characterizes the top of the main reservoir. Wells 11 (\ref{fig:synth_PP_11}), 13 (\ref{fig:synth_PP_13}) and 17 (\ref{fig:synth_PP_17}), nicely show the good correlation between the synthetic seismic and seismic data.  Three horizons are used to guide the interpretation: the top of the pebbly zone located above the reservoir, the top of the carbonate platform below the reservoir and the top of the reservoir. The tops of both the pebbly zone and the carbonate are each characterized by a distinct peaks on both the synthetic seismic and in the P-P seismic data. 
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig3_synth_11_PP}
+			\caption[Well 11 P-P synthetic seismic.]{Well 11 P-P synthetic seismic, in P-P time, used in the well seismic tie. In the GR, Density and in the Resistivity logs it is possible to see a Type log of the upper reservoir unit and the lower reservoir unit. In blue is the synthetic seismic generated from the P-wave velocity log and the density log. In red is the trace extracted nearest the well from the seismic data repeated five times, and in black are the eight traces extracted nearest the well from the seismic data. The correlation coefficient computed between the synthetic seismic (in blue) and the seismic data (in red) is 73 percent analyzed from 2035 ms to 2755 ms. The wavelet used was a 20 Hz Ricker wavelet.}
+			\label{fig:synth_PP_11}
+		\end{center}
+	\end{figure}
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig4_synth_13_PP}
+			\caption[Well 13 P-P synthetic seismic.]{Well 13 P-P synthetic seismic, in P-P time, used in the seismic well tie. In blue is the synthetic seismic generated from the p-wave velocity log and the density log. In red is the trace extracted nearest the well from the seismic data repeated five times, and in black are the eight traces extracted nearest the well from the seismic data. The correlation coefficient computed between the synthetic seismic (in blue) and the seismic data (in red) is 77 percent analyzed from 2675 ms to 3085 ms. The wavelet used was a 15 Hz Ricker wavelet.}
+			\label{fig:synth_PP_13}
+		\end{center}
+	\end{figure}
+		
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig5_synth_17_PP}
+			\caption[Well 17 P-P synthetic seismic.]{Well 17 P-P synthetic seismic used in the time depth correlation. In blue is the synthetic seismic generated from the p-wave velocity log and the density log. In red is the trace extracted nearest the well from the seismic data repeated five times, and in black are the eight traces extracted nearest the well from the seismic data. The correlation coefficient computed between the synthetic seismic (in blue) and the seismic data (in red) is 73 percent analyzed from 2410 ms to 2875 ms. The wavelet used was a Ricker with 20 Hz.}
+			\label{fig:synth_PP_17}
+		\end{center}
+	\end{figure}
+
+	
+Once the key horizons were identified in the wells in depth, and on the P-P seismic section in time, I could begin the interpretation. The first horizon to be interpreted was the top of the pebbly zone. It is well marked on the seismic as a distinct peak, and all the wells drilled to the reservoir have the pebbly zone identified on the logs. With information from the vertical wells and the synthetic seismogram as a starting point, the seismic interpretation was made by following the positive amplitude of the pebbly horizon. I did an interpretation of this unit using every 20 inlines and every 20 crosslines, and these picks were spatially interpolated to fill the entire area. The interpolated result was good because the horizon is almost flat, dipping very slightly eastward, and has only minor fault displacements (\ref{fig:map_PB_time}). 
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=0.9\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig6_edt}
+			\caption[Structural map in two-way-time of the horizon top of pebbly interpreted on the P-P data.]{Structural map in two-way-time of the horizon top of pebbly interpreted on the P-P data. The horizon time dip is toward east. The time dip is mainly caused by the increase in water depth. }
+			\label{fig:map_PB_time}
+		\end{center}
+	\end{figure}	
+	
+	
+The second horizon I interpreted was the top of the carbonate platform. This horizon is not penetrated by most of the wells because it is below the objective reservoir. However, a few wells have logged this carbonate and it is a strong peak on both the synthetics and actual seismic data. The carbonate has higher impedance than the shale and the reservoir above it. Another characteristic is that the top of the carbonate seismic horizon is an unconformity. The horizon pick was difficult, so I interpreted most of the lines individually. The technique for this interpretation was always to use  two screens (one for the inlines and another for the crosslines) to check the consistency on the map (\ref{fig:map_mac_time}). I interpreted some tilted blocks with high positive amplitude (\ref{fig:map_mac_amp}) and then connected them to create one consistent horizon. Between the tilted carbonate blocks there are some areas where the carbonate layer is not present, but I interpreted the horizon following the level which represents the same temporal line. The high positive amplitude in the top of tilted fault blocks is the result of the elastic properties from the carbonate units at the top of the carbonate sequence.
+	
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=0.9\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig7_edt}
+			\caption[Structural map in two-way-time on the carbonate platform interpreted on the P-P data.]{Structural map in two-way-time on the carbonate platform interpreted on the P-P data. The tilted carbonate platform blocks were affected by the salt tectonic, and the deposition of the overlying turbidite sands was controlled by the shape of these tilted blocks.}
+			\label{fig:map_mac_time}
+		\end{center}
+	\end{figure}	
+	
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=0.9\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig8_edt}
+			\caption[Horizon top of the carbonate P-P seismic amplitude map extracted in a 20ms window.]{Horizon top of the carbonate P-P seismic amplitude map extracted in a 20ms window. Note that the high positive amplitude is over the top of the tilted carbonate blocks. }
+			\label{fig:map_mac_amp}
+		\end{center}
+	\end{figure}	
+	
+	
+The third horizon, and the most important one, was the top of the reservoir itself. In the P-P seismic data it is a trough followed by a peak at the base of the reservoir (\ref{fig:xline410_PP}). Even though the reservoir is a quartzose sandstone, it has a lower impedance than the overlying shales.  The high porosity (average of 23 percent) and the oil saturation make it a seismic negative amplitude anomaly in the middle of the adjacent deep-water shales. The various seismic expressions of submarine-fan deposits according to Posamentier (1991) are identifiable for this reservoir on the P-P seismic data ( \ref{fig:Iline1420_PP}) : (1) the pinchout geometry is identifiable, (2)  the high-amplitude continuous reflections onlapping paleobathymetric highs, (3) the internal bidirectionally downlapping reflections, and (4) a low-relief external mounding. The top of the reservoir horizon can is associated with various other turbidity deposits of the same age.  The seismic amplitude of this reflector is related to the presence of the oil in the porous space of the sandstone. The discovery and development of this field was based on the seismic maximum negative or minimum amplitude map of the top of the reservoir (\ref{fig:map_res_amp}). The maximum negative amplitude attribute was used to highlight the areas with higher acoustic impedance contrast.The top of the reservoir structural map (\ref{fig:map_res_PP}) in P-P two-way-time has a uniform dip towards east mainly due to the increase in water depth.
+	
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig9_edt}
+			\caption[P-P seismic section in time, crossline 410 with the interpretation of the top of the pebbly zone, top of reservoir and top of carbonate platform.]{P-P seismic section in time, crossline 410 with the interpretation of the top of the pebbly zone in red, top of reservoir in yellow and top of carbonate platform in blue. Note (red arrows) the definition of the seismic amplitude anomaly in the top of the reservoir horizon, the oil-saturated sandstone gives a strong through reflector (negative anomaly due to the lower impedance of the oil reservoir compared with the overlying shales.}
+			\label{fig:xline410_PP}
+		\end{center}
+	\end{figure}
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig10_edt}
+			\caption[P-P seismic section in time, inline 1420 with the interpretation of the top of the pebbly zone, top of reservoir and top of carbonate.]{P-P seismic section in time, inline 1420 with the interpretation of the top of the pebbly zone in red, top of reservoir in yellow and top of carbonate in blue. Note (red arrows) the definition of the seismic amplitude anomaly in the top of the reservoir horizon, the oil saturated sandstone gives a strong through reflector. }
+			\label{fig:Iline1420_PP}
+		\end{center}
+	\end{figure}		
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=0.9\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig11_edt}
+			\caption[Minimum amplitude or most negative attribute map extracted in a 10ms window at the horizon top of the reservoir on the P-P seismic data with the development wells.]{Minimum amplitude or most negative attribute map extracted in a 10ms window below the horizon top of the reservoir on the P-P seismic data with the development wells. Later in this thesis, this map will be used to infer the main reservoir. }
+			\label{fig:map_res_amp}
+		\end{center}
+	\end{figure}
+	
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=0.9\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/map_PP_res}
+			\caption[ Structural map in two-way-time of the top of the reservoir horizon interpreted from the P-P seismic data.]{Structural map in two-way-time of the top of the reservoir horizon interpreted from the P-P seismic data. The top of the reservoir has a smooth dip towards east mainly due to the increase in water depth. }
+			\label{fig:map_res_PP}
+		\end{center}
+	\end{figure}
+	
+
+\subsection{P-S Seismic Interpretation}
+
+The P-S seismic interpretation was the first one done in this area. The first challenge was to identify the reservoir on the seismic section. Unfortunately, there is only one well (Well 01D) with a shear sonic log, and it is not in the main reservoir block. I made a synthetic seismic using well 01D (\ref{fig:synt_01_P-S})  and compared it with the seismic to determine the main horizons. I decided to first map the top of the pebbly zone and the top of the carbonate platform, mapped in the P-P seismic data, and would later focus on the reservoir.
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig12_synthetic_01_PS}
+			\caption[Well 01 P-S synthetic in P-S time.]{Well 01 P-S synthetic in P-S time, used in the well seismic tie. In blue is the synthetic seismic generated from the S-wave velocity log and the density log. In red is the trace extracted nearest the well from the seismic data repeated five times, and in black are the eight traces extracted nearest the well from the seismic data. The correlation coefficient computed between the synthetic seismic (in blue) and the seismic data (in red) is 56 percent analyzed over a time window of 2470 ms to 3140 ms. The wavelet used was a 15 Hz Ricker wavelet.}
+			\label{fig:synt_01_P-S}
+		\end{center}
+	\end{figure}
+
+
+The top of the pebbly zone is a peak due to its higher impedance compared to the shale above, and it is rather flat. The top of the pebbly zone has a strong signal in the logs, and it is used a regional marker in the Campos Basin.  Looking at the P-P seismic, the top of the pebbly zone is the first strong peak above the reservoir. After identifying the top of the pebbly zone in the P-S data, even with just one well match it was not difficult to map it in the whole 3D volume (\ref{fig:map_PB_time_PS}). I did all the P-S seismic interpretation looking back to the P-P seismic data as a guide. It is important that the P-P and the P-S interpretation be consistent with each other.
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=0.9\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig13_edt}
+			\caption[ Structural map in two-way-time of the top of the pebbly zone horizon interpreted from the P-S data. ]{Structural map in two-way-time of the top of the pebbly zone horizon interpreted from the P-S data. The horizon time dip is toward east. The time dip is mainly caused by the increase in water depth.}
+			\label{fig:map_PB_time_PS}
+		\end{center}
+	\end{figure}
+
+
+The top of the carbonate, on the other hand, is a unconformity. The carbonate platform was strongly affected by the later salt tectonics; it is separated in various blocks with different two-way-time values (\ref{fig:map_mac_time_PS}). As with the P-P interpretation, the top of the carbonate platform was more difficult to map than the top of pebbly zone. I used the same technique that I used in the P-P seismic interpretation. First I interpreted the areas with high positive amplitude that are over the top of the tilted carbonate blocks in the structural highs  (\ref{fig:map_mac_amp_PS})  and then interpreted the connections between the blocks to fully fill the area. 
+
+
+
+Between the thicker, tilted carbonate blocks  I interpreted the horizon following the same stratigraphic level. The high positive amplitude at the top of tilted carbonate blocks structural high are the result of the elastic properties from the carbonate layers in the top unit of the carbonate sequence.
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=0.9\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig14_edt}
+			\caption[Top of the carbonate platform map in two-way-time on the P-S data. ]{Top of the carbonate platform map in two-way-time on the P-S data. The tilted carbonate platform blocks were affected by the salt tectonic and the deposition of the reservoir rocks were affected by the shape of the tilted blocks.}
+			\label{fig:map_mac_time_PS}
+		\end{center}
+	\end{figure}
+
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=0.9\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig15_edt}
+			\caption[Top of the carbonate platform P-S amplitude map extracted in a 20 ms centered window around the seismic horizon. ]{Top of the carbonate platform P-S amplitude map extracted in a 20 ms centered window around the seismic horizon. The high positive amplitude shows the top of the tilted carbonate blocks. }
+			\label{fig:map_mac_amp_PS}
+		\end{center}
+	\end{figure}
+
+
+The third, and most challenging horizon to be interpreted, was the top of the reservoir in the P-S seismic volumes. In the synthetic seismic from Well 01D, it is possible to see a weak trough at the top of the reservoir. There is only one well in the whole area, and the negative seismic amplitude that correspond to the top of the reservoir in the synthetic seismic trace from this well, is not continuous in the area (\ref{fig:map_PS_res_amp}). In the P-S data, the top of the reservoir horizon has a weak seismic signal (\ref{fig:xline_410_zoom}), because the shear impedance contrast between the reservoir and the overlying shale is weak. I interpreted the top of the reservoir in the P-S seismic volume (\ref{fig:inline_1420_zoom}), but the top of the reservoir structural map (\ref{fig:Map_res_PS_time})in P-S two-way-time has a moderate level of uncertainty. 
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=0.9\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig16_edt}
+			\caption[Minimum amplitude or most negative attribute map extracted in a 20ms centered window around the horizon top of the reservoir on the P-S seismic data. ]{Minimum amplitude attribute map extracted in a 20ms centered window around the horizon top of the reservoir on the P-S seismic data. }
+			\label{fig:map_PS_res_amp}
+		\end{center}
+	\end{figure}
+
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig17_edt}
+			\caption[P-S seismic data in P-S time, crossline 410.]{P-S seismic data in P-S time, crossline 410. The top of the reservoir horizon is in yellow between the top of the pebbly horizon in red and the top of the carbonate platform horizon in blue. Note (red arrow) that the top of the reservoir horizon does not have a strong seismic amplitude.}
+			\label{fig:xline_410_zoom}
+		\end{center}
+	\end{figure}
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Fig18_edt}
+			\caption[P-S seismic data in P-S time, inline 1420 reservoir detail.]{P-S seismic data in P-S time, inline 1420 reservoir detail. The top of the reservoir horizon is in yellow, the top of the Pebbly horizon is in red and the top of the carbonate platform horizon is in blue.}
+			\label{fig:inline_1420_zoom}
+		\end{center}
+	\end{figure}
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=0.9\linewidth]{./chapters/Chapter2_Interpretation_latex/Figures/Map_res_PS}
+			\caption[Top of the reservoir horizon structural map in P-S two-way-time.]{Top of the reservoir horizon structural map in P-S two-way-time.}
+			\label{fig:Map_res_PS_time}
+		\end{center}
+	\end{figure}
+   
