@@ -6,6 +6,9 @@
 \usepackage{rotating}
 \usepackage[numbers]{natbib}
 \usepackage{hyperref}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{graphicx,subfig}
 \usepackage{listings}
 \usepackage{pdflscape} % use ``lscape'' if you are not creating a PDF output
 \usepackage{amsmath}
@@ -38,6 +41,22 @@
 %%% Parts of a Thesis - Front Matter - Abstract (required)
 
 \begin{abstract}
+In order to accomplish the objectives I am proposing a workflow to analyze
+  time lapse data in clastic reservoirs by incorporating rock physics modeling
+ and multicomponent seismic data.
+   
+The rock physics static modeling is based on a hybrid  approach that uses theoretic,
+ heuristic and empirical models for cemented sandstones (Avseth et al., 2010). 
+This model will be validated with the rock laboratory measurements of Vp and Vs for
+ Tuscaloosa Formation.  Then I proposed to extend the modeling into dynamic reservoir 
+ characterization framework by using fluid and pressure substitution.
+
+4D joint seismic inversion between PP and PS radial data will provide acoustic, shear 
+and Vp/Vs ratio information for the first and second monitor more accurately because it 
+should add stability to an ill- conditioned problem, that is very sensitive to noise and non-unique.
+The initial model of the inversion will be improve by implementing  Dynamic Image Warping
+ (DIW) in order to match properly the PP and PS radial horizons.
+
 
 \end{abstract}
 
@@ -53,26 +72,26 @@
 
 \newpage
 
-\listofsymbols
+%\listofsymbols
 
-\newpage
+%\newpage
 
-\addsymbol{absorption coefficient}{$\alpha_c$}
-\addsymbol{absorption cross section}{$\alpha_{\sigma}$}
-\addsymbol{average radius of cylindrical shell}{$c$}
-\addsymbol{activation energy of oxidation reaction of a-C in excited state}{$E^{\ast}_{act}$}
+%\addsymbol{absorption coefficient}{$\alpha_c$}
+%\addsymbol{absorption cross section}{$\alpha_{\sigma}$}
+%\addsymbol{average radius of cylindrical shell}{$c$}
+%\addsymbol{activation energy of oxidation reaction of a-C in excited state}{$E^{\ast}_{act}$}
 
-\listofabbreviations
-\newpage
+%\listofabbreviations
+%\newpage
 
 % Note that you may define abbreviations anywhere in the document, when you re-run LaTeX they
 % will be added to the list (just like all other lists)
-\addabbreviation{Bio Force Gun, Model 9000}{BFG9000}
-\addabbreviation{Mammoth Armed Reclamation Vehicle}{MARV}
-\addabbreviation{Stone of Jordan}{SoJ}
+%\addabbreviation{Bio Force Gun, Model 9000}{BFG9000}
+%\addabbreviation{Mammoth Armed Reclamation Vehicle}{MARV}
+%\addabbreviation{Stone of Jordan}{SoJ}
 %\addabbreviation{Field flow fractionation-inductively coupled plasma-mass\newline spectrometry% with extra% magic and stuff and things
-\addabbreviation{Field flow fractionation-inductively coupled plasma-mass spectrometry% with extra% magic and stuff and things
-}{FFF-ICP-MS}
+%\addabbreviation{Field flow fractionation-inductively coupled plasma-mass spectrometry% with extra% magic and stuff and things
+%}{FFF-ICP-MS}
 
 %%% Parts of a Thesis - Front Matter - Acknowledgments (optional)
 
@@ -92,9 +111,9 @@ To Toto.
 
 \bodymatter
 
-\chapter{test bib}
+%\chapter{test bib}
 
-\cite{ref:A,ref:B,ref:C} o los puedes citar asi~\cite{ref:A} and 
+%\cite{ref:A,ref:B,ref:C} o los puedes citar asi~\cite{ref:A} and 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % If you would like to work on each chapter of your thesis in a separate document then use: %
@@ -116,13 +135,13 @@ To Toto.
 %\end{selected-bibliography}
 
 %%% Parts of a Thesis - Back Matter - Appendices (if applicable)
-\appendix{Magical Encoding Awesomeness}\label{app:encoding}
-\ref{tab:encoding} shows how several symbols appear in the rendered document.
+%\appendix{Magical Encoding Awesomeness}\label{app:encoding}
+%\ref{tab:encoding} shows how several symbols appear in the rendered document.
 
 
-\appendix{Special Coolness}
+%\appendix{Special Coolness}
 
-Insert ice cubes here (\ref{lst:hello-world}).
+%Insert ice cubes here (\ref{lst:hello-world}).
 
 %\lstinputlisting[language=Matlab,label={lst:hello-world},caption={A MATLAB ``Hello World`` Example}]{matlab_code.m}
 
