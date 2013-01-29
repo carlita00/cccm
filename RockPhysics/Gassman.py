@@ -27,7 +27,8 @@ def kdry(ksatWell,phiWell,soWell,vsh,kbri,koil):
     mv = gquartz*(1.0-vsh[i])+gclay*vsh[i]
     mr = (1.0-vsh[i])/gquartz+vsh[i]/gclay
     gs = 0.5*(mv+1.0/mr)
-    #rhos = rhoquartz*(1.0-SO[i])+rhoclay*SO[i]
+
+    rhos = rhoquartz*(1.0-so[i])+rhoclay*so[i]
     #print(ks,gs,vsh[i])
     kfluid = (1.0-soWell[i])/kbri+soWell[i]/koil
     kfluid = 1.0/kfluid 
@@ -35,6 +36,44 @@ def kdry(ksatWell,phiWell,soWell,vsh,kbri,koil):
     tmp2 = phiWell[i]*ks/kfluid+ksatWell[i]/ks-1.0-phiWell[i] 
     kdry[i] = tmp1/tmp2
   return kdry 
+
+def kgassman(kdry,phi,so,vsh,kbri,koil,rhobri,rhooil):
+  n = len(kdry)
+  #print(max(kdry),max(so),max(vsh),kbri,koil)
+  ksat   = np.zeros(n)
+  rhosat   = np.zeros(n)
+  soR   = np.zeros(n)
+
+  kquartz = 37.0e09
+  kclay = 25.0e09
+  gquartz = 44.0e09
+  rhoquartz = 2650
+  rhoclay = 2550
+  gclay = 9.4e09
+
+  for i in range(n):
+    #so[i] =so[i]*0.00001
+    soR[i] =so[i] #*0.00001
+
+    mv = kquartz*(1.0-vsh[i])+kclay*vsh[i]
+    mr = (1.0-vsh[i])/kquartz+vsh[i]/kclay
+    ks = 0.5*(mv+1.0/mr)
+    #print(so[i]) 
+    mv = gquartz*(1.0-vsh[i])+gclay*vsh[i]
+    mr = (1.0-vsh[i])/gquartz+vsh[i]/gclay
+    gs = 0.5*(mv+1.0/mr)
+    rhos = rhoquartz*(1.0-vsh[i])+rhoclay*vsh[i]
+
+    kfluid = (1.0-so[i])/kbri+so[i]/koil
+    kfluid = 1.0/kfluid
+    #print(kfluid)
+    rhofluid = (1.0-so[i])*rhobri+so[i]*rhooil
+    tmp3=(phi[i]/kfluid+(1.0-phi[i])/ks-kdry[i]/(ks*ks))
+    tmp1=((1.0-kdry[i]/ks)*(1.0-kdry[i]/ks))
+    ksat[i]=  kdry[i]+tmp1/tmp3 
+    rhosat[i]= rhooil*phi[i]+(1.0-phi[i])*rhos 
+
+  return ksat,rhosat,soR
   
 class Gassman:
   def __init__(self,ks,rhos,phi):

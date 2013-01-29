@@ -19,141 +19,422 @@ class Plot:
     self._phi = phi
     
 
-  def plotDry(self,kbri,koil,pref,ksat_well,gdry,phit,SO,vsh_iw,facies,vsh):
+  def plotDry(self,kbri,koil,pref,ksat_well,gdry,phit,SO,gr,facies,vsh,kdry_well):
+
+
+    plt.rcParams.update({'font.size': 16,'legend.fontsize': 14})
 
     #phid,phit,ksat_well,vsh_iw,g,SO,depth,well,facies,sid = np.loadtxt(fileName,unpack=True)
-    kdry_well = Gassman.kdry(ksat_well,phit,SO,vsh,kbri,koil)
+    #kdry_well = Gassman.kdry(ksat_well,phit,SO,vsh,kbri,koil)
 
     n1 = len(ksat_well)
     dry_ratio = np.zeros(n1)
     #for i in range(n1):  
       #print(vsh[i])
-    fig = figure(3, figsize=(10, 8))
+    fig = figure(4, figsize=(7, 11))
+    ax = plt.subplot(2,1,1)
+    #ax.set_xlabel('porosity $\phi$')
+    ax.set_ylabel('K dry (Pa)')
+    #plot(self._phi[:],self._kdry_l[1,:],'b')
+    #plot(self._phi[:],self._kdry_l[2,:],'b')
+    plot(self._phi[:],self._kdry_l[pref,:],'b')
+    plot(self._phi[:],self._kdry_c[:],'b')
+    #plot(self._phi[:],self._kdryConstant[3,:],'b')
+    plot(self._phi[:],self._kdryConstant[5,:],'b')
+    plot(self._phi[:],self._kdryConstant[7,:],'b')
+    plot(self._phi[:],self._kdryConstant[9,:],'b')
+    ax.set_xticklabels([])
+
+    #plot(self._phi[:],self._kdryConstant[18,:],'b')
+    ylim(1.e9,1.5e10) 
+    xlim(0,0.5) 
+    p=ax.scatter(phit,kdry_well,c=vsh)
+    #p=ax.scatter(phit,ksat_well,c='r')
+    p.set_clim([0,.5])
+    cbar= plt.colorbar(p)
+    cbar.set_label('Vsh')
+    #plt.rcParams.update({'font.size': 12,'legend.fontsize': 12})
+
+    bx = plt.subplot(2,1,2)
+    bx.set_xlabel('porosity $\phi$')
+    bx.set_ylabel('G dry (Pa)')
+    plot(self._phi[:],self._gdry_l[pref,:],'b')
+    plot(self._phi[:],self._gdry_c[:],'b')
+    plot(self._phi[:],self._gdryConstant[5,:],'b')
+    plot(self._phi[:],self._gdryConstant[7,:],'b')
+    plot(self._phi[:],self._gdryConstant[9,:],'b')
+    ylim(1e9,1.5e10) 
+    xlim(0,0.5) 
+
+    p=bx.scatter(phit,gdry,c=vsh)
+    cbar= plt.colorbar(p)
+    cbar.set_label('Vsh')
+    p.set_clim([0,.5])
+    fig.savefig('model_calibration.pdf')
+
+
+    fig = figure(5, figsize=(6, 6))
     ax = plt.subplot(1,1,1)
     ax.set_xlabel('porosity $\phi$')
-    ax.set_ylabel('Dry Bulk modulus $K$')
+    ax.set_ylabel('K dry (Pa)')
     #plot(self._phi[:],self._kdry_l[1,:],'b')
     #plot(self._phi[:],self._kdry_l[2,:],'b')
     plot(self._phi[:],self._kdry_l[pref,:],'b')
     plot(self._phi[:],self._kdry_c[:],'b')
     #plot(self._phi[:],self._kdryConstant[2,:],'b')
-    #plot(self._phi[:],self._kdryConstant[9,:],'b')
-    plot(self._phi[:],self._kdryConstant[18,:],'b')
-    ylim(1.e08,4e10) 
+    plot(self._phi[:],self._kdryConstant[5,:],'b')
+    plot(self._phi[:],self._kdryConstant[7,:],'b')
+    plot(self._phi[:],self._kdryConstant[9,:],'b')
+    ylim(1.e9,4e10) 
     xlim(0,0.5) 
-    p=ax.scatter(phit,kdry_well,c=vsh_iw)
-    #p=ax.scatter(phit,ksat_well,c='r')
-    p.set_clim([0,100])
+    fig.savefig('teory_model.pdf')
 
-    cbar= plt.colorbar(p)
-    cbar.set_label('GR')
-    plt.rcParams.update({'font.size': 20})
 
-    fig = figure(4, figsize=(10, 8))
-    bx = plt.subplot(1,1,1)
-    bx.set_xlabel('porosity $\phi$')
-    bx.set_ylabel('Dry Shear modulus $G$')
-    plot(self._phi[:],self._gdry_l[pref,:],'b')
-    plot(self._phi[:],self._gdry_c[:],'b')
-    #plot(self._phi[:],self._gdryConstant[2,:],'b')
-    #plot(self._phi[:],self._gdryConstant[9,:],'b')
-    #plot(self._phi[:],self._gdryConstant[14,:],'b')
-    ylim(1,8e10) 
-    xlim(0,0.5) 
+    #plt.rcParams.update({'font.size': 20,'lengend.fontsize':12})
 
-    p=bx.scatter(phit,gdry,c=vsh_iw)
-    cbar= plt.colorbar(p)
-    cbar.set_label('GR')
-    p.set_clim([0,100])
-
-    plt.rcParams.update({'font.size': 20})
-
-  def plotDryratio(self,kbri,koil,ksat_well,gdry,phit,SO,vsh_iw,facies,depth,dmin,dmax,vsh):
+  def plotDryratio(self,title,kbri,koil,ksat_well,gdry,kdry_well,phit,SO,gr,facies,depth,dmin,dmax,vsh):
     #phid,phit,ksat_well,vsh_iw,g,SO,depth,well,facies,sid = np.loadtxt(fileName,unpack=True)
-    kdry_well= Gassman.kdry(ksat_well,phit,SO,vsh,kbri,koil)
+    #kdry_well= Gassman.kdry(ksat_well,phit,SO,vsh,kbri,koil)
     n1 = len(ksat_well)
     dry_ratio = np.zeros(n1)
     for i in range(n1):  
       #print(vsh[i],depth[i])  
       dry_ratio[i]=(kdry_well[i]+4.0/3.0*gdry[i])/gdry[i] 
       dry_ratio[i]=np.power(dry_ratio[i],0.5)
-    fig = figure(5, figsize=(10, 8))
-    bx = plt.subplot(1,1,1)
-    bx.set_xlabel('Vp/Vs ratio')
-    bx.set_ylabel('Depth (ft)')
-    p=bx.scatter(dry_ratio,depth,c=SO)
-    p.set_clim([0,0.5])
-    cbar= plt.colorbar(p)
-    cbar.set_label('Oil saturation')
-    ylim(dmax,dmin) 
-    xlim(1,2.4) 
 
-    fig = figure(6, figsize=(10, 8))
-    bx = plt.subplot(1,1,1)
-    bx.set_xlabel('Vp/Vs ratio')
-    bx.set_ylabel('Depth (ft)')
-    plot(dry_ratio,depth,c='r')
-    plot(SO,depth)
-    xlim(1,2.4) 
-    ylim(dmax,dmin)
-    return kdry_well
 
-  def plotfacies(self,ksat_well,gdry,phit,vsh_iw,facies,depth,kdry_well,pref):
-    fig = figure(7, figsize=(8, 6))
-    bx = plt.subplot(1,1,1)
-    bx.set_xlabel('porosity $\phi$',fontsize=20)
-    bx.set_ylabel('Dry Bulk modulus $K$ (Pa)',fontsize=20)
-    #axis([0.0, 0.4, -10, 4*1e10])
-    #ylim(0,4*1e10)
-    xlim(0.0,0.4) 
+
+
+    fig = figure(7, figsize=(16, 8))
+    fig.suptitle(title)
+
+    bx = plt.subplot(1,5,1)
+    bx.set_xlabel('Gamma Ray')
+    bx.set_ylabel('Depth (feet)')
+    bx.xaxis.set_major_locator(MaxNLocator(4))
+    p=bx.plot(gr,depth,c='k')
+    bx.set_ylim(dmax,dmin) 
+    #bx.set_title('')
+    #bx.set_yticklabels([])
+
 
     colors=[1.0,2.,3.,4.,5.,6.,7.,8.,9.,10.0,20.0,30.0,40.0,50.0,60.0,70.0,80.0,90.0]
     n = len(depth)
     for i in range(n):
       for j in range(len(colors)):
-        if vsh_iw[i] <30:
+        if facies[i] == colors[j]:
+          if colors[j] >=5 and colors[j]<=9:
+            j = 4
+            c1='k'
+            p=bx.scatter(gr[i],depth[i],c=c1)
+          elif colors[j] >=50 and colors[j]<=90:
+            j = 13
+            c1='k'
+            p=bx.scatter(gr[i],depth[i],c=c1)
+          else:
+            c1=cm.hsv((j+1)/float(len(colors)),1)
+            p=bx.scatter(gr[i],depth[i],c=c1,edgecolor='none')
+    bx.set_xlim(0,160)
+
+
+    bx = plt.subplot(1,5,2)
+    bx.set_xlabel('Vp/Vs dry ratio')
+    #bx.set_ylabel('Depth (ft)')
+    #p=bx.scatter(dry_ratio,depth,c=SO,edgecolor='none')
+    p1=bx.plot(dry_ratio,depth,c='k')
+    bx.xaxis.set_major_locator(MaxNLocator(4))
+    #p.set_clim([0,0.5])
+    #cbar= plt.colorbar(p)
+    #cbar.set_label('Oil saturation')
+    ylim(dmax,dmin) 
+    bx.set_yticklabels([])
+
+    xlim(1.4,1.8) 
+    '''
+    bx = plt.subplot(1,5,3)
+    bx.set_xlabel('Oil saturation')
+    #bx.set_ylabel('Depth (ft)')
+    #p=bx.scatter(dry_ratio,depth,c=SO,edgecolor='none')
+    p1=bx.plot(SO,depth,c='k')
+    bx.xaxis.set_major_locator(MaxNLocator(4))
+    #p.set_clim([0,0.5])
+    #cbar= plt.colorbar(p)
+    #cbar.set_label('Oil saturation')
+    bx.set_yticklabels([])
+
+    ylim(dmax,dmin) 
+    xlim(0,0.5) 
+    '''
+    bx = plt.subplot(1,5,4)
+    bx.set_xlabel('Kdry (Pa)')
+    #bx.set_ylabel('Depth (ft)')
+    #p=bx.scatter(dry_ratio,depth,c=SO,edgecolor='none')
+    p1=bx.plot(kdry_well,depth,c='k')
+    bx.set_yticklabels([])
+
+    bx.xaxis.set_major_locator(MaxNLocator(4))
+    #p.set_clim([0,0.5])
+    #cbar= plt.colorbar(p)
+    #cbar.set_label('Oil saturation')
+    ylim(dmax,dmin) 
+    bx.set_xlim(1e9 ,2.e10) 
+
+    kbri=2.44e9
+    koil=0.04e9
+    rhobri=990
+    rhooil=0.65e3
+    #kgassman(kdry_well,phit,SO,vsh,kbri,koil,rhobri,rhooil)
+    ksatR,rhosatR,soR=Gassman.kgassman(kdry_well,phit,SO,vsh,kbri,koil,rhobri,rhooil)
+
+
+    bx = plt.subplot(1,5,3)
+    bx.set_xlabel('Oil saturation')
+    #bx.set_ylabel('Depth (ft)')
+    #p=bx.scatter(dry_ratio,depth,c=SO,edgecolor='none')
+    #p1=bx.plot(SO,depth,c='k')
+    p2=bx.plot(soR,depth,c='k')
+    bx.xaxis.set_major_locator(MaxNLocator(4))
+    #p.set_clim([0,0.5])
+    #cbar= plt.colorbar(p)
+    #cbar.set_label('Oil saturation')
+    bx.set_yticklabels([])
+
+    ylim(dmax,dmin) 
+    xlim(0,0.5) 
+
+    bx = plt.subplot(1,5,5)
+    bx.set_xlabel('Ksat (Pa)')
+    #bx.set_ylabel('Depth (ft)')
+    p=bx.plot(ksat_well,depth,c='k',label="Ksat Obs")
+    p1=bx.plot(ksatR,depth,c='r',label="Ksat Cal")
+    xlim(3.e9,2.5e10) 
+    bx.xaxis.set_major_locator(MaxNLocator(4))
+    ylim(dmax,dmin) 
+    bx.set_yticklabels([])
+    plt.legend()
+    fig.savefig(title+'QC2.pdf')
+
+
+    fig = figure(8, figsize=(8, 8))
+    fig.suptitle(title)
+    bx = plt.subplot(1,2,1)
+    bx.set_xlabel('Oil saturation')
+    bx.set_ylabel('Depth (ft)')
+    #p=bx.scatter(dry_ratio,depth,c=SO,edgecolor='none')
+    #p1=bx.plot(SO,depth,c='k')
+    p2=bx.plot(soR,depth,c='k')
+    bx.xaxis.set_major_locator(MaxNLocator(4))
+    #p.set_clim([0,0.5])
+    #cbar= plt.colorbar(p)
+    #cbar.set_label('Oil saturation')
+    #bx.set_yticklabels([])
+
+    ylim(dmax,dmin) 
+    xlim(-0.1,0.5) 
+
+
+    bx = plt.subplot(1,2,2)
+    bx.set_xlabel('Ksat (Pa)')
+    #bx.set_ylabel('Depth (ft)')
+    p=bx.plot(ksat_well,depth,c='k',label="Ksat Obs")
+    p1=bx.plot(ksatR,depth,c='r',label="Ksat Cal")
+    xlim(3.e9,2.5e10) 
+    bx.xaxis.set_major_locator(MaxNLocator(4))
+    ylim(dmax,dmin) 
+    bx.set_yticklabels([])
+    plt.legend()
+    fig.savefig(title+'fixed.pdf')
+
+
+  def plotfacies(self,ksat_well,gdry,phit,vsh_iw,facies,depth,kdry_well,pref):
+    plt.rcParams.update({'font.size': 16,'legend.fontsize': 14})
+
+    fig = figure(9, figsize=(7, 11))
+    bx = plt.subplot(2,1,1)
+    #bx.set_xlabel('porosity $\phi$')
+    bx.set_ylabel('K Dry (Pa)')
+    #axis([0.0, 0.4, -10, 4*1e10])
+    #ylim(0,4*1e10)
+    ylim(1e9,1.5e10) 
+    xlim(0,0.5) 
+    bx.set_xticklabels([])
+
+    colors=[1.0,2.,3.,4.,5.,6.,7.,8.,9.,10.0,20.0,30.0,40.0,50.0,60.0,70.0,80.0,90.0]
+    n = len(depth)
+    for i in range(n):
+      for j in range(len(colors)):
+        if vsh_iw[i] <50:
           if facies[i] == colors[j]:
             if colors[j] >=5 and colors[j]<=9:
               j = 4
-              c=cm.hsv((j+1)/float(len(colors)),1)
+              c='k'
               p=bx.scatter(phit[i],kdry_well[i],color=c)
             elif colors[j] >=50 and colors[j]<=90:
               j = 13
-              c=cm.hsv((j+1)/float(len(colors)),1)
+              c = 'k'
               p=bx.scatter(phit[i],kdry_well[i],color=c)
             else:
               c=cm.hsv((j+1)/float(len(colors)),1)
               p=bx.scatter(phit[i],kdry_well[i],color=c)
 
             #print(facies[i])
-    plot(self._phi[:],self._kdry_l[pref,:],'b')
-    plot(self._phi[:],self._kdry_c[:],'b')
-    plot(self._phi[:],self._kdryConstant[2,:],'b')
-    plot(self._phi[:],self._kdryConstant[9,:],'b')
-    plot(self._phi[:],self._kdryConstant[18,:],'b')
+    plot(self._phi[:],self._kdry_l[pref,:],c='b')
+    plot(self._phi[:],self._kdry_c[:],c='b')
+    #plot(self._phi[:],self._kdryConstant[3,:],c='b')
+    plot(self._phi[:],self._kdryConstant[5,:],c='b')
+    plot(self._phi[:],self._kdryConstant[7,:],c='b')
+    plot(self._phi[:],self._kdryConstant[9,:],c='b')
+
+
+    bx = plt.subplot(2,1,2)
+    bx.set_xlabel('porosity $\phi$')
+    bx.set_ylabel('G dry (Pa)')
+    plot(self._phi[:],self._gdry_l[pref,:],'b')
+    plot(self._phi[:],self._gdry_c[:],'b')
+    plot(self._phi[:],self._gdryConstant[5,:],'b')
+    plot(self._phi[:],self._gdryConstant[7,:],'b')
+    plot(self._phi[:],self._gdryConstant[9,:],'b')
+    ylim(1e9,1.5e10) 
+    xlim(0,0.5) 
+
+    for i in range(n):
+      for j in range(len(colors)):
+        if vsh_iw[i] <50:
+          if facies[i] == colors[j]:
+            if colors[j] >=5 and colors[j]<=9:
+              j = 4
+              c='k'
+              p=bx.scatter(phit[i],gdry[i],color=c)
+            elif colors[j] >=50 and colors[j]<=90:
+              j = 13
+              c = 'k'
+              p=bx.scatter(phit[i],gdry[i],color=c)
+            else:
+              c=cm.hsv((j+1)/float(len(colors)),1)
+              p=bx.scatter(phit[i],gdry[i],color=c)
+
+
+
 
     #p=bx.scatter(d[pref][9][:],c[pref][9][:],c=so)
     p1 = Rectangle((0, 0), 0.2, 0.2, fc=cm.hsv((1)/float(len(colors)),1))
     p2 = Rectangle((0, 0), 0.2, 0.2, fc=cm.hsv((2)/float(len(colors)),1))
     p3 = Rectangle((0, 0), 0.2, 0.2, fc=cm.hsv((3)/float(len(colors)),1))
-    p5 = Rectangle((0, 0), 0.2, 0.2, fc=cm.hsv((5)/float(len(colors)),1))
+    p4 = Rectangle((0, 0), 0.2, 0.2, fc=cm.hsv((4)/float(len(colors)),1))
+    p5 = Rectangle((0, 0), 0.2, 0.2, fc='k')
 
     p20 = Rectangle((0, 0), 0.2, 0.2, fc=cm.hsv((11)/float(len(colors)),1))
     p30 = Rectangle((0, 0), 0.2, 0.2, fc=cm.hsv((12)/float(len(colors)),1))
-    p40 = Rectangle((0, 0), 0.2, 0.2, fc=cm.hsv((13)/float(len(colors)),1))
-    p50 = Rectangle((0, 0), 0.2, 0.2, fc=cm.hsv((14)/float(len(colors)),1))
+    p40 = Rectangle((0, 0), 0.2, 0.2, fc='k')
 
 
-    labels = ('Tusc: Beach / Barrier bar' , 'Tusc: Washover', 'Tusc: Transitional', \
+
+    labels = ('Tusc: Beach / Barrier bar' , 'Tusc: Washover', 'Tusc: Transitional','Tusc: Fluvial', \
           'Tusc: Poor rock', 'Paluxy: Distributary sand','Paluxy: mediocre distributary sand', \
-          'Paluxy: mediocre distributary sand','Paluxy: Poor rock')
-    legend = plt.legend([p1,p2,p3,p5,p20,p30,p40,p50],labels, loc=(0.25, .7), labelspacing=0.1)
+          'Paluxy: Poor rock')
+    legend = plt.legend([p1,p2,p3,p4,p5,p20,p30,p40],labels, loc='center left', bbox_to_anchor=(1, 1),ncol=1)
     ltext = gca().get_legend().get_texts()
+    #ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    fig.savefig('model_facies.pdf',bbox_extra_artists=(legend,), bbox_inches='tight')
 
+    #---- Tuscaloosa fluvial modeling---------
+    '''
+    fig = figure(10, figsize=(7, 6))
+    bx = plt.subplot(1,1,1)
+    bx.set_title('Quartz:70%, Clay:20%, Sid:10% ')
+    bx.set_xlabel('porosity $\phi$')
+    bx.set_ylabel('K Dry (Pa)')
+    #axis([0.0, 0.4, -10, 4*1e10])
+    #ylim(0,4*1e10)
+    ylim(1e9,1.5e10) 
+    xlim(0,0.5) 
+    #bx.set_xticklabels([])
+    plot(self._phi[:],self._kdry_l[pref,:],c='r')
+    plot(self._phi[:],self._kdry_c[:],c='b')
+    #plot(self._phi[:],self._kdryConstant[3,:],c='b')
+    plot(self._phi[:],self._kdryConstant[5,:],c='b')
+    plot(self._phi[:],self._kdryConstant[7,:],c='b')
+    plot(self._phi[:],self._kdryConstant[9,:],c='b')
 
+    n = len(depth)
+    for i in range(n):
+      for j in range(len(colors)):
+        if facies[i]==4 :
+          if facies[i] == colors[j]:
+            c=cm.hsv((j+1)/float(len(colors)),1)
+            p=bx.scatter(phit[i],kdry_well[i],color=c)
+
+    fig.savefig('facies_modelingTF.pdf')
+    '''
+    
+
+    #---- Tuscaloosa beach modeling---------
+    
+    fig = figure(10, figsize=(7, 6))
+    bx = plt.subplot(1,1,1)
+    bx.set_title('Quartz:97%, Clay:3%')
+    bx.set_xlabel('porosity $\phi$')
+    bx.set_ylabel('K Dry (Pa)')
+    #axis([0.0, 0.4, -10, 4*1e10])
+    #ylim(0,4*1e10)
+    ylim(1e9,1.5e10) 
+    xlim(0,0.5) 
+    #bx.set_xticklabels([])
+    plot(self._phi[:],self._kdry_l[pref,:],c='b')
+    plot(self._phi[:],self._kdry_c[:],c='b')
+    #plot(self._phi[:],self._kdryConstant[3,:],c='b')
+    plot(self._phi[:],self._kdryConstant[5,:],c='r')
+    plot(self._phi[:],self._kdryConstant[7,:],c='b')
+    plot(self._phi[:],self._kdryConstant[9,:],c='b')
+
+    n = len(depth)
+    for i in range(n):
+      for j in range(len(colors)):
+        if facies[i]==1 :
+          if facies[i] == colors[j]:
+            c=cm.hsv((j+1)/float(len(colors)),1)
+            p=bx.scatter(phit[i],kdry_well[i],color=c)
+
+    fig.savefig('facies_modelingTB.pdf')
+    
+
+    
+    #---- Paluxy-Tusc modeling---------
+    '''
+    fig = figure(10, figsize=(7, 6))
+    bx = plt.subplot(1,1,1)
+    bx.set_title('Quartz:85%, Clay:15%')
+    bx.set_xlabel('porosity $\phi$')
+    bx.set_ylabel('K Dry (Pa)')
+    #axis([0.0, 0.4, -10, 4*1e10])
+    #ylim(0,4*1e10)
+    ylim(1e9,1.5e10) 
+    xlim(0,0.5) 
+    #bx.set_xticklabels([])
+    plot(self._phi[:],self._kdry_l[pref,:],c='b')
+    plot(self._phi[:],self._kdry_c[:],c='b')
+    #plot(self._phi[:],self._kdryConstant[3,:],c='b')
+    plot(self._phi[:],self._kdryConstant[10,:],c='b')
+    plot(self._phi[:],self._kdryConstant[6,:],c='r')
+    plot(self._phi[:],self._kdryConstant[8,:],c='b')
+
+    n = len(depth)
+    for i in range(n):
+      for j in range(len(colors)):
+        if facies[i]>=20 and facies[i]<=40 :
+          if facies[i] == colors[j]:
+            c=cm.hsv((j+1)/float(len(colors)),1)
+            p=bx.scatter(phit[i],kdry_well[i],color=c)
+        if facies[i]>=2 and facies[i]<=3 :
+          if facies[i] == colors[j]:
+            c=cm.hsv((j+1)/float(len(colors)),1)
+            p=bx.scatter(phit[i],kdry_well[i],color=c)
+
+    fig.savefig('facies_modelingP.pdf')
+    '''
 
   def plottemplate(self,par,pref,vpvs,ip,so):
-    fig = figure(8, figsize=(10, 8))
+    fig = figure(10, figsize=(10, 8))
     bx = plt.subplot(1,1,1)
     bx.set_xlabel('Ip')
     bx.set_ylabel('vp/vs')
@@ -178,7 +459,7 @@ class Plot:
     p.set_clim([0,0.3])
 
   def plot3dtemplate(self,par,pref,vpvs,ip,so,p,phi):
-    fig = figure(9, figsize=(10, 8))
+    fig = figure(11, figsize=(10, 8))
     #bx = plt.subplot(1,1,1)
     bx = fig.add_subplot(111, projection='3d')
     bx.set_xlabel('Ip')
@@ -225,7 +506,7 @@ class Plot:
     n1 = len(phi)
     n2 = len(co2)
     n3 = len(p)
-    fig = figure(10, figsize=(10, 8))
+    fig = figure(12, figsize=(10, 8))
     bx = plt.subplot(1,1,1)
     bx.set_xlabel('Difference in P (Pa)')
     bx.set_ylabel('Parameters')

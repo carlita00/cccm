@@ -22,13 +22,15 @@ import matplotlib.pyplot as plt
   
 k = [37.0e09,25.0e09,123.0e09]    #Pa  
 g = [44.e09,9.4e09,51.0e09]       #Pa
-#f = [.9,.09,.01] # Mineral fraccion
-f = [.8,.19,.01] # Mineral fraccion
-#f = [.65,.15,.2] # Mineral fraccion
+f = [.97,.03,.0] # Mineral fraccion
+#f = [.85,.15,.00] # Mineral Paluxy
+#f = [1,.0,0.0] # Mineral fraccion
+#f = [.7,.20,.10] # Mineral fraccion Tusc Fluvia;
+
 rho = [2650.0, 2550.0,3960.0]
 phiC = 0.4001 # critical porosity
 n = 20.0 - 34.0 *phiC +14.0*np.power(phiC,2) 
-c = 1 #1.3
+c = 1.3 #TusF 1 #Tusc Beach 1.5!! # Paluxy 1.2
 n = n*c
 print(n)
 
@@ -74,7 +76,7 @@ gdry_c = gm.gdryCement(c,phi,gc,kdry_c)
 
 #---------K Sat-- Gassmman -------
 rhos  =  2632 #make sure of this value!!!!!! and check the pressure !!!
-pref  = 9 # CHECKKK
+pref  = 10 # 9 # CHECKKK
 gassman = Gassman.Gassman(ks,rhos,phi)
 co2 = np.arange(0.0,1,0.1)
 n1 = len(phi)
@@ -107,10 +109,15 @@ print(p)
 for i in range(nconstant):
   print(i,k_per[i],g_per[i])
 #------------Plot-----------------
+#dmin = 3170 #3207
+#dmax = 3440 #3440 #3440
+#dmin2 = 3114 #3186
+#dmax2 = 3301 #3440 #3301
+
 dmin = 3207
-dmax = 3440
+dmax = 3440 #3440 #3440
 dmin2 = 3186
-dmax2 = 3301
+dmax2 = 3301 #3440 #3301
 
 fileName1 = './Logs/140.txt'
 fileName2 = './Logs/159.txt'
@@ -124,8 +131,8 @@ fileName2 = './Logs/159.txt'
 #log159out = {}
 #--- Reading the logs files-------
 
-slowp1,slows1,dtc1,dts1,rhoD1,so1,phit1,facies1,depth1,gr1,bvi1,cbw1,vsh1 = Logs.logread140(fileName1)
-slowp2,slows2,dtc2,dts2,rhoD2,so2,phit2,facies2,depth2,gr2,bvi2,cbw2,somril = Logs.logread159(fileName2)
+slowp1,slows1,dtc1,dts1,rhoD1,so1,phit1,facies1,depth1,gr1,bvi1,cbw1,vsh1,cal1 = Logs.logread140(fileName1)
+slowp2,slows2,dtc2,dts2,rhoD2,so2,phit2,facies2,depth2,gr2,bvi2,cbw2,somril,cal2 = Logs.logread159(fileName2)
 
 
 #--- Init a class each log will have one ------
@@ -133,47 +140,60 @@ log1 = Logs.Logs(fileName1,dmin,dmax,rho)
 log2 = Logs.Logs(fileName2,dmin2,dmax2,rho)
 
 #---- Calculating parameters--------
-kSatC1,kSatD1,muDryC1,muDryD1,muSatC1,muSatD1,phit1,so1,vsh1,facies1,depth1,gr1,vpvs1,ip1 = \
-log1.parameters(slowp1,slows1,dtc1,dts1,rhoD1,so1,phit1,facies1,depth1,gr1,bvi1,cbw1,vsh1)
+kSatC1,kSatD1,muDryC1,muDryD1,muSatC1,muSatD1,phit1,\
+so1,vsh1,facies1,depth1,gr1,vpvs1,ip1,rhoCal1,rhoDD1,vp1,vpCal1,kDry1 = \
+log1.parameters(slowp1,slows1,dtc1,dts1,rhoD1,so1,phit1,facies1,depth1,gr1,bvi1,cbw1,cal1)
 
-kSatC2,kSatD2,muDryC2,muDryD2,muSatC2,muSatD2,phit2,so2,vsh2,facies2,depth2,gr2,vpvs2,ip2 = \
-log2.parameters(slowp2,slows2,dtc2,dts2,rhoD2,so2,phit2,facies2,depth2,gr2,bvi2,cbw2,gr2)
+kSatC2,kSatD2,muDryC2,muDryD2,muSatC2,muSatD2,phit2,\
+so2,vsh2,facies2,depth2,gr2,vpvs2,ip2,rhoCal2,rhoDD2,vp2,vpCal2,kDry2 = \
+log2.parameters(slowp2,slows2,dtc2,dts2,rhoD2,so2,phit2,facies2,depth2,gr2,bvi2,cbw2,cal2)
 
 
 #print len(a)
 #---- Plotting the logs ------------
-log1.plot("140-1")
+#log1.plot("140-1")
 #log2.plot("159-2")
 
 #------Merge the logs----------------
 
 
-depth,ksat,mudry,phit,so,gr,facies,vsh,vpvs,ip = Logs.mergelogs(kSatD2,muDryD2,phit2, \
-                                                       so2,gr2,facies2,vsh2,vpvs2,ip2,depth2,kSatD1, \
-                                                       muDryD1,phit1,so1,gr1,facies1,vsh1,vpvs1,ip1,depth1)
+depth,ksat,kdry,mudry,phit,so,gr,facies,vsh,vpvs,ip = Logs.mergelogs(kSatD2,muDryD2,phit2, \
+                                                       so2,gr2,facies2,vsh2,vpvs2,ip2,depth2,cal2,rhoDD2,kDry2,kSatD1, \
+                                                       muDryD1,phit1,so1,gr1,facies1,vsh1,vpvs1,ip1,depth1,cal1,rhoDD1,kDry1)
+
+
+#Logs.plotqc(kSatD2,muDryD2,phit2,so2,gr2,facies2,vsh2,vpvs2,ip2,depth2,cal2,rhoDD2,rhoCal2,vp2,vpCal2, \
+#            kSatD1,muDryD1,phit1,so1,gr1,facies1,vsh1,vpvs1,ip1,depth1,cal1,rhoDD1,rhoCal1,vp1,vpCal1)
+
+
 #print(depth)  #n=len(kSatD2)+len(kSatD)
 print(len(depth1),len(depth2),len(depth)) 
 
 
 plots = Plot.Plot(kdry_l,gdry_l,kdry_c,gdry_c,kdryConstant,gdryConstant,phi,ks)
-#plots.plotDry(kbri[pref],koil[pref],pref,kSatD2,muDryD2,phit2,so2,gr2,facies2,vsh2)
-plots.plotDry(kbri[pref],koil[pref],pref,kSatD1,muDryD1,phit1,so1,gr1,facies1,vsh1)
+#plots.plotDry(kbri[pref],koil[pref],pref,kSatD2,mudryD2,phit2,so2,gr2,facies2,vsh2,kDry2)
+#plots.plotDry(kbri[pref],koil[pref],pref,kSatD1,muDryD1,phit1,so1,gr1,facies1,vsh1,kDry1)
+plots.plotDry(kbri[pref],koil[pref],pref,ksat,mudry,phit,so,gr,facies,vsh,kdry)
 
-#plots.plotDry(kbri[pref],koil[pref],pref,ksat,mudry,phit,so,gr,facies,vsh)
-kdry_well = plots.plotDryratio(kbri[pref],koil[pref],kSatD1,muDryD1,phit1,so1,gr1,facies1,depth1,dmin,dmax,vsh1)
+plots.plotDryratio('140-1',kbri[pref],koil[pref],kSatD1,muDryD1,kDry1,phit1,so1,gr1,facies1,depth1,dmin,dmax,vsh1)
+#plots.plotDryratio('159-2',kbri[pref],koil[pref],kSatD2,muDryD2,kDry2,phit2,somril/100,gr2,facies2,depth2,dmin2,dmax2,vsh2)
+
 
 #kdry_well = plots.plotDryratio(kbri[pref],koil[pref],kSatD2,muDryD2,phit2,so2,gr2,facies2,depth2,dmin2,dmax2,vsh2)
-#plots.plotfacies(kSatD2,muDryD2,phit2,vsh2,facies2,depth2,kdry_well,pref)
+
+#plots.plotfacies(kSatD2,muDryD2,phit2,vsh2,facies2,depth2,kDry2,pref)
 #kdry_well = plots.plotDryratio(kbri[pref],koil[pref],ksat,mudry,phit,so,gr,facies,depth,dmin2,dmax2,vsh)
 #plots.plotfacies(kSatD2,muDryD2,phit2,vsh2,facies2,depth2,kdry_well,pref)
-plots.plotfacies(kSatD1,muDryD1,phit1,vsh1,facies1,depth1,kdry_well,pref)
+#plots.plotfacies(kSatD1,muSatD1,phit1,vsh1,facies1,depth1,kDry1,pref)
 
-#plots.plotfacies(ksat,mudry,phit,vsh,facies,depth,kdry_well,pref)
+plots.plotfacies(ksat,mudry,phit,vsh,facies,depth,kdry,pref)
 
 #----- Calculating elastic parameters ---------
 
 #parameters1 = ['vpBrineCo2','vsBrineCo2','ipBrineCo2','isBrineCo2','vpvsBrineCo2', \
 #              'vpBrineOil','vsBrineOil','ipBrineOil','isBrineOil','vpvsBrineOil', ]
+
+'''
 parameters = ['vpBrine','vsBrine','ipBrine','isBrine','rtBrine']
 fluid = ['Co2','Oil'] 
 differences = ['P','S','B']
@@ -194,8 +214,9 @@ for i1 in range(m1):
     i += 1
 
 static = par.calculation(static_par) #dictionary static parameters
-
+'''
 #---Plotting static template---------------
+'''
 plots.plottemplate(static,pref,vpvs,ip,so)
 plots.plot3dtemplate(static,pref,vpvs,ip,so,p,phi)
 
@@ -219,7 +240,7 @@ for i3 in range(m3):
     dynamic_par[i] = string2+string3
     i += 1
 print(dynamic_par)
-
+'''
 
 #---Plotting dynamic template--------------
 
