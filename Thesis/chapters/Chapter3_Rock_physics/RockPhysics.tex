@@ -1,0 +1,99 @@
+\chapter{Dynamic rock physics modeling}
+
+The geological processes that affects siliciclastic sediments and rock porosities have been 
+studied by many authors (references). Trends in velocity 
+porosity relations can indicate diagenetic or depositional processes that 
+give information about the rock fabric \citep{ref:avseth}. \ref{fig:processes} shows 
+a summary of the processes that controls porosity on the clastic rocks. Steep slopes
+indicates stiffness, compaction and cementation and flatter slopes corresponds
+to sorting and clay content. Therefore, evaluating the data in the rock physics framework
+helps to understand the reservoir nature.
+ 
+\csmlongfigure[h!]{processes}{./chapters/Chapter3_Rock_physics/Figures/processes}{4.0in}{
+Depositional and diagenetic processes that affects sandstones porosity. Taken from
+\cite{ref:avseth} }
+
+In this study I use rock physics modeling as a tool to integrate  core, petrophysical, 
+XRD, facies data and 4D joint seismic inversion to make a quantitative
+interpretation of Delhi Field reservoir changes due to CO$_2$ injection.
+For the static rock physics modeling I follow the workflow suggested by \cite{ref:avseth}. This 
+consist on a hybrid  approach that uses theoretic, heuristic and empirical
+models built for high porosity sandstone reservoirs. The used models are best known as friable
+sand, contact cement and constant cement models. 
+
+For the dynamic rock physics modeling I follow the workflow suggested in \cite{ref:dynamic} that
+relates relative changes in $V_{p}/V{s}$ ratio and acoustic impedance to pore pressure
+and fluid changes. Then, I extend this qualitative analysis into quantitative calculating
+pore pressure maps for each facies. The pore pressure calculation is important property for maximize
+hydrocarbon recovery, for reservoir management and for drilling safety.
+
+The detail workflow of the modeling is shown in \ref{fig:workflow}.
+The subsection of the chapters corresponds to the colors of the workflow
+
+\ref{fig:workflow}
+\csmlongfigure[h!]{workflow}{./chapters/Chapter3_Rock_physics/Figures/workflow2}{5.0in}{logs}
+
+
+\subsection{Rock physics models}
+bla
+
+\subsection{Model calibration}
+bla
+bla \ref{fig:theoryModel}
+\csmlongfigure[h!]{theoryModel}{./chapters/Chapter3_Rock_physics/Figures/theoryModel}{5in}{logs}
+
+
+bla \ref{fig:model_calibration}
+\csmlongfigure[h!]{model_calibration}{./chapters/Chapter3_Rock_physics/Figures/model_calibration}{5in}{logs}
+
+bla \ref{fig:model_faciesQ85}
+\csmlongfigure[h!]{model_faciesQ85}{./chapters/Chapter3_Rock_physics/Figures/model_faciesQ85}{7in}{logs}
+
+bla \ref{fig:thinTW}
+\csmlongfigure[h!]{thinTW}{./chapters/Chapter3_Rock_physics/Figures/thinTW}{5in}{logs}
+
+bla \ref{fig:facies_modelingP}
+\csmlongfigure[h!]{facies_modelingP}{./chapters/Chapter3_Rock_physics/Figures/facies_modelingP}{5in}{logs}
+
+bla \ref{fig:thinTB}
+\csmlongfigure[h!]{thinTB}{./chapters/Chapter3_Rock_physics/Figures/thinTB}{5in}{logs}
+
+bla \ref{fig:facies_modelingTB}
+\csmlongfigure[h!]{facies_modelingTB}{./chapters/Chapter3_Rock_physics/Figures/facies_modelingTB}{5in}{logs}
+
+bla \ref{fig:thinTF}
+\csmlongfigure[h!]{thinTF}{./chapters/Chapter3_Rock_physics/Figures/thinTF}{5in}{logs}
+
+bla \ref{fig:facies_modelingTF}
+\csmlongfigure[h!]{facies_modelingTF}{./chapters/Chapter3_Rock_physics/Figures/facies_modelingTF}{5in}{logs}
+
+\newpage
+\subsection{Static Rock Physics template}
+
+bla \ref{fig:staticModelP}
+\csmlongfigure[h!]{staticModelP}{./chapters/Chapter3_Rock_physics/Figures/staticModelP}{7in}{logs}
+
+
+
+\ref{tab:modeling}
+\begin{table}[h]
+\caption{ Modeling parameters \label{tab:modeling}}
+\begin{center}
+\begin{tabular}{ | l | l | l|  l | l | l|}
+\hline
+  Facies            &  n & Quartz & Clay & Siderite & P$eff$ (Mpa)  \\
+\hline
+Tusc Fluvial        &                 8.64 &   0.7  &  0.2 &     0.1  &  12.5  \\
+\hline
+Tusc Beach/Barrier  & 12.96                &   0.97  &  0.03 &     0.0  &  12.5  \\
+\hline
+Tusc Washover/Transitional and Paluxy  & 10.36    &   0.85  &  0.15 &     0.0  &  12.5  \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+
+%\subsubsection{Static rock physics template}
+%\subsubsection{Dynamic rock physics template}

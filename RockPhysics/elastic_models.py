@@ -1314,7 +1314,7 @@ norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
 
 p = plt.pcolormesh(xi,yi,zi,cmap=cmap)
 #ax = plt.scatter(x,y,c=vpvs_inversion)
-cbar =plt.colorbar(p)
+plt.colorbar(p, cmap=cmap, norm=norm, boundaries=bounds, ticks=[0, 1, 2,3,4])
 p = plt.axis([min(x), max(x), min(y), max(y)])
 
 cbar.set_clim(0,4)

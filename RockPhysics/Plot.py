@@ -6,6 +6,8 @@ from pylab import *
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.mlab as mll
+
 #---------Plotting----------------
 class Plot:
   def __init__(self,kdry_l,gdry_l,kdry_c,gdry_c,kdryConstant,gdryConstant,phi,ks):
@@ -22,10 +24,9 @@ class Plot:
   def plotDry(self,kbri,koil,pref,ksat_well,gdry,phit,SO,gr,facies,vsh,kdry_well):
 
 
-    plt.rcParams.update({'font.size': 16,'legend.fontsize': 14})
+    plt.rcParams.update({'font.size': 14,'legend.fontsize': 14})
 
-    #phid,phit,ksat_well,vsh_iw,g,SO,depth,well,facies,sid = np.loadtxt(fileName,unpack=True)
-    #kdry_well = Gassman.kdry(ksat_well,phit,SO,vsh,kbri,koil)
+    kdry = Gassman.kdry(ksat_well,phit,SO,vsh,kbri,koil)
 
     n1 = len(ksat_well)
     dry_ratio = np.zeros(n1)
@@ -49,7 +50,7 @@ class Plot:
     ylim(1.e9,1.5e10) 
     xlim(0,0.5) 
     p=ax.scatter(phit,kdry_well,c=vsh)
-    #p=ax.scatter(phit,ksat_well,c='r')
+    #p=ax.scatter(phit,kdry,c='r')
     p.set_clim([0,.5])
     cbar= plt.colorbar(p)
     cbar.set_label('Vsh')
@@ -65,6 +66,8 @@ class Plot:
     plot(self._phi[:],self._gdryConstant[9,:],'b')
     ylim(1e9,1.5e10) 
     xlim(0,0.5) 
+
+
 
     p=bx.scatter(phit,gdry,c=vsh)
     cbar= plt.colorbar(p)
@@ -94,7 +97,7 @@ class Plot:
 
   def plotDryratio(self,title,kbri,koil,ksat_well,gdry,kdry_well,phit,SO,gr,facies,depth,dmin,dmax,vsh):
     #phid,phit,ksat_well,vsh_iw,g,SO,depth,well,facies,sid = np.loadtxt(fileName,unpack=True)
-    #kdry_well= Gassman.kdry(ksat_well,phit,SO,vsh,kbri,koil)
+    kdry= Gassman.kdry(ksat_well,phit,SO,vsh,kbri,koil)
     n1 = len(ksat_well)
     dry_ratio = np.zeros(n1)
     for i in range(n1):  
@@ -105,10 +108,10 @@ class Plot:
 
 
 
-    fig = figure(7, figsize=(16, 8))
+    fig = figure(7, figsize=(8, 6))
     fig.suptitle(title)
 
-    bx = plt.subplot(1,5,1)
+    bx = plt.subplot(1,3,1)
     bx.set_xlabel('Gamma Ray')
     bx.set_ylabel('Depth (feet)')
     bx.xaxis.set_major_locator(MaxNLocator(4))
@@ -137,7 +140,7 @@ class Plot:
     bx.set_xlim(0,160)
 
 
-    bx = plt.subplot(1,5,2)
+    bx = plt.subplot(1,3,2)
     bx.set_xlabel('Vp/Vs dry ratio')
     #bx.set_ylabel('Depth (ft)')
     #p=bx.scatter(dry_ratio,depth,c=SO,edgecolor='none')
@@ -149,7 +152,8 @@ class Plot:
     ylim(dmax,dmin) 
     bx.set_yticklabels([])
 
-    xlim(1.4,1.8) 
+    xlim(1.4,1.65) 
+
     '''
     bx = plt.subplot(1,5,3)
     bx.set_xlabel('Oil saturation')
@@ -165,28 +169,41 @@ class Plot:
     ylim(dmax,dmin) 
     xlim(0,0.5) 
     '''
-    bx = plt.subplot(1,5,4)
-    bx.set_xlabel('Kdry (Pa)')
+
+    kbri=2.8e9
+    koil=0.829e9
+    rhobri=1030
+    rhooil=0.66e3
+    #kgassman(kdry_well,phit,SO,vsh,kbri,koil,rhobri,rhooil)
+    ksatR,rhosatR,soR,kfluid=Gassman.kgassman(kdry_well,phit,SO,vsh,kbri,koil,rhobri,rhooil)
+
+
+
+    bx = plt.subplot(1,3,3)
+    bx.set_xlabel('Kdry(GPa)')
     #bx.set_ylabel('Depth (ft)')
     #p=bx.scatter(dry_ratio,depth,c=SO,edgecolor='none')
-    p1=bx.plot(kdry_well,depth,c='k')
+    bx.plot(kdry_well/1e9,depth,c='k')
+    bx.plot(kdry/1e9,depth,c='r',label='kdry obs')
+
+    bx.set_xlim(0.0,17.0) 
+
+    #bx2 = bx.twiny()
+    #bx2.plot(kfluid/1e9,depth,c='b',label='kfluid')
+    #plt.legend()
+    #bx2.set_xlabel('Kfluid(GPa)',color='b')
     bx.set_yticklabels([])
 
     bx.xaxis.set_major_locator(MaxNLocator(4))
     #p.set_clim([0,0.5])
     #cbar= plt.colorbar(p)
     #cbar.set_label('Oil saturation')
-    ylim(dmax,dmin) 
-    bx.set_xlim(1e9 ,2.e10) 
+    bx.set_ylim(dmax,dmin) 
+    #bx2.set_ylim(dmax,dmin) 
+    fig.savefig(title+'QC2.pdf')
 
-    kbri=2.44e9
-    koil=0.04e9
-    rhobri=990
-    rhooil=0.65e3
-    #kgassman(kdry_well,phit,SO,vsh,kbri,koil,rhobri,rhooil)
-    ksatR,rhosatR,soR=Gassman.kgassman(kdry_well,phit,SO,vsh,kbri,koil,rhobri,rhooil)
-
-
+    #bx2.set_xlim(0.0 ,2.5) 
+    '''
     bx = plt.subplot(1,5,3)
     bx.set_xlabel('Oil saturation')
     #bx.set_ylabel('Depth (ft)')
@@ -201,7 +218,8 @@ class Plot:
 
     ylim(dmax,dmin) 
     xlim(0,0.5) 
-
+    '''
+    '''
     bx = plt.subplot(1,5,5)
     bx.set_xlabel('Ksat (Pa)')
     #bx.set_ylabel('Depth (ft)')
@@ -212,6 +230,7 @@ class Plot:
     ylim(dmax,dmin) 
     bx.set_yticklabels([])
     plt.legend()
+    ''
     fig.savefig(title+'QC2.pdf')
 
 
@@ -232,7 +251,7 @@ class Plot:
     ylim(dmax,dmin) 
     xlim(-0.1,0.5) 
 
-
+    fig.suptitle(title)
     bx = plt.subplot(1,2,2)
     bx.set_xlabel('Ksat (Pa)')
     #bx.set_ylabel('Depth (ft)')
@@ -244,9 +263,9 @@ class Plot:
     bx.set_yticklabels([])
     plt.legend()
     fig.savefig(title+'fixed.pdf')
+    '''
 
-
-  def plotfacies(self,ksat_well,gdry,phit,vsh_iw,facies,depth,kdry_well,pref):
+  def plotfacies(self,ksat_well,gdry,phit,vsh_iw,facies,depth,kdry_well,pref,so,kbri,koil):
     plt.rcParams.update({'font.size': 16,'legend.fontsize': 14})
 
     fig = figure(9, figsize=(7, 11))
@@ -258,6 +277,7 @@ class Plot:
     ylim(1e9,1.5e10) 
     xlim(0,0.5) 
     bx.set_xticklabels([])
+    #kdry_well = Gassman.kdry(ksat_well,phit,so,vsh_iw,kbri,koil)
 
     colors=[1.0,2.,3.,4.,5.,6.,7.,8.,9.,10.0,20.0,30.0,40.0,50.0,60.0,70.0,80.0,90.0]
     n = len(depth)
@@ -369,7 +389,7 @@ class Plot:
     
 
     #---- Tuscaloosa beach modeling---------
-    
+    '''
     fig = figure(10, figsize=(7, 6))
     bx = plt.subplot(1,1,1)
     bx.set_title('Quartz:97%, Clay:3%')
@@ -396,11 +416,11 @@ class Plot:
             p=bx.scatter(phit[i],kdry_well[i],color=c)
 
     fig.savefig('facies_modelingTB.pdf')
-    
+    '''
 
     
     #---- Paluxy-Tusc modeling---------
-    '''
+    
     fig = figure(10, figsize=(7, 6))
     bx = plt.subplot(1,1,1)
     bx.set_title('Quartz:85%, Clay:15%')
@@ -411,11 +431,11 @@ class Plot:
     ylim(1e9,1.5e10) 
     xlim(0,0.5) 
     #bx.set_xticklabels([])
-    plot(self._phi[:],self._kdry_l[pref,:],c='b')
+    plot(self._phi[:],self._kdry_l[pref,:],c='r')
     plot(self._phi[:],self._kdry_c[:],c='b')
     #plot(self._phi[:],self._kdryConstant[3,:],c='b')
     plot(self._phi[:],self._kdryConstant[10,:],c='b')
-    plot(self._phi[:],self._kdryConstant[6,:],c='r')
+    plot(self._phi[:],self._kdryConstant[6,:],c='b')
     plot(self._phi[:],self._kdryConstant[8,:],c='b')
 
     n = len(depth)
@@ -431,35 +451,78 @@ class Plot:
             p=bx.scatter(phit[i],kdry_well[i],color=c)
 
     fig.savefig('facies_modelingP.pdf')
-    '''
+    
 
-  def plottemplate(self,par,pref,vpvs,ip,so):
-    fig = figure(10, figsize=(10, 8))
+  def plottemplate(self,par,pref,vs,so,gdry,phit,vsh,kbri,koil,rhobri,rhooil,facies):
+    fig = figure(11, figsize=(10, 6))
     bx = plt.subplot(1,1,1)
-    bx.set_xlabel('Ip')
-    bx.set_ylabel('vp/vs')
+    #bx.set_title('Paluxy and Tuscaloosa washover/transitioal facies')
+    #bx.set_title('Tuscaloosa fluvial facies')
+
+    bx.set_xlabel('Acoustic Impedance (kg/m$^2$s)*1e7')
+    bx.set_ylabel(r'$V_{p}/V_{s}$')
     a= par['rtBrineCo2']
     b= par['ipBrineCo2']
     c= par['rtBrineOil']
     d= par['ipBrineOil']
+    n = len(gdry)
+    lambd = np.zeros(n) 
+    vp    = np.zeros(n)
+    vpvs  = np.zeros(n)
+    ip    = np.zeros(n)
+    ksatR,rhosatR,soR,kfluid=Gassman.kgassman(gdry,phit,so,vsh,kbri,koil,rhobri,rhooil)
 
 
-    p=bx.scatter(b[pref][0][:],a[pref][0][:],c='b')
-    p=bx.scatter(b[pref][9][:],a[pref][9][:],c='r')
-    p=bx.scatter(d[pref][3][:],c[pref][3][:],c='g')
-    #p=bx.scatter(d[pref][9][:],c[pref][9][:],c=so)
-    p=bx.scatter(ip,vpvs,c=so)
+    for i in range(len(gdry)):
+      lambd[i]= ksatR[i]-2.0*gdry[i]/3.0
+      vp[i]=np.power((lambd[i]+2*gdry[i])/rhosatR[i],0.5)
+      vpvs[i]=vp[i]/vs[i]
+      ip[i] = vp[i]*rhosatR[i]
 
+    '''
+    bx.scatter(b[pref][0][:]/1e7,a[pref][0][:],c='b',edgecolor='none')
+    bx.scatter(b[pref][9][:]/1e7,a[pref][9][:],c='r',edgecolor='none')
+    bx.scatter(d[pref][9][:]/1e7,c[pref][9][:],c='g',edgecolor='none')
+    #bx.scatter(d[pref][4][:]/1e7,c[pref][4][:],c='g',edgecolor='none')
+    '''
+    #p=bx.scatter(d[pref][9][:],c[pref][9][:],c=vsh)
+    p=bx.scatter(ip/1e7,vpvs,c=vsh,edgecolor='none')
+    
+    ipplot = np.zeros(n)
+    vpvsplot =np.zeros(n)
+    soplot =np.zeros(n)
+    '''
+    for i in range(n):
+      if facies[i]>=20 and facies[i]<=40 :
+        vpvsplot[i]=vpvs[i]
+        ipplot[i] = ip[i]
+        soplot[i] = so[i]
+      if facies[i]>=2 and facies[i]<=3 :
+        vpvsplot[i]=vpvs[i]
+        ipplot[i] = ip[i]
+        soplot[i] = so[i]
+    '''
+    '''
+    for i in range(n):
+      if facies[i]==4 :
+        vpvsplot[i]=vpvs[i]
+        ipplot[i] = ip[i]
+        soplot[i] = so[i]
 
+    p=bx.scatter(ipplot/1e7,vpvsplot,c=soplot)
+    '''
     cbar= plt.colorbar(p)
-    cbar.set_label('Oil Saturation')
+    cbar.set_label('Vsh')
     #plot(self._phi[:],self._gdry_c[:],'b')
-    ylim(1,3) 
-    #xlim(0,0.5) 
-    p.set_clim([0,0.3])
+    ylim(1.4,2.6) 
+    xlim(0.5,0.8) 
+    p.set_clim([0,0.5])
+    #fig.savefig('StaticModelingP.pdf')
+    fig.savefig('StaticModelingTF.pdf')
+
 
   def plot3dtemplate(self,par,pref,vpvs,ip,so,p,phi):
-    fig = figure(11, figsize=(10, 8))
+    fig = figure(12, figsize=(10, 8))
     #bx = plt.subplot(1,1,1)
     bx = fig.add_subplot(111, projection='3d')
     bx.set_xlabel('Ip')
@@ -506,7 +569,7 @@ class Plot:
     n1 = len(phi)
     n2 = len(co2)
     n3 = len(p)
-    fig = figure(12, figsize=(10, 8))
+    fig = figure(13, figsize=(10, 8))
     bx = plt.subplot(1,1,1)
     bx.set_xlabel('Difference in P (Pa)')
     bx.set_ylabel('Parameters')
@@ -527,7 +590,107 @@ class Plot:
             bx.scatter(d[i1],c[i1][0][320] , c=colors[i])
             #i=i+1
 
-  
+      fig.savefig('parchangeP.pdf')
+
+  def plotdynamictemplate(self,g3,g4,g5,g6,vpvsfile,ipfile,n3,n2,pref,p):
+
+    xline,iline,x,y,vpvs_inversion = np.loadtxt(vpvsfile,unpack=True)
+    xline,iline,x,y,zp_inversion = np.loadtxt(ipfile,unpack=True)
+    #xwell,ywell = np.loadtxt('./normdiff_to_plot/injectors',unpack=True)
+    #h = diff['P']
+    fig =  figure(31, figsize=(6, 5))
+    ax = plt.subplot(1,1,1)
+
+    N_inv = zp_inversion.size
+    #N_well = xwell.size
+
+    discrimination = np.zeros(N_inv)
+
+
+    for i in range(N_inv):
+      if zp_inversion[i] <=0.0 and vpvs_inversion[i] >= 0.0:
+        ax.scatter(zp_inversion[i]*100,vpvs_inversion[i]*100 ,c= 'Gold',edgecolor='none')
+        discrimination[i]= 0.5
+      elif zp_inversion[i] <=0.0 and vpvs_inversion[i] <= 0.0:
+        ax.scatter(zp_inversion[i]*100,vpvs_inversion[i]*100 ,c= 'Crimson',edgecolor='none')
+        discrimination[i]= 1.5
+
+      elif zp_inversion[i] >=0.0 and vpvs_inversion[i] >= 0.0:
+        ax.scatter(zp_inversion[i]*100,vpvs_inversion[i]*100 ,c= 'RoyalBlue',edgecolor='none')
+        discrimination[i]= 2.5
+
+      elif zp_inversion[i] >=0.0 and vpvs_inversion[i] <= 0.0:
+        ax.scatter(zp_inversion[i]*100,vpvs_inversion[i]*100 ,c= 'Indigo',edgecolor='none')
+        discrimination[i]= 3.5
+
+      else:
+        ax.scatter(zp_inversion[i]*100,vpvs_inversion[i]*100 ,c= 'w',edgecolor='none')
+        discrimination[i]= 4.5
+    
+    for i3 in range (n3):
+      for i2 in range(n2):
+        i=1
+        #ax.scatter(g4[i3][i2][320],g3[i3][i2][320] , c='k')
+        #ax.scatter(g6[i3][i2][320],g5[i3][i2][320] , c='r')
+        #ax.scatter(g4[pref][i2][320],g3[pref][i2][320] , c='r',marker='v',s=100)
+    pressure2interp = np.load('pressure_model_xzy.npy')
+
+
+
+    ####Gridding pressure###########################
+    # Size of regular grid
+    ny, nx = 100, 100
+
+    # Generate a regular grid to interpolate the data.
+    xi = np.linspace(-40, 20, nx)
+    yi = np.linspace(-25, 20, ny)
+    xi, yi = np.meshgrid(xi, yi)
+
+    # Interpolate using delaunay triangularization 
+    zi = mll.griddata(pressure2interp[:,0],pressure2interp[:,1],pressure2interp[:,2],xi,yi)
+
+    ax.set_xlabel('Impedance % difference')
+    ax.set_ylabel('Vp/Vs ratio % difference')
+    #ax.set_title('Saturation ')
+    p = plt.axis([-20, 20, -20, 20])
+
+    fig.savefig('point_inv.png', bbox_inches='tight')
+
+
+
+    # Size of regular grid
+    ny, nx = 500, 500
+
+    # Generate a regular grid to interpolate the data.
+    xi = np.linspace(min(x), max(x), nx)
+    yi = np.linspace(min(y), max(y), ny)
+    xi, yi = np.meshgrid(xi, yi)
+
+    # Interpolate using delaunay triangularization 
+    zi = mll.griddata(x,y,discrimination,xi,yi)
+
+    fig =  figure(30, figsize=(6, 5))
+
+    ax = plt.subplot(1,1,1)
+
+    cmap = mpl.colors.ListedColormap(['g','r','b','y'])
+    bounds=[0,1,2,3,4]
+    norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
+
+    p = plt.pcolormesh(xi,yi,zi,cmap=cmap)
+    #ax = plt.scatter(x,y,c=vpvs_inversion)
+    cbar=plt.colorbar(p, cmap=cmap, norm=norm, boundaries=bounds, ticks=[0, 1, 2,3,4])
+    p = plt.axis([min(x), max(x), min(y), max(y)])
+    bounds = np.arange(5)
+    vals = bounds[:-1]
+    cbar.set_ticks(vals + .5)
+    cbar.set_ticklabels(['P+', 'CO2+', 'Brine+', 'P-'])
+    cbar.set_clim(0,4)
+#for i in range(N_well):
+#    ax.scatter(xwell[i],ywell[i] ,c= 'k',marker='v',s=100)
+
+
+
 
 
 plt.show()

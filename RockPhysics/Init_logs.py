@@ -9,16 +9,16 @@ import matplotlib.pyplot as plt
 
 def logread140(fileName):
   depth,caliper,rhoC,depthP,bvi,bvw,cbw,phie,phit,gr,slowp,so,slows,vsh1,vsh2,boilD,dmrp, \
-  dtc,dts,rhoD,facies,phit = np.loadtxt(fileName,unpack=True)
-  return slowp,slows,dtc,dts,rhoD,so,phit,facies,depth,gr,bvi,cbw,vsh2,caliper
+  dtc,dts,rhoD,facies,phit,rS,rL = np.loadtxt(fileName,unpack=True)
+  return slowp,slows,dtc,dts,rhoD,so,phit,facies,depth,gr,bvi,cbw,vsh2,caliper,rS,rL
 
 def logread159(fileName):
   depth,caliper,rhoC,depthP,bvi,bvw,cbw,phie,phit,gr,slowp,so,somril,slows,s1,s2,cal2, \
-  dmroil,dmrp,dtc,dts,rhoD,t2k,facies = np.loadtxt(fileName,unpack=True)
-  return slowp,slows,dtc,dts,rhoD,so,phit,facies,depth,gr,bvi,cbw,somril,caliper
+  dmroil,dmrp,dtc,dts,rhoD,t2k,facies,ml,rs,rl = np.loadtxt(fileName,unpack=True)
+  return slowp,slows,dtc,dts,rhoD,so,phit,facies,depth,gr,bvi,cbw,somril,caliper,ml,rs,rl
 
-def mergelogs(kSatD2,muDryD2,phit2,so2,gr2,facies2,vsh2,vpvs2,ip2, \
-              depth2,cal2,rho2,kDry2,kSatD,muDryD,phit,so,gr1,facies1,vsh,vpvs,ip,depth1,cal,rho1,kDry1):
+def mergelogs(kSatD2,muDryD2,phit2,so2,gr2,facies2,vsh2,vpvs2,vs2,ip2, \
+              depth2,cal2,rho2,kDry2,kSatD,muDryD,phit,so,gr1,facies1,vsh,vpvs,vs1,ip,depth1,cal,rho1,kDry1):
   depth = np.append(depth1,depth2,axis=0) 
   ksat = np.append(kSatD,kSatD2,axis=0) 
   kdry = np.append(kDry1,kDry2,axis=0) 
@@ -30,13 +30,33 @@ def mergelogs(kSatD2,muDryD2,phit2,so2,gr2,facies2,vsh2,vpvs2,ip2, \
   vsh = np.append(vsh,vsh2,axis=0)
   vpvs = np.append(vpvs,vpvs2,axis=0)
   ip = np.append(ip,ip2,axis=0)
-  return depth,ksat,kdry,mudry,phit,so,gr,facies,vsh,vpvs,ip
+  vs = np.append(vs1,vs2,axis=0)
+  fig = figure(21, figsize=(10, 6))
+  bx = plt.subplot(1,1,1)
+  #bx.set_title('Paluxy and Tuscaloosa washover/transitioal facies')
+  #bx.set_title('Tuscaloosa fluvial facies')
+
+  bx.set_xlabel('Acoustic Impedance (kg/m$^2$s)*1e7')
+  bx.set_ylabel(r'$V_{p}/V_{s}$')
+
+  p=bx.scatter(ip/1e7,vpvs,c=so,edgecolor='none')
+    
+  cbar= plt.colorbar(p)
+  cbar.set_label('Oil saturation')
+  #plot(self._phi[:],self._gdry_c[:],'b')
+  ylim(1.4,2.6) 
+  xlim(0.4,1.1) 
+  p.set_clim([0,0.5])
+
+  fig.savefig('qc1.pdf')
+
+  return depth,ksat,kdry,mudry,phit,so,gr,facies,vsh,vpvs,vs,ip
 
   
 def plotqc(kSatD2,muDryD2,phit2,so2,gr2,facies2,vsh2,vpvs2,ip2,depth2,cal2,rho2,rhoCal2,vp2,vpCal2, \
-           kSatD ,muDryD ,phit ,so ,gr1,facies1,vsh ,vpvs ,ip ,depth1,cal1,rho1,rhoCal1,vp1,vpCal1):
+           kSatD ,muDryD ,phit ,so ,gr1,facies1,vsh ,vpvs ,ip ,depth1,cal1,rho1,rhoCal1,vp1,vpCal1,rS,rL,ml,rs,rl):
 
-  plt.rcParams.update({'font.size': 18,'legend.fontsize': 16})
+  plt.rcParams.update({'font.size': 18,'legend.fontsize': 14})
 
   #-----Figure 1 de la tesis------#
   fig = figure(1, figsize=(9, 8))
@@ -122,6 +142,59 @@ def plotqc(kSatD2,muDryD2,phit2,so2,gr2,facies2,vsh2,vpvs2,ip2,depth2,cal2,rho2,
   ltext = gca().get_legend().get_texts()
   #fig.savefig('gr_facies.pdf')
   fig.savefig('gr_facies.pdf',bbox_extra_artists=(legend,), bbox_inches='tight')
+
+  fig = figure(20, figsize=(8, 6))
+  fig.suptitle("159-2")
+  bx = plt.subplot(1,2,2)
+
+  bx.set_xlabel('Resistivity (ohm-m)')
+  #p=bx.plot(gr1,depth1,c='k')
+  bx.xaxis.set_major_locator(MaxNLocator(4))
+  bx.plot(rs,depth2,c='k',label='Res 10 inch')
+  bx.plot(rl,depth2,c='b',label=" Res 90 inch ")
+  bx.plot(ml,depth2,c='r',label=" Microlog")
+
+  bx.set_xlim(0.,20)
+  bx.set_yscale('log')  
+  bx.set_ylim(3439,3114) 
+
+  bx.set_yticklabels([])
+  bx.legend()
+
+ 
+
+
+  bx = plt.subplot(1,2,1)
+  bx.set_xlabel('Gamma Ray')
+  bx.set_ylabel('Depth (ft)')
+  p=bx.plot(gr2,depth2,c='k')
+  bx.xaxis.set_major_locator(MaxNLocator(4))
+  bx.set_ylim(3439,3114) 
+
+
+  colors=[1.0,2.,3.,4.,5.,6.,7.,8.,9.,10.0,20.0,30.0,40.0,50.0,60.0,70.0,80.0,90.0]
+  n = len(depth2)
+  for i in range(n):
+    if depth2[i]>3186 and depth2[i]<3301:
+      for j in range(len(colors)):
+        if facies2[i] == colors[j]:
+          if colors[j] >=5 and colors[j]<=9:
+            j = 4
+            c1='k'
+            p=bx.scatter(gr2[i],depth2[i],c=c1)
+          elif colors[j] >=50 and colors[j]<=90:
+            j = 13
+            c1='k'
+            p=bx.scatter(gr2[i],depth2[i],c=c1)
+          else:
+            c1=cm.hsv((j+1)/float(len(colors)),1)
+            p=bx.scatter(gr2[i],depth2[i],c=c1,edgecolor='none')
+  bx.set_xlim(0,200)
+
+
+
+  fig.savefig('invasion.pdf')
+
 class Logs:
   def __init__(self,fileName,dmin,dmax,rhos):
     self._fileName = fileName
@@ -169,8 +242,8 @@ class Logs:
     self._cbw = cbw
     self._cal = cal
 
-    maxGr = 200 #150#112 # max(gr)
-    minGr = 35
+    maxGr = 150 #150 # 170 #200 #150#112 # max(gr)
+    minGr = 35 #20 #35
     for i in range(n):
       #if self._
       self._vsh[i] = (self._gr[i]-minGr)/(maxGr-minGr) #self._bvi[i] + self._cbw[i] 
@@ -218,6 +291,10 @@ class Logs:
         self._muSatC[i] = self._vsC[i]*self._vsC[i]*self._rhoD[i]
         self._muSatD[i] = self._vsD[i]*self._vsD[i]*self._rhoD[i]
 
+
+        #self._muSatD[i] = self._vs_cal[i]*self._vs_cal[i]*self._rhoD[i]
+
+
         self._lambdaC[i] = self._vpC[i]*self._vpC[i]*self._rhoD[i]-2.0*self._muSatC[i]
         self._lambdaD[i] = self._vpD[i]*self._vpD[i]*self._rhoD[i]-2.0*self._muSatD[i]
         self._kSatC[i] = self._lambdaC[i]+2.0*self._muSatC[i]/3.0
@@ -242,11 +319,11 @@ class Logs:
         self._muDryD[i] = self._vsD[i]*self._vsD[i]*(1.0-self._phit[i])*self._rhodry[i]
         #print(self._vsh[i],self._vp_cal[i])
         kquartz = 37.0e09
-        kclay = 25.0e09
+        kclay = 25.0e9 #21.0e09
         gquartz = 44.0e09
         rhoquartz = 2650
         rhoclay = 2550
-        gclay = 9.4e09
+        gclay = 9.0e09
    
         mv = kquartz*(1.0-self._vsh[i])+kclay*self._vsh[i]
         mr = (1.0-self._vsh[i])/kquartz+self._vsh[i]/kclay
@@ -279,19 +356,19 @@ class Logs:
 
     return (self._kSatC, self._kSatD, self._muDryC, self._muDryD, self._muSatC, \
             self._muSatD, self._phit, self._so, self._vsh, self._facies, self._depth, \
-            self._gr,self._vpvs,self._ip,self._rho_cal,self._rhoD,self._vpD,self._vp_cal,self._kDryA)
+            self._gr,self._vpvs,self._vsD,self._ip,self._rho_cal,self._rhoD,self._vpD,self._vp_cal,self._kDryA)
 
 
   def plot(self,title):
 
-    #daxmin = 3125 #14 #3170
-    #daxmax = 3301 #3440
-    #dminfor = 3186 #3207
-    #dmaxfor = 3301 #3440
-    daxmin = 3170
-    daxmax = 3440
-    dminfor = 3207
-    dmaxfor = 3440
+    daxmin = 3186 #3125 #14 #3170
+    daxmax = 3301 #3440
+    dminfor = 3186 #3207
+    dmaxfor = 3301 #3440
+    #daxmin = 3207 #3170
+    #daxmax = 3440
+    #dminfor = 3207
+    #dmaxfor = 3440
 
     self._title = title   
     plt.rcParams.update({'font.size': 18,'legend.fontsize': 15})
@@ -337,14 +414,14 @@ class Logs:
     ax.set_yticklabels([])
 
     bx = plt.subplot(1,5,3)
-    bx.set_xlabel(r'$\rho$ (kg/m$^3$)')
+    bx.set_xlabel(r'$\rho$ (g/cm$^3$)')
     bx.xaxis.set_major_locator(MaxNLocator(4))
     bx.set_ylim(daxmax,daxmin ) 
     #bx.set_title('Well 159-2')
-    p2=plot(self._rhoD,self._depth,c='k',label=r'$\rho$ Obs')
-    p1=plot(self._rho_cal*1000,self._depth,c='r',label=r'$\rho$ Cal')
+    p2=plot(self._rhoD/1000,self._depth,c='k',label=r'$\rho$ Obs')
+    p1=plot(self._rho_cal,self._depth,c='r',label=r'$\rho$ Cal')
     plt.legend()
-    xlim(1800,2900)
+    xlim(1.8,2.9)
 
     bx.set_title(title)
 
@@ -352,42 +429,59 @@ class Logs:
     bx.set_yticklabels([])
 
     ax = plt.subplot(1,5,4)
-    ax.set_xlabel('P velocity (m/s)')
+    ax.set_xlabel(r'$V_{p}$ (km/s)')
     #ax.set_ylabel('depth')
-    p1=plot(self._vpD,self._depth, c ='k',label="Vp Obs")
-    p2=plot(self._vp_cal,self._depth,c='r',label="Vp Cal")
+    p1=plot(self._vpD/1000,self._depth, c ='k',label=r"$V_{p}$ Obs")
+    p2=plot(self._vp_cal/1000,self._depth,c='r',label=r"$V_{p}$ Cal")
     ylim(self._dmax,self._dmin) 
     ax.xaxis.set_major_locator(MaxNLocator(4))
-    xlim(1500,5000) 
+    xlim(1.5,4) 
     ax.set_ylim(daxmax,daxmin ) 
     #ax.set_title('Well 140-1')
     ax.set_yticklabels([])
     plt.legend()
     
     ax = plt.subplot(1,5,5)
-    ax.set_xlabel('S velocity (m/s)')
+    ax.set_xlabel(r'$V_{s}$ (km/s)')
     #ax.set_ylabel('depth')
-    p1=plot(self._vsD,self._depth,c='k',label="Vp Obs")
-    p2=plot(self._vs_cal,self._depth,c='r',label="Vs Cal")
+    p1=plot(self._vsC/1000,self._depth,c='k',label="Vs Obs")
+    p2=plot(self._vs_cal/1000,self._depth,c='r',label="Vs Cal")
     ylim(self._dmax,self._dmin) 
     ax.xaxis.set_major_locator(MaxNLocator(4))
-    xlim(100,2800) 
+    xlim(.1,2.8) 
     ax.set_ylim(daxmax,daxmin ) 
     ax.set_yticklabels([])
     plt.legend()
     fig.savefig(self._title+'_QC.pdf', bbox_inches='tight')
 
 
-    fig = figure(3, figsize=(11, 8))
+    fig = figure(3, figsize=(8, 6))
     fig.suptitle(title)
-    ax = plt.subplot(1,3,1)
-    ax.set_ylabel('depth')
- 
+
+    n = len(self._gr)
+    lambd = np.zeros(n) 
+    vp1    = np.zeros(n)
+    vp    = np.zeros(n)
+
+    kbri=2.81e9
+    koil=0.829e9
+    rhobri=1030
+    rhooil=0.69e3
+
+    ksatR,rhosatR,soR,kfluid=Gassman.kgassman(self._muSatC,self._phit,self._so,self._vsh,kbri,koil,rhobri,rhooil)
+
+
+    for i in range(n):
+      lambd[i]= ksatR[i]-2.0*self._muSatD[i]/3.0
+      vp1[i]=np.power((lambd[i]+2*self._muSatC[i])/rhosatR[i],0.5)
+
+    ax = plt.subplot(1,3,1)  
+    ax.set_ylabel('Depth (feet)')
+
     ax.set_xlabel('Gamma Ray')
     p=ax.plot(self._gr,self._depth,c='k')
     ax.xaxis.set_major_locator(MaxNLocator(4))
     ax.set_ylim(daxmax,daxmin ) 
-    #ax.set_title('Well 159-2')
 
     colors=[1.0,2.,3.,4.,5.,6.,7.,8.,9.,10.0,20.0,30.0,40.0,50.0,60.0,70.0,80.0,90.0]
     n = len(self._depth)
@@ -408,30 +502,28 @@ class Logs:
               p=ax.scatter(self._gr[i],self._depth[i],c=c1,edgecolor='none')
     ax.set_xlim(0,200)
 
-    ax = plt.subplot(1,3,2)
-    ax.set_xlabel('Vp/Vs ratio')
-    #ax.set_ylabel('depth')
-    p1=plot(self._vpD/self._vsD,self._depth,c='k')
-    ylim(self._dmax,self._dmin) 
-    ax.xaxis.set_major_locator(MaxNLocator(4))
-    xlim(1.4,2.3) 
-    ax.set_ylim(daxmax,daxmin ) 
+    bx = plt.subplot(1,3,2)  
+    bx.set_xlabel('Oil saturation')
+    bx.plot(self._so*100,self._depth,c='k')
+    bx.set_xlim(0,50)
+    bx.xaxis.set_major_locator(MaxNLocator(4))
+    bx.set_yticklabels([])
+    bx.set_ylim(daxmax,daxmin ) 
+
+    ax = plt.subplot(1,3,3)  
+
+    ax.set_xlabel('Vp (km/s)')
+    p1=ax.plot(self._vpD/1000,self._depth,c='k',label='Vp obs')
+    p2=ax.plot(vp1/1000,self._depth,c='r',label='Vp cal')
+    plt.legend()
     ax.set_yticklabels([])
 
-    ax = plt.subplot(1,3,3)
-    ax.set_xlabel('K dry (Pa)')
-    #ax.set_ylabel('depth')
-    p1=plot(self._kDryA,self._depth,c='k')
-    ylim(self._dmax,self._dmin) 
     ax.xaxis.set_major_locator(MaxNLocator(4))
-    ax.set_xlim(1e9 ,1e10) 
     ax.set_ylim(daxmax,daxmin ) 
-    ax.set_yticklabels([])
-
-
-
-
-    fig.savefig(self._title+'_pr.pdf')
+    #ax.set_title('Well 159-2')
+    ax.set_xlim(2,4.0)
+   
+    fig.savefig(self._title+'_vp.pdf')
 
 
 

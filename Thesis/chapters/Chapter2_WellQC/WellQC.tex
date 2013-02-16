@@ -1,0 +1,279 @@
+\chapter{Petrophysical properties}
+
+
+Petrophysical analysis and a rigorous well data quality control (QC)
+was done to the logs of wells 140-1 and 159-2 prior to rock physics modeling.
+Log analysis is fundamental to understand the petrophysical
+properties of the reservoir and for elastic 
+parameter estimation.
+
+The analysis started by evaluating the Gamma Ray (GR) log with the cluster
+facies analysis done by \cite{ref:doug} which included the integration 
+of XRD analysis, mineralogy from point-counting, well logs, core data and seismic data
+for depositional environment and facies interpretation. \ref{fig:gr_facies} shows
+the GR logs for both wells along with the facies analysis in colors. From this figure, one can 
+observe the cleanest facies corresponds to the Tuscaloosa beach/barrier bar, with an
+average permeability of 5,200 mD and porosity of 30\%, followed by the Tuscaloosa washover
+facies with an average permeability of 3,200 mD and porosity of 32\%. Tuscaloosa fluvial,
+and Paluxy facies have an average permeability 700 mD and 1,000 mD respectively. 
+
+Facies modeling showed strong correlation with gamma ray;
+therefore, with the lithology. In this chapter, facies
+correlation with density, sonic logs and elastic parameters
+will be discussed.  
+
+
+\csmlongfigure[h!]{gr_facies}{./chapters/Chapter2_WellQC/Figures/gr_facies.pdf}{5in}{
+Gamma ray logs for wells 159-2 and 140-1. Colors indicate the facies
+interpretation done by \cite{ref:doug}. Tuscaloosa beach/barrier bar represents 
+the cleanest sandstone while Tuscaloosa fluvial is a shaly sandstone. Black color indicates
+the non-reservoir rocks.} 
+ 
+
+\subsection{Densities and velocities QC}
+
+Caliper log data can indicate washout zones or areas where the borehole is out
+of gage. The washout zones may create
+anomalous data that need to be corrected for borehole rugosity. Density is one
+ of the most affected logs because the measuring tool has to be in contact with 
+the wellbore wall \citep{ref:tad}. 
+\ref{fig:159-2_QC,fig:140-1_QC} and \ref{fig:140-1_QC} show the caliper and density logs. One can observe there are no washout zones that affecting the density measurements. 
+The caliper log is well behaved through the formation, therefore density logs were
+ not edited at this stage.
+
+
+\begin{sidewaysfigure}
+\centering
+\scalebox{0.5}
+{\includegraphics[width=15in]{./chapters/Chapter2_WellQC/Figures/159-2_QC.pdf}}
+\caption{Caliper, gamma ray, density and sonic logs of well 159-2. The black color indicates
+the observed logs while red color indicates pseudo logs. Gasmmann's equation was used
+to generate the density pseudo log. Castagna's equations were used to calculate compressional
+and shear velocity.} 
+\label{fig:159-2_QC}
+\end{sidewaysfigure}
+
+\begin{sidewaysfigure}
+\centering
+\scalebox{0.5}
+{\includegraphics[width=15in]{./chapters/Chapter2_WellQC/Figures/140-1_QC.pdf}}
+\caption{Caliper, gamma ray, density and sonic logs of well 140-1. The black color indicates
+the observed logs while red color indicates pseudo logs. Gasmmann's equation was used
+to generate the density pseudo log. Castagna's equations were used to calculate compressional
+and shear velocity.} 
+\label{fig:140-1_QC}
+\end{sidewaysfigure}
+
+
+Gardner's equation was used to generate pseudo density logs from compressional velocities
+\citep{ref:gardner}:
+
+\begin{equation}
+\rho=\alpha V_{p}^{\beta},
+  \label{eq:gardner}
+\end{equation}
+
+where $\alpha$ is 0.31, $\beta$ is 0.25, $V_{p}$ units are m/s and $\rho$ units are
+g/cm$^3$. \ref{fig:159-2_QC} and \ref{fig:140-1_QC} show in red the pseudo density log
+and in black the observed log. Discrepancies are observed because Gardner's empirical equation
+is more reliable  for well cemented and brine saturated rocks which is not the case 
+for Delhi Field rocks. Hence, Gardner's equation is not appropriated for Delhi, calibration of the 
+coefficients is recommended in order to have better results, especially in the shale zones. 
+
+Castagna's empirical equations for compressional and shear velocity estimation
+were used as a QC tool \citep{ref:castagna}. These equations relate the porosity and the clay 
+content for brine saturated rocks:
+
+\begin{equation}
+V_{p}=5.81-9.42\phi-2.2C,
+  \label{eq:castagna1}
+\end{equation}
+
+\begin{equation}
+V_{s}=3.89-7.07\phi-2.04C,
+  \label{eq:castagna2}
+\end{equation}
+
+where $\phi$ is the porosity and $C$ is the clay content. The porosity log used for 
+this calculation corresponds to Magnetic-Resonance-Imaging-Log (MRIL). The
+tool generates a static magnetic field that magnetizes the spin axes of the protons that 
+originally are align with the earth's magnetic field. The tool generates spin echoes
+and records the amplitude of the spin echo-train which is proportional to the hydrogen 
+protons, therefore to the porosities \citep{ref:george}. Clay content was calculated from
+the GR logs.
+
+\ref{fig:159-2_QC} and \ref{fig:140-1_QC} show in red color the pseudo logs and in black the
+observed logs. Both wells indicate that predictions have higher frequencies than the
+observed values. Lower frequencies show the same behavior in the sandstones, therefore the clay and porosity models
+values can be used to model the shear and compressional velocities. However, these modeles overestimate the 
+velocities in the shale zones. This behavior is expected for rocks composed primarily of clay \citep{ref:castagna}.  
+
+\subsection{Dry bulk modulus calculation}
+
+One of the most important elastic parameters for rock physics modeling 
+is the dry frame bulk modulus of the rock ($K_{dry}$). $K_{dry}$ when calculated by 
+using Gassmann's equation is usually noisy, and may contain negative poisson
+ratio values \citep{ref:tad}. For this reason, \cite{ref:krief} simple heuristic model
+was used to calculate $K_{dry}$:
+
+\begin{equation}
+K_{dry}=G \frac{K_{0}}{G_{0}},
+  \label{eq:kdry}
+\end{equation}
+
+where $K_{0}$ and $G_{0}$ are the bulk and the shear modulus respectively of the mineral matrix. These moduli
+were calculated using the Voigt-Reuss-Hill average that is the average between Voigt ($M_{v}$)
+and Reuss ($M_{r}$) bounds:
+
+\begin{equation}
+M_{H}= \frac{M_{v}+M_{r}}{2}=\frac{1}{2}[\sum_{i=1}^{N}f_{i}M_{i}+(\sum_{i=1}^{N}f_{i}M_{i}^{-1})^{-1})],
+  \label{eq:hill}
+\end{equation}
+
+the term $M_{i}$ is the moduli and $f_{i}$ is the volume fraction \citep{ref:handbook}. For this modeling,
+I assumed the rocks where composed of quartz and clay. This assumption is consistent with the XRD results 
+for core 159-2 (see appendix \ref{app:xrds}, \ref{fig:xrd}). \ref{tab:moduli}  shows the bulk and shear modulus values used. 
+ 
+\begin{table}[h!]
+\caption{ Bulk and shear modulus used for $K_{dry}$ calculation \label{tab:moduli}}
+\begin{center}
+\begin{tabular}{ | l | l |l|}
+\hline
+Mineral      & $K$ (Gpa) & $G$ (Gpa)  \\
+\hline
+Quartz & 37.0 & 44.0 \\
+\hline
+Clay & 25.0 &9.0 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\ref{fig:159-2QC2} and \ref{fig:140-1QC2} show the calculated $K_{dry}$. The values
+range between 3.0 and 5.0 Gpa. The lowest values are observed in the sandstones
+with the exception of the Tuscaloosa beach/barrier facies which indicates
+ possible cementation.
+
+\csmlongfigure[h!]{159-2QC2}{./chapters/Chapter2_WellQC/Figures/159-2QC2.pdf}{5in}{
+Gamma ray, $V_{p}/V_{s}$ ratio of the dry rock frame and $K_{dry}$ of the dry rock frame of well 159-2.}
+
+\csmlongfigure[h!]{140-1QC2}{./chapters/Chapter2_WellQC/Figures/140-1QC2.pdf}{5in}{
+Gamma ray, $V_{p}/V_{s}$ ratio of the dry rock frame and $K_{dry}$ of the dry rock frame of well 140-1.}
+
+$V_{p}$/$V_{s}$ dry ratio is another QC shown in \ref{fig:159-2QC2} and \ref{fig:140-1QC2}. One can observe that the 
+lowest $V_{p}$/$V_{s}$ ratio is consistent with the cleanest facies and that  
+$V_{p}$/$V_{s}$ ratio is a lithology discriminator between sands and shales. Higher 
+$V_{p}$/$V_{s}$ ratios indicate high clay content. 
+
+\newpage
+\subsection{Fluid substitution}
+
+Rock saturated bulk modulus was calculated using the isotropic form of Gasmmann's equation 
+\citep{ref:gasmmann}:
+\begin{equation}
+K_{sat}= K_{dry}+\frac{(1-K_{dry}/K_{0})^{2}}{\phi/K_{fl}+(1-\phi)/K_{0}-K_{dry}/K_{0}^2},
+  \label{eq:gasmmann}
+\end{equation}
+
+where $K_{dry}$ is the dry bulk frame modulus calculated in Equation \ref{eq:kdry}, $K_{0}$ 
+is the bulk modulus of the mineral matrix, $\phi$ is the total porosity and $K_{fl}$ is 
+the fluid bulk modulus calculated by using Hill's average (\ref{eq:hill}). The oil saturation
+values were obtain by the MRIL logs. The reader is referred to \cite{ref:george} for
+a review of nuclear magnetic logs (NMR).
+
+The fluid properties used for the modeling are shown in \ref{tab:fluid}. The moduli
+of the fluid were calculated using Batzle and Wang spreadsheet and are shown in \ref{tab:flag}. 
+
+
+\begin{table}[h!]
+\caption{Fluid properties used for $K_{sat}$ modeling \label{tab:fluid}}
+\begin{center}
+\begin{tabular}{ | l | l |}
+\hline
+Temperature      & 137 F  \\
+\hline
+Pressure      & 1450 PSI  \\
+\hline
+Oil Gravity & 43.9 API \\
+\hline
+Gas Gravity & 0.65 \\
+\hline
+Salinity & 80,000 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\begin{table}[h!]
+\caption{Brine and oil moduli \label{tab:flag}}
+\begin{center}
+\begin{tabular}{ | l | l |l|}
+\hline
+Fluid type & $\rho$ ($g/cm^3$)& K (GPa) \\
+\hline
+Brine      &  1.03 & 2.81  \\
+\hline
+Oil      & 0.69 & 0.82   \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+$V_{p}$ was calculated as another QC tool by using:
+ 
+\begin{equation}
+V_{p}=\sqrt{\frac{K_{sat}+4/3 G_{sat}}{\rho_{sat}}}, 
+  \label{eq:gassmann}
+\end{equation}
+
+where $K_{sat}$ is the bulk modulus of the rock calculated in \ref{eq:gasmmann}, $G_{sat}$ is the shear
+modulus calculated from the logs and $\rho_{sat}$ is the rock density.
+
+
+\ref{fig:159-2_vp} and \ref{fig:140-1_vp} show the oil saturation log, the $K_{sat}$, 
+the $V_{p}$ observed and the $V_{p}$ calculated log. Well 140-1 in \ref{fig:140-1_vp}  shows good correlation
+ between the observed and calculated $V_{p}$ which indicates consistency between the 
+$K_{dry}$, oil saturation log and the recorded sonic logs. Well 159-2 in  \ref{fig:159-2_vp} 
+does not show good correlation between the observed and calculated $V_{p}$. Calculated $V_{p}$ 
+is underestimating the sonic log values, this behavior is possibly related to invasion effects of 
+the water-based mud which could be penetrating the formation with brine. The invasion effect
+can be seen in \ref{fig:invasion} where the shallow and deep resistivity logs show discrepancies
+in the oil saturated zones.
+
+\cite{ref:han} suggest that velocities and densities affected by invasion are difficult to correct.
+Incorrect values can yield wrong reflectivity models producing misties with the seismic. 
+I use the velocity and density pseudo-logs generated in this chapter for 
+the rock physics modeling and the seismic ties. 
+
+
+\csmlongfigure[h!]{159-2_vp}{./chapters/Chapter2_WellQC/Figures/159-2_vp.pdf}{4.5in}{
+Gamma ray, oil saturation, and $V_{p}$ of well 159-2. Black color indicates the recorded sonic. 
+Red color indicates the pseudo-log.}
+
+\csmlongfigure[h!]{140-1_vp}{./chapters/Chapter2_WellQC/Figures/140-1_vp.pdf}{4.5in}{
+Gamma ray, oil saturation, and $V_{p}$ of well 159-2. Black color indicates the recorded sonic. 
+Red color indicates the pseudo-log.}
+
+\csmlongfigure[h!]{invasion}{./chapters/Chapter2_WellQC/Figures/invasion.pdf}{4.5in}{10 inch and 90
+inch resistivity logs of well 159-2. Note how the resistivity values changes in the 
+oil saturated zones due to invasion effects.}
+
+\subsection{QC Crossplot}
+
+$V_{p}/V_{s}$ ratio vs acoustic impedance is a crossplot commonly used in rock physics
+because we can evaluate well-log data and seismic inversion data \citep{ref:avseth}.
+\ref{fig:ip_vpvs} shows the crossplot, the color scale is the clay volume obtain
+from GR logs. A clear separation between sandstones and shales is observed.
+This qualitative result is encouraging for the rock physics modeling and 
+joint inversion framework. The next chapter will provide a calibration of 
+rock physics models based on logs with the objective to do a quantitave interpretation
+of the data.
+
+
+\csmlongfigure[h!]{ip_vpvs}{./chapters/Chapter2_WellQC/Figures/ip_vpvs.pdf}{6in}{
+$V_{p}/V_{s}$ ratio vs acoustic impedance for wells 140-1 and 159-2}
+
+
+\newpage\mbox{}\newpage
