@@ -56,7 +56,7 @@ def mergelogs(kSatD2,muDryD2,phit2,so2,gr2,facies2,vsh2,vpvs2,vs2,ip2, \
 def plotqc(kSatD2,muDryD2,phit2,so2,gr2,facies2,vsh2,vpvs2,ip2,depth2,cal2,rho2,rhoCal2,vp2,vpCal2, \
            kSatD ,muDryD ,phit ,so ,gr1,facies1,vsh ,vpvs ,ip ,depth1,cal1,rho1,rhoCal1,vp1,vpCal1,rS,rL,ml,rs,rl):
 
-  plt.rcParams.update({'font.size': 18,'legend.fontsize': 14})
+  plt.rcParams.update({'font.size': 16,'legend.fontsize': 14})
 
   #-----Figure 1 de la tesis------#
   fig = figure(1, figsize=(9, 8))

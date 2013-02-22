@@ -1,5 +1,9 @@
 \chapter{Dynamic rock physics modeling}
 
+In this study I use rock physics modeling as a tool to integrate  core, petrophysical, 
+XRD, facies data and 4D joint seismic inversion to make a quantitative
+interpretation of Delhi Field reservoir changes due to CO$_2$ injection.
+
 The geological processes that affects siliciclastic sediments and rock porosities have been 
 studied by many authors (references). Trends in velocity 
 porosity relations can indicate diagenetic or depositional processes that 
@@ -13,87 +17,403 @@ helps to understand the reservoir nature.
 Depositional and diagenetic processes that affects sandstones porosity. Taken from
 \cite{ref:avseth} }
 
-In this study I use rock physics modeling as a tool to integrate  core, petrophysical, 
-XRD, facies data and 4D joint seismic inversion to make a quantitative
-interpretation of Delhi Field reservoir changes due to CO$_2$ injection.
 For the static rock physics modeling I follow the workflow suggested by \cite{ref:avseth}. This 
 consist on a hybrid  approach that uses theoretic, heuristic and empirical
 models built for high porosity sandstone reservoirs. The used models are best known as friable
-sand, contact cement and constant cement models. 
+sand and cemented sand models. 
 
 For the dynamic rock physics modeling I follow the workflow suggested in \cite{ref:dynamic} that
 relates relative changes in $V_{p}/V{s}$ ratio and acoustic impedance to pore pressure
 and fluid changes. Then, I extend this qualitative analysis into quantitative calculating
 pore pressure maps for each facies. The pore pressure calculation is important property for maximize
-hydrocarbon recovery, for reservoir management and for drilling safety.
+hydrocarbon recovery, reservoir management and drilling safety.
 
-The detail workflow of the modeling is shown in \ref{fig:workflow}.
-The subsection of the chapters corresponds to the colors of the workflow
+The work of this chapter can be summarize in the workflow shown in \ref{fig:workflow}.
+The are four main processes highlighted in colors which corresponds to subsections. Yellow,
+green, blue and purple corresponds to subsections: rock physics models, model calibration,
+static modeling and dynamic modeling, each subsection will be explain in detail.
 
-\ref{fig:workflow}
-\csmlongfigure[h!]{workflow}{./chapters/Chapter3_Rock_physics/Figures/workflow2}{5.0in}{logs}
+\csmlongfigure[h!]{workflow}{./chapters/Chapter3_Rock_physics/Figures/workflow}{5.3in}{
+Rock physics modeling workflow. Colors: yellow, green, blue and purple indicates the subsections
+rock models, model calibration, static modeling and dynamic modeling respectively.}
 
 
 \subsection{Rock physics models}
-bla
+
+Friable and cemented sands models are based in granular media. Granular media provide
+insights about porosity, sorting, cementation and stress effects of sandstones by studying
+packing of spheres that ideally represents rock grains \citep{ref:handbook}.    
+Although none of these models represents the real rocks they are very powerful to
+link reservoir and elastic properties allowing to predict the seismic signature
+in the reservoir when carefully applied. 
+
+%As \cite{ref:draper} suggested ``All models are wrong, but some are useful".
+
+\subsubsection{Friable sand model}
+This model was developed by \cite{ref:dvorkin}, consists in finding the elastics moduli 
+of the dry rock when no there is no cement in the grain contacts. To describe the end member
+Hertz Mindlin theory is used to mimic well sorted sands where the effective moduli is giving by: 
+
+\begin{equation}
+K_{HM}=\left[\frac{n^2(1-\phi_{C})^2G_{s}^2}{18\pi^2(1-\upsilon_{s})^2}P\right]^{1/3},
+  \label{eq:KHM}
+\end{equation}
+
+\begin{equation}
+G_{HM}=\frac{5-4\upsilon_{s}}{5(2-\upsilon_{s})}\left[\frac{3n^2(1-\phi_{C})^2G_{s}^2}{2\pi^2(1-\upsilon_{s})^2}P\right]^{1/3},
+  \label{eq:GHM}
+\end{equation}
+
+where $\phi_{C}$ is the critical porosity (minimum porosity at which the rock is fluid supported),
+$\upsilon_{s}$ and $G_{s}$ are the poisson ratio and the shear modulus of the mineral frame respectively,
+ P is the effective pressure and n is the coordination number (number of contacts per grain).
+
+The effective pressure is corresponds to the difference between overburden and pore pressure: 
+\begin{equation}
+P_{eff}=P_{c}-P_{p},
+  \label{eq:P}
+\end{equation}
+
+the term $P_{c}$ is the overburden pressure assumed to be 1 psi/ft \citep{ref:sidra}, the pore pressure 
+was modeled to range between from 5.0 to 19.0 MPa.
+
+The modified Hashin-Shritkman (HS) lower bound, a model that connects the end member moduli at $\phi_{C}$ with 
+the dry rock mineral frame at zero porosity is used to find the elastic moduli for different porosities,
+
+\begin{equation}
+K_{dry}=\left[\frac{\frac{\phi}{\phi_{C}}}{K_{HM}+\frac{4}{3}G_{HM}}+\frac{1-\frac{\phi}{\phi_{C}}}{K+\frac{4}{3}G_{HM}}\right]^{-1}-\frac{4}{3}G_{HM},
+  \label{eq:kdry}
+\end{equation}
+
+\begin{equation}
+G_{dry}=\left[\frac{\frac{\phi}{\phi_{C}}}{G_{HM}+\frac{G_{HM}}{6}\left(\frac{9K_{HM}+8G_{HM}}{K_{HM}+2G_{HM}}\right)}+\frac{1-\frac{\phi}{\phi_{C}}}{G+\frac{G_{HM}}{6}\left(\frac{9K_{HM}+8G_{HM}}{K_{HM}+2G_{HM}}\right)}\right]^{-1}-\frac{G_{HM}}{6}\left(\frac{9K_{HM}+8G_{HM}}{K_{HM}+2G_{HM}}\right),
+  \label{eq:kdry}
+\end{equation}
+
+where $\phi$ is a vector of porosities that range between 0.0 and 0.4. \ref{fig:theoryModel}
+ shows the $K_{dry}$ moulus that corresponds to the modified HS lower bound or friable sand model.
+
+\subsubsection{Cemented sand model}
+
+This model was developed by \cite{ref:dvorkin2}, consists in finding the elastics moduli 
+of the dry rock when there is no cement in the grain contacts. The cementation is product
+of the diagenesis. The cement reduces porosity and increases the rock stiffness and permeability \citep{ref:avseth}. The effective moduli for the dry rock are given by: 
+
+
+\begin{equation}
+K_{dry}=\frac{n(1-\phi_{C})M_{c}S{n}}{6},
+  \label{eq:kdryc}
+\end{equation}
+
+\begin{equation}
+G_{dry}=\frac{3K_{dry}}{5}+\frac{3n(1-\phi_{C})G_{c}S_{\tau}}{20},
+  \label{eq:kdryc}
+\end{equation}
+
+where $G_{c}$ is the shear modulus of the cement, n is the coordination number. $M_{c}$ is the compressional modulus of the cement given by:
+\begin{equation}
+M_{c}=K_{c}+\frac{4G_{c}}{3},
+  \label{eq:mc}
+\end{equation}
+
+where $K_{c}$ is the bulk modulus of te cement.
+
+The terms $S_{n}$ and $S_{\tau}$ corresponds to:
+\begin{equation}
+S_{n}=A_{n}\alpha^2+B_{n}\alpha+C_{n},
+  \label{eq:mc}
+\end{equation}
+
+\begin{equation}
+S_{\tau}=A_{\tau}\alpha^2+B_{\tau}\alpha+C_{\tau},
+  \label{eq:mc}
+\end{equation}
+
+
+\begin{equation}
+A_{n}=-0.024153\Lambda_{n}^{-1.3646}
+  \label{eq:mc}
+\end{equation}
+
+\begin{equation}
+B_{n}=0.020405\Lambda_{n}^{-0.89008}
+  \label{eq:mc}
+\end{equation}
+
+\begin{equation}
+C_{n}=0.000024649\Lambda_{n}^{-1.9864}
+  \label{eq:mc}
+\end{equation}
+
+
+\begin{equation}
+A_{\tau}=-10^{2}(2.26\upsilon_{s}^2+2.07\upsilon_{s}+2.3)\Lambda_{\tau}^{0.079\upsilon_{s}^2+0.1754\upsilon_{s}-1.342},
+  \label{eq:mc}
+\end{equation}
+
+\begin{equation}
+B_{\tau}=(0.0573\upsilon_{s}^2+0.0937\upsilon_{s}+0.202)\Lambda_{\tau}^{0.0274\upsilon_{s}^2+0.0529\upsilon_{s}-0.8765},
+  \label{eq:mc}
+\end{equation}
+
+\begin{equation}
+C_{\tau}=10^{-4}(9.654\upsilon_{s}^2+4.945\upsilon_{s}+3.1)\Lambda_{\tau}^{0.01867\upsilon_{s}^2+0.4011\upsilon_{s}-1.8186},
+  \label{eq:mc}
+\end{equation}
+
+
+\begin{equation}
+\Lambda_{n}=\frac{2G_{c}(1-\upsilon_{s})(1-\upsilon_{c})}{G\pi(1-2\upsilon_{c})}
+\label{eq:mc}
+\end{equation}
+
+\begin{equation}
+\Lambda_{\tau}=\frac{G_{c}}{G\pi}
+\label{eq:lambda}
+\end{equation}
+
+the terms $\upsilon_{s}$ and $\upsilon_{c}$ are the poisson ratio of the rock dry mineral frame and the cement, 
+respectively. $\alpha$ is the amount of contact cement for cemented layer around the grain:
+
+
+\begin{equation}
+\alpha=\left[\frac{\frac{2}{3}(\phi_{C}-\phi)}{1-\phi_{C}}\right]^{0.5}
+\end{equation}
+
+\ref{fig:theoryModel} shows the $K_{dry}$ modulus that corresponds to the contact cement model.
+The reader is referred to \cite{ref:dvorkin2} for a complete review of the cemented model.
+
+Once the contact cement model is built constant cementation lines are calculated using \cite{ref:avseth2} approach.
+\cite{ref:avseth2} suggested that all sands have the same amount cement at different porosities. The porosity reduction
+ is related to sorting and cementation. The effective moduli are given by: 
+
+\begin{equation}
+K_{dry}=\left[\frac{\frac{\phi}{\phi_{b}}}{K_{b}+\frac{4}{3}G_{b}}+\frac{1-\frac{\phi}{\phi_{b}}}{K+\frac{4}{3}G_{b}}\right]^{-1}-\frac{4}{3}G_{b},
+  \label{eq:kdry}
+\end{equation}
+
+\begin{equation}
+G_{dry}=\left[\frac{\frac{\phi}{\phi_{b}}}{G_{b}+\frac{G_{b}}{6}\left(\frac{9K_{b}+8G_{b}}{K_{b}+2G_{b}}\right)}+\frac{1-\frac{\phi}{\phi_{b}}}{G+\frac{G_{b}}{6}\left(\frac{9K_{b}+8G_{b}}{K_{b}+2G_{b}}\right)}\right]^{-1}-\frac{G_{b}}{6}\left(\frac{9K_{b}+8G_{b}}{K_{b}+2G_{b}}\right),
+  \label{eq:kdry}
+\end{equation}
+
+
+where $K_{b}$, $G_{b}$ and $\phi_{b}$ are the bulk, shear modulus and porosity calculated in the contact cement model.
+\ref{fig:theoryModel} shows the $K_{dry}$ constant cementation lines.
+ 
+\csmlongfigure[h!]{theoryModel}{./chapters/Chapter3_Rock_physics/Figures/theoryModel}{5in}{
+Uncosolidated, contact cement and constant cement models. The black dot indicates the end member
+of the unconsolidated model corresponding to $K_{HM}$ from Hertz Mindlin theory. The models are calculated
+for 85\% of Quartz and 15\% of clay. The cement corresponds to quartz}
+
 
 \subsection{Model calibration}
-bla
-bla \ref{fig:theoryModel}
-\csmlongfigure[h!]{theoryModel}{./chapters/Chapter3_Rock_physics/Figures/theoryModel}{5in}{logs}
+
+Wells 140-1 and 159-2, XRD, thin sections, core and facies data information were used to calibrate the model.
+Bulk dry modulus was calculated in Chapter \ref{sec:drybulk}, shear dry modulus is assumed  to be
+equal to the saturated shear bulk modulus. Elastic dry moduli porosity trends are evaluated
+in \ref{fig:model_calibration}. One can see that shaly sandstones are clearly discriminated from
+the cleanest sandstones. The reservoir sandstones have different trends, for instance one can 
+observe the cleaner sandstones are stiffer. This is because they composition is mainly quartz 
+and also may be due to cemented grains. 
+
+\csmlongfigure[h!]{model_calibration}{./chapters/Chapter3_Rock_physics/Figures/model_calibration}{7in}{
+Dry elastic moduli from wells 140-1 and 159-2, the colorbar indicates the volume of shale. The unconsolidated,
+ contact cement and constant cement models are indicated by the blue lines. The models are calculated
+for 85\% of Quartz and 15\% of clay. The cement corresponds to quartz}
 
 
-bla \ref{fig:model_calibration}
-\csmlongfigure[h!]{model_calibration}{./chapters/Chapter3_Rock_physics/Figures/model_calibration}{5in}{logs}
-
-bla \ref{fig:model_faciesQ85}
-\csmlongfigure[h!]{model_faciesQ85}{./chapters/Chapter3_Rock_physics/Figures/model_faciesQ85}{7in}{logs}
-
-bla \ref{fig:thinTW}
-\csmlongfigure[h!]{thinTW}{./chapters/Chapter3_Rock_physics/Figures/thinTW}{5in}{logs}
-
-bla \ref{fig:facies_modelingP}
-\csmlongfigure[h!]{facies_modelingP}{./chapters/Chapter3_Rock_physics/Figures/facies_modelingP}{5in}{logs}
-
-bla \ref{fig:thinTB}
-\csmlongfigure[h!]{thinTB}{./chapters/Chapter3_Rock_physics/Figures/thinTB}{5in}{logs}
-
-bla \ref{fig:facies_modelingTB}
-\csmlongfigure[h!]{facies_modelingTB}{./chapters/Chapter3_Rock_physics/Figures/facies_modelingTB}{5in}{logs}
-
-bla \ref{fig:thinTF}
-\csmlongfigure[h!]{thinTF}{./chapters/Chapter3_Rock_physics/Figures/thinTF}{5in}{logs}
-
-bla \ref{fig:facies_modelingTF}
-\csmlongfigure[h!]{facies_modelingTF}{./chapters/Chapter3_Rock_physics/Figures/facies_modelingTF}{5in}{logs}
-
-\newpage
-\subsection{Static Rock Physics template}
-
-bla \ref{fig:staticModelP}
-\csmlongfigure[h!]{staticModelP}{./chapters/Chapter3_Rock_physics/Figures/staticModelP}{7in}{logs}
+The same graphic using the facies
+as the color code  is shown in \ref{fig:model_facies}. Now, one can observe that is easier to analyze elastic
+moduli porosity trends. These trends can be related to the facies. From this figure, 
+three groups that follow similar trends are identified: Paluxy-Tuscaloosa washover, 
+Tuscaloosa fluvial and Tuscaloosa beach facies. The composition of each group
+and the modeling parameters are shown in \ref{tab:modeling}.
 
 
 
-\ref{tab:modeling}
-\begin{table}[h]
+\csmlongfigure{model_facies}{./chapters/Chapter3_Rock_physics/Figures/model_facies}{6in}{
+Dry elastic moduli from wells 140-1 and 159-2, the colors indicate the facies interpreted by
+\cite{ref:doug}. The unconsolidated,
+ contact cement and constant cement models are indicated by the blue lines. The models are calculated
+for 85\% of Quartz and 15\% of clay. The cement corresponds to quartz}
+
+\begin{table}
 \caption{ Modeling parameters \label{tab:modeling}}
 \begin{center}
 \begin{tabular}{ | l | l | l|  l | l | l|}
 \hline
-  Facies            &  n & Quartz & Clay & Siderite & P$eff$ (Mpa)  \\
+  Facies                               &  n    & Quartz & Clay  & Siderite & P$eff$ (Mpa)  \\
 \hline
-Tusc Fluvial        &                 8.64 &   0.7  &  0.2 &     0.1  &  12.5  \\
+Tusc Washover/Transitional and Paluxy  & 10.36 &   0.85 &  0.15 &     0.0  &  12.5  \\
 \hline
-Tusc Beach/Barrier  & 12.96                &   0.97  &  0.03 &     0.0  &  12.5  \\
+Tusc Fluvial                           & 10.36 &   0.7  &  0.2  &     0.1  &  12.5  \\
 \hline
-Tusc Washover/Transitional and Paluxy  & 10.36    &   0.85  &  0.15 &     0.0  &  12.5  \\
+Tusc Beach/Barrier                     & 10.36 &   0.97  &  0.03 &     0.0  &  12.5  \\
 \hline
 \end{tabular}
 \end{center}
 \end{table}
 
+\subsubsection{Paluxy-Tuscaloosa washover facies}
+
+Paluxy and Tuscaloosa washover facies were grouped, both of this formations
+have similar compositions around 85\% of quartz and 15\% of clay. \ref{fig:facies_modelingP}
+shows the shear bulk modulus for these facies. One can note that the model falls mainly 
+in the red line that indicates unconsolidated sand model. \ref{fig:thinTW} shows the thin section of 
+a typical Tuscaloosa washover facies for well 159-2. Minor compaction and no cementation
+is observed. Therefore, the unconsolidated sand model is the appropiated model for
+the study of these facies.  
 
 
-%\subsubsection{Static rock physics template}
-%\subsubsection{Dynamic rock physics template}
+\csmlongfigure[h!]{facies_modelingP}{./chapters/Chapter3_Rock_physics/Figures/facies_modelingP}{5in}{
+Shear modulus for the Paluxy and Tuscaloosa washover facies. The red line indicates
+the unconsolidated sand model. Blue lines indicate the contact and constant cement models.
+The models are calculated for 85\% of Quartz and 15\% of clay. The cement corresponds to quartz}
+
+
+
+\csmlongfigure[h!]{thinTW}{./chapters/Chapter3_Rock_physics/Figures/thinTW}{5in}{
+Typical thin section of the Tuscaloosa washover facies for core 159-2. Note there is minor
+compaction and no cementation}
+
+\subsubsection{Tuscaloosa fluvial facies}
+
+Tuscaloosa fluvial facies is the one that have more clay content from the reservoir
+sandstones. The average composition is 70\% of quartz, 20\% of clay and 10\% of siderite.
+\ref{fig:facies_modelingTF} shows the shear modulus for this facies. The model fits the
+unconsolidated sand model. The thin sections shown in \ref{fig:thinTF} reveals abundant clay and
+siderite, minor compaction and no cementation.
+
+
+\csmlongfigure[h!]{facies_modelingTF}{./chapters/Chapter3_Rock_physics/Figures/facies_modelingTF}{5in}{
+Shear modulus for the Tuscaloosa fluvial facies. The red line indicates
+the unconsolidated sand model. Blue lines indicate the contact and constant cement models.
+The models are calculated for 70\% of quartz, 20\% of clay and 10\% of siderite. 
+The cement corresponds to quartz}
+
+\csmlongfigure[h!]{thinTF}{./chapters/Chapter3_Rock_physics/Figures/thinTF}{5in}{
+Typical thin section of the Tuscaloosa fluvial facies for core 159-2. Note there is
+abundant clay and siderite}
+
+\subsubsection{Tuscaloosa beach facies}
+
+Tuscaloosa beach facies is the cleanest and stiffer of the reservoir
+sandstones. The average composition is 97\% of quartz, and 3\% of clay.
+\ref{fig:facies_modelingTB} shows the shear modulus for this facies. The model fits the
+red line whic corresponds to quartz cementation of 3\%. The thin sections shown in \ref{fig:thinTB} reveals that there is contact between the quartz grain with possible patchy cement. Almost no clay
+is present.
+
+The contact cement and constant cement models do no take into account 
+stress sensitivity. However, there is an important stress effect 
+in the rocks that have patchy cementation where some grain are cemented and some are lose. 
+\citep{ref:avsethcement} suggested a weight function that measures the degree of rock 
+unconsolidation that allow to quantify the stress effect in cemented rocks:
+ 
+\begin{equation}
+W=\frac{K_{dry}-K_{soft}(P_{0})}{K_{stiff}-K_{soft}(P_{0})},
+  \label{eq:mc}
+\end{equation}
+
+\begin{equation}
+K_{dry}(P_{eff})=(1-W)K_{soft}(P_{eff})+WK_{stiff},
+  \label{eq:mc}
+\end{equation}
+
+where $K_{dry}$ is the observed modulus that corresponds to 3\% of quartz cement, $K_{soft}$ is
+the unconsolidated model for a given pressure $P_{0}$ and $K_{stiff}$ is modulus value when
+the rock is insentive to stress that corresponds to the $K$ for rocks that have 10\% of cement. These equations
+will be applied in the dynamic modeling when pressure sensitivity is measure for each facies.
+
+
+
+
+\csmlongfigure[h!]{thinTB}{./chapters/Chapter3_Rock_physics/Figures//facies_modelingTB}{5in}{
+Shear modulus for the Tuscaloosa beach facies. The red line indicates
+3\% of quartz cement. Blue lines indicate the unconsolidated, contact and constant cement models.
+The models are calculated for 97\% of quartz, and 3\% of clay.}
+
+\csmlongfigure[h!]{facies_modelingTB}{./chapters/Chapter3_Rock_physics/Figures/thinTB}{5in}{
+Typical thin section of the Tuscaloosa beach facies for core 159-2. Note there is
+abundant quartz, almost no clay and possible patchy cementation.}
+
+\clearpage
+\newpage
+\subsection{Static Rock Physics template}
+
+Fluid substitution was applied using Gasmmann's equation \ref{eq:gasmmann} to calculate
+the saturated moduli of rocks with 100\% brine, 100\% oil and 100\% $CO_{2}$. The fluid properties
+and the elastic moduli used were shown in \label{tab:fluid} and \label{tab:flag} in the previous chapter.
+
+$V_{p}/V_{s}$ ratio and acoustic impedance of the saturated rocks were calculated in 
+order to built the static rock physics template (SRPT). 
+The SRPTs are widely use in the industry for reservoir quantitative interpretation 
+because allow to evaluate well log data and seismic inversion outputs in function
+of elastic parameters. \ref{fig:static} shows the SRPT for each modeled facies group. The blue, 
+green and red line indicate rocks saturated with 100\% brine, 100\%oil and 100\%$CO_{2}$, respectively. 
+Hydrocarbon presence decrease considerable the $V_{p}/V_{s}$ ratio, especially the $CO_{2}$ due to its lower bulk
+modulus and density.  
+One can note that each
+facies group have different $V_{p}/V_{s}$ ratio and acoustic impedance trends. Lower $V_{p}/V_{s}$ ratio
+are observed for the Tuscaloosa beach facies and increase in the Paluxy-Tuscaloosa washover and Tuscaloosa
+fluvial facies. Therefore, $V_{p}/V_{s}$ ratio is powerful lithology and fluid discriminator in Delhi Field. 
+
+\csmlongfigure[h!]{static}{./chapters/Chapter3_Rock_physics/Figures/static}{7in}{Static rock physics template
+for the Paluxy-Tuscaloosa washover facies, Tuscaloosa fluvial facies and Tuscaloosa beach facies.  The blue, 
+green and red line indicate rocks saturated with 100\% brine, 100\%oil and 100\%$CO_{2}$, respectively. 
+}
+
+\subsection{Dynamic Rock Physics template}
+
+Dynamic modeling has the objective of measuring changes in the reservoir
+properties. In Delhi Field, I assume the changes in the reservoir are given due
+to pressure and $CO_{2}$ saturation, compaction or dilation are not taken into account
+in the modeling (find a reference or explain why I think compaction or dilation
+will not affect the elastic properties as much as pressure and saturation changes). 
+
+The scope of the dynamic rock physics modeling for Delhi field consist on
+quantifying the relative changes between monitors 1 and 2, both of them shot
+after $CO_{2}$ injection program started. Relative changes in the elastic properties
+are given by: 
+
+\begin{equation}
+P_{diff}= 100*[P_{mon2}-P_{mon1}]/P_{mon1},
+  \label{eq:changes}
+\end{equation}
+
+where $P_{diff}$ is any elastic property, $P_{mon2}$ and $P_{mon1}$ are the elastic properties
+for monitor 2 and 1, respectively. \ref{fig:co2sat} shows how the relative changes in $V_p/V_s$ ratio,
+ compressional velocity, shear velocity, acoustic impedance an shear impedance 
+when $CO_2$ replaces 65\% brine and 35\% of oil for a constant pore pressure of
+10 MPa. One can note, that few amount of $CO_{2}$ changes dramatically the compressional 
+velocity, acoustic impedance and $V_{p}/V_s$ ratio but gradual when increasing the saturation.
+ Shear velocity and shear impedance are almost insensitive to fluids.
+Also, we can observe the non-linear behavior of
+$CO_2$ which make it difficult to quantify but easy to identify in the seismic. Therefore, the purpose
+of the study is to detect $CO_2$ and not quantifying it.
+  
+
+\csmlongfigure[h!]{co2sat}{./chapters/Chapter3_Rock_physics/Figures/co2sat}{5in}{}
+
+Pressure changes are analyzed using a pore pressure reference of 13.0 MPa for a rock
+65\%brine and 35\% oil saturated. \ref{fig:pressure} shows the relative changes 
+in $V_p/V_s$, acoustic and shear impedance due to pressure changes. One can observe 
+pore pressure changes are almost linear when pore pressure increases. However, below
+the bubble point pressure gas will come out of solution and then two fluid phases will
+be in the pore space. This aspect represents a limitation when predicting pressures. 
+Also, one can observe that Vp/Vs ratio curves behave in the opposite direction 
+from the rest of the properties. Therefore crossploting vp/vs ratio with 
+any of the properties will allows to visualize better pore pressure changes. 
+
+The analysis of pure pressure changes or pure saturation change does not represents
+the reality of the reservoir, usually both changes occur at the same time. Figure XX
+shows the effects in Vp/Vs ratio and acoustic impedance
+
+ 
+\csmlongfigure[h!]{pressure}{./chapters/Chapter3_Rock_physics/Figures/pressure}{5in}{}
+
+Then I built a dynamic rock physics template (DRPT) where I modeled the changes in the parameter
+to mimic the changs in the reservoir due to co2 injection. I modeled both scenarios
+at the same time, saturation and pressure change. Then I recognized that four quadrants
+indicates mainly pore pressure increase, decrease and co2 and brine.
+

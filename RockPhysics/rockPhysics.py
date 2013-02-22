@@ -27,17 +27,17 @@ k = [37.0e09,25.0e09,123.0e09]    #Pa
 g = [44.e09,9.0e09,51.0e09]       #Pa
 
 #f = [.97,.03,.0] # Mineral fraccion
-f = [.85,.15,.00] # Mineral Paluxy
+#f = [.85,.15,.00] # Mineral Paluxy
 #f = [1,.0,0.0] # Mineral fraccion
-#f = [.7,.20,.10] # Mineral fraccion Tusc Fluvia;
+f = [.7,.20,.10] # Mineral fraccion Tusc Fluvia;
 #tB=False
 #tF=False
 #tW=False
 #pL=True
 
 tB=False
-tF=False
-tW=True
+tF=True
+tW=False
 pL=False
 
 
@@ -120,6 +120,7 @@ print(co2)
 n1 = len(phi)
 n3 = len(p)
 n2 = len(co2)
+'''
 rhobri,rhooil,rhoco2,kbri,koil,kco2 = np.zeros(n3),np.zeros(n3),np.zeros(n3),\
                                       np.zeros(n3),np.zeros(n3),np.zeros(n3)
 
@@ -127,10 +128,20 @@ rhobri,rhooil,rhoco2,kbri,koil,kco2 = np.zeros(n3),np.zeros(n3),np.zeros(n3),\
 for i in range(n3):
   rhoco2[i] = .082e3 #0.6*1e3
   rhobri[i] = 1.03*1e3
-  rhooil[i] = 0.64e3 #0.79*1e3
+  rhooil[i] = 0.69e3 #0.79*1e3
   kco2[i] = 0.018e9 #0.125*1e9
   kbri[i] = 2.8*1e9
   koil[i] = 0.829e9 #1.*1e9
+'''
+
+rhooil,koil,tmp,rhoco2,kco2,rhobri,kbri= np.loadtxt('flag.txt',unpack=True)
+
+rhooil = rhooil*1e3
+koil   = koil*1e9
+rhoco2 = rhoco2*1e3
+kco2   = kco2*1e9
+rhobri = rhobri*1e3
+kbri   = kbri*1e9
 
 #------------Plot-----------------
 #dmin = 3170 #3207
@@ -231,11 +242,13 @@ if tB==True:
       wg = (gdryConstant[pref][i1]- gdry_l[pref][i1])/(gdryConstant[ipo][i1]- gdry_l[pref][i1])   
       kdryModel[i3][i1]=(1.0-wk)*kdry_l[i3][i1]+wk*kdryConstant[ipo][i1]
       gdryModel[i3][i1]=(1.0-wg)*gdry_l[i3][i1]+wg*gdryConstant[ipo][i1]
+      #print"chegue"
 
 oilInit   = 0.35
 brineInit = 0.65
 (ksat_co2,rhosat_co2)= gassman.fluidSub2_p(kbri,kco2,koil,rhobri,rhoco2,rhooil,kdryModel,co2,p,oilInit,brineInit)
 #(ksat_c,rhosat_c)= gassman.fluidSub2(kbri[pref],kco2[pref],rhobri[pref],rhooil[pref],kdry_c,co2)
+
 ksat_oil   = np.zeros(((n3,n2,n1))) 
 rhosat_oil = np.zeros(((n3,n2,n1)))
 for i3 in range(n3):
@@ -244,7 +257,7 @@ for i3 in range(n3):
       ksat_oil[i3][i2][i1]   = ksat_co2[i3][n2-1-i2][i1]
       rhosat_oil[i3][i2][i1] = rhosat_co2[i3][n2-1-i2][i1]
       
-#(ksat_oil,rhosat_oil)= gassman.fluidSub2_p(kbri,kco2,koil,rhobri,rhoco2,rhooil,kdryModel,co2,p,oilInit,brineInit)
+#(ksat_oil,rhosat_oil)= gassman.fluidSub2_st(kbri,koil,koil,rhobri,rhooil,rhooil,kdryModel,co2,p,oilInit,brineInit)
 #(ksat_c,rhosat_c)= gassman.fluidSub2(kbri[pref],kco2[pref],rhobri[pref],rhooil[pref],kdry_c,co2)
 
 
@@ -278,7 +291,7 @@ static = par.calculation(static_par) #dictionary static parameters
 
 #---Plotting static template---------------
 
-plots.plottemplate(static,pref,vs,so,mudry,phit,vsh,kbri[pref],koil[pref],rhobri[pref],rhooil[pref],facies)
+#plots.plottemplate(static,pref,vs,so,mudry,phit,vsh,kbri[pref],koil[pref],rhobri[pref],rhooil[pref],facies)
 #plots.plot3dtemplate(static,pref,vpvs,ip,so,p,phi)
 
 
@@ -306,7 +319,7 @@ print(dynamic_par)
 
 #---Plotting dynamic template--------------
 
-plots.plotparschange(dynamic,diff,dynamic_par,p,co2,phi) 
+plots.plotparschange(dynamic,diff,dynamic_par,p,co2,phi,pref) 
 
 g1 = dynamic['vsBrineCo2P']
 g2 = dynamic['vpBrineCo2P']
@@ -315,9 +328,15 @@ g4 = dynamic['ipBrineCo2B']
 g5 = dynamic['rtBrineOilB']
 g6 = dynamic['ipBrineOilB']
 
+#g3 = dynamic['isBrineCo2B']
+#g4 = dynamic['ipBrineCo2B']
+#g5 = dynamic['isBrineOilB']
+#g6 = dynamic['ipBrineOilB']
+
+
+
 PressureInt.gridding(g3,g4,g5,g6,vpvsfile,ipfile,n3,n2,pref,p)
 PressureInt.maps(vpvsfile,ipfile,n3,n2,pref,p)
 plots.plotdynamictemplate(g3,g4,g5,g6,vpvsfile,ipfile,n3,n2,pref,p)
 
-      
 plt.show()

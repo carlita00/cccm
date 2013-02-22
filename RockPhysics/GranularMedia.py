@@ -65,8 +65,14 @@ class GranularMedia:
     alpha     = np.zeros(n1)
     k  = np.zeros(n1)
     for i in range(n1):
+      n2 = 20.0 - 34.0 *self._phiC +14.0*np.power(self._phiC,2) 
+      n2*= self._c
+
       alpha[i]= (2.0/3.0)*(self._phiC-self._phi[i])/(1.0-self._phiC)
       alpha[i]= np.power(alpha[i], 0.5)
+      #alpha[i]=(self._phiC-self._phi[i]) /(3.0*n2*(1.0-self._phiC))
+      #alpha[i]= 2*np.power(alpha[i], 0.25)
+
     vn = 2.0*self._gc*(1.0-self._prs)*(1.0-self._prc)/(math.pi*self._gs*(1.0-2.0*self._prc))
 
     #vn/= math.pi*self._gs*(1.0-2.0*self._prc)
@@ -93,7 +99,16 @@ class GranularMedia:
     g = np.zeros(n1)
     for i in range(n1):
       alpha[i] = (2.0/3.0)*(self._phiC-self._phi[i])/(1.0-self._phiC)
-      alpha[i] = np.power(alpha[i], 0.5)    
+      alpha[i] = np.power(alpha[i], 0.5)  
+      n2 = 20.0 - 34.0 *self._phiC +14.0*np.power(self._phiC,2) 
+      n2*= self._c
+      #alpha[i]=(self._phiC-self._phi[i]) /(3.0*n2*(1.0-self._phiC))
+      #alpha[i]= 2*np.power(alpha[i], 0.25)
+
+
+      #alpha[i]= (2.0/3.0)*(self._phiC-self._phi[i])/(1.0-self._phiC)
+      #alpha[i]= np.power(alpha[i], 0.5)
+  
     vtao = self._gc/(math.pi*self._gs)
     tmp  = 0.079*np.power(self._prs,2)+0.1754*self._prs-1.342 
     atao = -1.0e-2*(2.26*np.power(self._prs,2)+2.07*self._prs+2.3)*np.power(vtao,tmp)

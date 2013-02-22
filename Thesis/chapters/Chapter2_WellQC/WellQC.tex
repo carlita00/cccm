@@ -33,7 +33,7 @@ the non-reservoir rocks.}
 \subsection{Densities and velocities QC}
 
 Caliper log data can indicate washout zones or areas where the borehole is out
-of gage. The washout zones may create
+of gauge. The washout zones may create
 anomalous data that need to be corrected for borehole rugosity. Density is one
  of the most affected logs because the measuring tool has to be in contact with 
 the wellbore wall \citep{ref:tad}. 
@@ -109,7 +109,7 @@ values can be used to model the shear and compressional velocities. However, the
 velocities in the shale zones. This behavior is expected for rocks composed primarily of clay \citep{ref:castagna}.  
 
 \subsection{Dry bulk modulus calculation}
-
+\label{sec:drybulk}
 One of the most important elastic parameters for rock physics modeling 
 is the dry frame bulk modulus of the rock ($K_{dry}$). $K_{dry}$ when calculated by 
 using Gassmann's equation is usually noisy, and may contain negative poisson
@@ -117,11 +117,11 @@ ratio values \citep{ref:tad}. For this reason, \cite{ref:krief} simple heuristic
 was used to calculate $K_{dry}$:
 
 \begin{equation}
-K_{dry}=G \frac{K_{0}}{G_{0}},
+K_{dry}=G \frac{K_{s}}{G_{s}},
   \label{eq:kdry}
 \end{equation}
 
-where $K_{0}$ and $G_{0}$ are the bulk and the shear modulus respectively of the mineral matrix. These moduli
+where $K_{s}$ and $G_{s}$ are the bulk and the shear modulus respectively of the mineral matrix. These moduli
 were calculated using the Voigt-Reuss-Hill average that is the average between Voigt ($M_{v}$)
 and Reuss ($M_{r}$) bounds:
 
@@ -172,11 +172,11 @@ $V_{p}$/$V_{s}$ ratios indicate high clay content.
 Rock saturated bulk modulus was calculated using the isotropic form of Gasmmann's equation 
 \citep{ref:gasmmann}:
 \begin{equation}
-K_{sat}= K_{dry}+\frac{(1-K_{dry}/K_{0})^{2}}{\phi/K_{fl}+(1-\phi)/K_{0}-K_{dry}/K_{0}^2},
+K_{sat}= K_{dry}+\frac{(1-K_{dry}/K_{s})^{2}}{\phi/K_{fl}+(1-\phi)/K_{s}-K_{dry}/K_{s}^2},
   \label{eq:gasmmann}
 \end{equation}
 
-where $K_{dry}$ is the dry bulk frame modulus calculated in Equation \ref{eq:kdry}, $K_{0}$ 
+where $K_{dry}$ is the dry bulk frame modulus calculated in Equation \ref{eq:kdry}, $K_{s}$ 
 is the bulk modulus of the mineral matrix, $\phi$ is the total porosity and $K_{fl}$ is 
 the fluid bulk modulus calculated by using Hill's average (\ref{eq:hill}). The oil saturation
 values were obtain by the MRIL logs. The reader is referred to \cite{ref:george} for
@@ -272,7 +272,7 @@ rock physics models based on logs with the objective to do a quantitave interpre
 of the data.
 
 
-\csmlongfigure[h!]{ip_vpvs}{./chapters/Chapter2_WellQC/Figures/ip_vpvs.pdf}{6in}{
+\csmlongfigure[h!]{ip_vpvs}{./chapters/Chapter2_WellQC/Figures/ip_vpvs.png}{4in}{
 $V_{p}/V_{s}$ ratio vs acoustic impedance for wells 140-1 and 159-2}
 
 
